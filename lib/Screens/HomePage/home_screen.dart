@@ -108,32 +108,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   )
                 : SizedBox(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height / 2,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              child: FadeTransition(
-                opacity: animation,
-                child: Carousel(
-                  boxFit: BoxFit.cover,
-                  autoplay: true,
-                  animationCurve: Curves.decelerate,
-                  animationDuration: Duration(milliseconds: 500),
-                  dotSize: 6.0,
-                  dotIncreasedColor: Colors.green,
-                  dotBgColor: Colors.transparent,
-                  dotPosition: DotPosition.topRight,
-                  dotVerticalPadding: 10.0,
-                  showIndicator: false,
-                  indicatorBgPadding: 7.0,
-                  images: reloadBannerImages,
-                ),
-              ),
-            ),
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width,
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: Carousel(
+                        boxFit: BoxFit.cover,
+                        autoplay: true,
+                        animationCurve: Curves.decelerate,
+                        animationDuration: Duration(milliseconds: 500),
+                        dotSize: 6.0,
+                        dotIncreasedColor: Colors.green,
+                        dotBgColor: Colors.transparent,
+                        dotPosition: DotPosition.topRight,
+                        dotVerticalPadding: 10.0,
+                        showIndicator: false,
+                        indicatorBgPadding: 7.0,
+                        images: reloadBannerImages,
+                      ),
+                    ),
+                  ),
             clipper: BottomWaveClipper(),
           ),
           Expanded(
@@ -161,17 +155,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             },
                             child: (index == 0)
                                 ? Badge(
-                                padding: EdgeInsets.all(15.0),
-                                position: BadgePosition.topStart(
-                                    top: 15, start: 5),
-                                badgeContent: Text('99+',
-                                    style: TextStyle(color: Colors.white)),
-                                child: EmptyCard(
-                                    imagename: homelistitem.imageName,
-                                    title: homelistitem.title))
+                                    padding: EdgeInsets.all(15.0),
+                                    position: BadgePosition.topStart(
+                                        top: 15, start: 5),
+                                    badgeContent: Text('99+',
+                                        style: TextStyle(color: Colors.white)),
+                                    child: EmptyCard(
+                                        imagename: homelistitem.imageName,
+                                        title: homelistitem.title))
                                 : EmptyCard(
-                                imagename: homelistitem.imageName,
-                                title: homelistitem.title)),
+                                    imagename: homelistitem.imageName,
+                                    title: homelistitem.title)),
                       ),
                     ),
                   );

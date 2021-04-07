@@ -263,32 +263,32 @@ class _EucharisticState extends State<Eucharistic>
                       size: 100.0,
                       color: Colors.red,
                     ),
-            ),
-          )
-              : Container(
-            decoration: new BoxDecoration(
-              // color: Colors.transparent,
-              image: new DecorationImage(
-                fit: BoxFit.cover,
-                colorFilter: new ColorFilter.mode(
-                    Colors.black.withOpacity(0.5), BlendMode.dstATop),
-                image: AssetImage('image/MassTiming.jpg'),
-              ),
-            ),
-            child: Stack(
-              children: <Widget>[
-                // Positioned(
-                //   top: 40,
-                //   child: _addButton(),
-                // ),
-                if (!Singleton().isAdmin)
-                  Positioned(
-                    top: 40,
-                    right: 16,
-                    child: _editButton(),
                   ),
-                Column(
-                  children: <Widget>[
+                )
+              : Container(
+                  decoration: new BoxDecoration(
+                    // color: Colors.transparent,
+                    image: new DecorationImage(
+                      fit: BoxFit.cover,
+                      colorFilter: new ColorFilter.mode(
+                          Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                      image: AssetImage('image/MassTiming.jpg'),
+                    ),
+                  ),
+                  child: Stack(
+                    children: <Widget>[
+                      // Positioned(
+                      //   top: 40,
+                      //   child: _addButton(),
+                      // ),
+                      if (!Singleton().isAdmin)
+                        Positioned(
+                          top: 40,
+                          right: 16,
+                          child: _editButton(),
+                        ),
+                      Column(
+                        children: <Widget>[
                           Center(child: Container()),
                           SizedBox(
                             height: 40,
@@ -312,102 +312,102 @@ class _EucharisticState extends State<Eucharistic>
                           if (isEditOptionEabled)
                             Row(
                               children: <Widget>[
-                          Text(
-                            'Choose Date',
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.5),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              _selectDate(context);
-                            },
-                            child: Container(
-                              width: _width,
-                              height: _height / 7,
-                              margin: EdgeInsets.only(top: 0),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.red)),
-                              child: TextFormField(
-                                style: TextStyle(fontSize: 20),
-                                textAlign: TextAlign.justify,
-                                enabled: false,
-                                keyboardType: TextInputType.text,
-                                controller: _dateController,
-                                onSaved: (String val) {
-                                  _setDate = val;
-                                },
-                                // decoration: InputDecoration(
-                                //     disabledBorder: UnderlineInputBorder(
-                                //         borderSide: BorderSide.none),
-                                //     contentPadding: EdgeInsets.only(top: 0.0)),
-                              ),
+                                Text(
+                                  'Choose Date',
+                                  style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    _selectDate(context);
+                                  },
+                                  child: Container(
+                                    width: _width,
+                                    height: _height / 7,
+                                    margin: EdgeInsets.only(top: 0),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.red)),
+                                    child: TextFormField(
+                                      style: TextStyle(fontSize: 20),
+                                      textAlign: TextAlign.justify,
+                                      enabled: false,
+                                      keyboardType: TextInputType.text,
+                                      controller: _dateController,
+                                      onSaved: (String val) {
+                                        _setDate = val;
+                                      },
+                                      // decoration: InputDecoration(
+                                      //     disabledBorder: UnderlineInputBorder(
+                                      //         borderSide: BorderSide.none),
+                                      //     contentPadding: EdgeInsets.only(top: 0.0)),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
+                          SizedBox(
+                            height: 10,
                           ),
+                          if (isEditOptionEabled)
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  'Choose Time',
+                                  style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    _selectTime(context);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 0),
+                                    width: _width,
+                                    height: _height / 7,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.red)),
+                                    child: TextFormField(
+                                      style: TextStyle(fontSize: 20),
+                                      textAlign: TextAlign.justify,
+                                      onSaved: (String val) {
+                                        _setTime = val;
+                                      },
+                                      enabled: false,
+                                      keyboardType: TextInputType.text,
+                                      controller: _timeController,
+                                      // decoration: InputDecoration(
+                                      //     disabledBorder: UnderlineInputBorder(
+                                      //         borderSide: BorderSide.none),
+                                      //     contentPadding: EdgeInsets.all(0)),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          if (isEditOptionEabled)
+                            RoundedLoadingButton(
+                              child: Text('Submit',
+                                  style: TextStyle(color: Colors.white)),
+                              color: Colors.red,
+                              controller: _btnController,
+                              onPressed: onSubmitPressed,
+                            ),
                         ],
                       ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    if (isEditOptionEabled)
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            'Choose Time',
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.5),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              _selectTime(context);
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 0),
-                              width: _width,
-                              height: _height / 7,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.red)),
-                              child: TextFormField(
-                                style: TextStyle(fontSize: 20),
-                                textAlign: TextAlign.justify,
-                                onSaved: (String val) {
-                                  _setTime = val;
-                                },
-                                enabled: false,
-                                keyboardType: TextInputType.text,
-                                controller: _timeController,
-                                // decoration: InputDecoration(
-                                //     disabledBorder: UnderlineInputBorder(
-                                //         borderSide: BorderSide.none),
-                                //     contentPadding: EdgeInsets.all(0)),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    if (isEditOptionEabled)
-                      RoundedLoadingButton(
-                        child: Text('Submit',
-                            style: TextStyle(color: Colors.white)),
-                        color: Colors.red,
-                        controller: _btnController,
-                        onPressed: onSubmitPressed,
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          )),
+                    ],
+                  ),
+                )),
     );
   }
 

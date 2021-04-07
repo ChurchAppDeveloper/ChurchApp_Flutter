@@ -52,10 +52,7 @@ class ContactUSState extends State<ContactUS> {
         ),
         Positioned(
           left: 0.0,
-          bottom: MediaQuery
-              .of(context)
-              .size
-              .height / 8,
+          bottom: MediaQuery.of(context).size.height / 8,
           child: FittedBox(
             fit: BoxFit.contain,
             child: Padding(
