@@ -1,22 +1,19 @@
-//
-
 import 'dart:convert';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math' as math;
 
 class ConfessionService {
   static final String FetchBookedSlots =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/slotModule?slotStatus=Booked';
+      '${Config.baseUrl}/slotModule?slotStatus=Booked';
 
-  static final String PostNewSlot =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/slotModule';
+  static final String PostNewSlot = '${Config.baseUrl}/slotModule';
 
   static final String FetchAvailableSlots =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/slotModule?slotStatus=Available';
+      '${Config.baseUrl}/slotModule?slotStatus=Available';
 
-  static final String FetchConfession =
-      "https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/confessionModule";
+  static final String FetchConfession = "${Config.baseUrl}/confessionModule";
 
   static final int httpStatusOK = 200;
 

@@ -52,21 +52,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ProfileService().getProfileDetails();
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 5000));
-    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
 
     animation.addStatusListener((status) {
+      setState(() {
+        bannerindex = bannerindex + 1;
+        if (bannerindex > bannerImages.length - 1) {
+          bannerindex = 0;
+        }
+        reloadBannerImages.clear();
+        reloadBannerImages.add(bannerImages[bannerindex]);
+      });
       if (status == AnimationStatus.completed) {
-        setState(() {
-          bannerindex = bannerindex + 1;
-          if (bannerindex > bannerImages.length - 1) {
-            bannerindex = 0;
-          }
-          reloadBannerImages.clear();
-          reloadBannerImages.add(bannerImages[bannerindex]);
-        });
-
+        print("completed");
         controller.reverse();
       } else if (status == AnimationStatus.dismissed) {
+        print("forward");
         controller.forward();
       }
     });
@@ -89,10 +90,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor:
           Color.fromARGB(255, 245, 246, 250), //Color.fromARGB(255, 219, 69, 71)
-      body: Column(
+      body: Stack(
         children: [
           ClipPath(
             child: (_fetching)
@@ -104,9 +106,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         color: Colors.red,
                       ),
                     ),
-                  )
+            )
                 : SizedBox(
-                    height: 350.0,
+              height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.width,
                     child: FadeTransition(
                       opacity: animation,
@@ -118,20 +120,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         dotSize: 6.0,
                         dotIncreasedColor: Colors.green,
                         dotBgColor: Colors.transparent,
-                        dotPosition: DotPosition.topRight,
-                        dotVerticalPadding: 10.0,
-                        showIndicator: false,
-                        indicatorBgPadding: 7.0,
-                        images: reloadBannerImages,
-                      ),
-                    ),
-                  ),
+                  dotPosition: DotPosition.topRight,
+                  dotVerticalPadding: 10.0,
+                  showIndicator: false,
+                  indicatorBgPadding: 7.0,
+                  images: reloadBannerImages,
+                ),
+              ),
+            ),
             clipper: BottomWaveClipper(),
           ),
           Expanded(
             // AnimationLimiter(
             child: GridView.count(
               childAspectRatio: 1.0,
+              padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 0),
               crossAxisCount: columnCount,
               children: List.generate(
                 homelist.length,
@@ -140,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   return AnimationConfiguration.staggeredGrid(
                     columnCount: columnCount,
                     position: index,
-                    duration: const Duration(milliseconds: 1500),
+                    duration: const Duration(milliseconds: 750),
                     child: ScaleAnimation(
                       scale: 0.5,
                       child: FadeInAnimation(
@@ -152,17 +155,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             },
                             child: (index == 0)
                                 ? Badge(
-                                    padding: EdgeInsets.all(15.0),
-                                    position: BadgePosition.topStart(
-                                        top: 15, start: 5),
-                                    badgeContent: Text('99+',
-                                        style: TextStyle(color: Colors.white)),
-                                    child: EmptyCard(
-                                        imagename: homelistitem.imageName,
-                                        title: homelistitem.title))
-                                : EmptyCard(
+                                padding: EdgeInsets.all(15.0),
+                                position: BadgePosition.topStart(
+                                    top: 15, start: 5),
+                                badgeContent: Text('99+',
+                                    style: TextStyle(color: Colors.white)),
+                                child: EmptyCard(
                                     imagename: homelistitem.imageName,
-                                    title: homelistitem.title)),
+                                    title: homelistitem.title))
+                                : EmptyCard(
+                                imagename: homelistitem.imageName,
+                                title: homelistitem.title)),
                       ),
                     ),
                   );
@@ -348,6 +351,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 class HomeItem {
   final String title;
   final String imageName;
+
   HomeItem(this.title, this.imageName);
 }
 

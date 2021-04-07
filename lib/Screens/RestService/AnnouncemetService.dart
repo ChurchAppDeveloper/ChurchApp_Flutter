@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime_type/mime_type.dart';
@@ -11,14 +12,14 @@ class AnnouncementService {
   String announcettitle = "";
   String announcedesc = "";
   File uploadfile;
+
   static final String FetchAnnouncement =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/announcementModule';
+      '${Config.baseUrl}/announcementModule';
 
   static final String CreateAnnouncement =
-      "https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/announcementModule";
+      '${Config.baseUrl}/announcementModule';
 
-  static final String UploadDoc =
-      "https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/uploaderModule?";
+  static final String UploadDoc = '${Config.baseUrl}/uploaderModule?';
 
   static final String MediaURL =
       "https://assets-barnabas.s3.us-east-2.amazonaws.com/";

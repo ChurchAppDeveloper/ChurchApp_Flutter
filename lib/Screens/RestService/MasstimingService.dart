@@ -1,16 +1,17 @@
 import 'dart:convert';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MassTimingService {
   static final String GET_MassTiming_URL =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/massMeetingModule';
+      '${Config.baseUrl}/massMeetingModule';
 
   static final String GET_Echrastic_URL =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/eventModule?eventId=1';
+      '${Config.baseUrl}/eventModule?eventId=1';
 
   static final String GET_Rosary_URL =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/eventModule?eventId=2';
+      '${Config.baseUrl}/eventModule?eventId=2';
 
   static final int httpStatusOK = 200;
 

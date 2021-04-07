@@ -1,16 +1,16 @@
 import 'dart:convert';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PushTokenService {
 // https://zrrlyf7lv2.execute-api.us-east-1.amazonaws.com/churchapi/CreateEndpointModule
   static final String GET_CreateEndPoint_URL =
-      'https://zrrlyf7lv2.execute-api.us-east-1.amazonaws.com/churchapi/CreateEndpoint';
+      '${Config.baseUrl}/CreateEndpoint';
 
   static final String GET_DeleteEndPoint_URL =
-      'https://zrrlyf7lv2.execute-api.us-east-1.amazonaws.com/churchapi/deleteEndpointModule';
+      '${Config.baseUrl}/deleteEndpointModule';
 
-  // https://zrrlyf7lv2.execute-api.us-east-1.amazonaws.com/churchapi/CreateEndpoint
   sendupdatedToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String pushtoken = prefs.getString('pushtoken');
@@ -20,10 +20,11 @@ class PushTokenService {
     prefs.setString('pushtoken', token);
     final String url = GET_CreateEndPoint_URL;
     Map data = {'deviceId': token, "phoneNumber": phonenumber};
+    print("Map" + data.toString());
     String body = json.encode(data);
     http.Response response = await http.post(url,
         headers: {"Content-Type": "application/json"}, body: body);
-    print("create" + response.body.toString());
+    print("create or Push " + response.body.toString());
     // }
   }
 

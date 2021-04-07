@@ -1,34 +1,28 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as fileUtil;
 import 'package:http_parser/http_parser.dart';
 import 'dart:math' as math;
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 typedef void OnUploadProgressCallback(int sentBytes, int totalBytes);
 
 class ClassifieldService {
-  static final String CreateBusiness =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/businessModule';
+  static final String CreateBusiness = '${Config.baseUrl}/businessModule';
 
-  static final String FetchBusiness =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/businessModule';
+  static final String FetchBusiness = '${Config.baseUrl}/businessModule';
 
-  static final String FetchClassifields =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/classifieldModule';
+  static final String FetchClassifields = '${Config.baseUrl}/classifieldModule';
 
-  static final String UploadDoc =
-      "https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/uploaderModule?";
+  static final String UploadDoc = "${Config.baseUrl}/uploaderModule?";
 
   static final String MediaURL =
       "https://assets-barnabas.s3.us-east-2.amazonaws.com/";
 
-  static final String CreateClassifield =
-      "https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/classifieldModule";
+  static final String CreateClassifield = "${Config.baseUrl}/classifieldModule";
 
   static final int httpStatusOK = 200;
 

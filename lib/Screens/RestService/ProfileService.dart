@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileService {
-  static final String GET_Profile_URL =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/profileModule';
+  static final String GET_Profile_URL = '${Config.baseUrl}/profileModule';
 
   static final int httpStatusOK = 200;
 

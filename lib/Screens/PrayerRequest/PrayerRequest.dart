@@ -53,15 +53,24 @@ class CustomBody extends StatelessWidget {
   Widget build(BuildContext context) {
     // double listheight = (45 * songs.length).toDouble();
     return Stack(children: <Widget>[
+      Positioned(
+          left: 70,
+          bottom: 125,
+          child: ScaleAnimatedTextKit(
+            repeatForever: true,
+            onTap: () {
+              print("Tap Event");
+            },
+            text: ["PRAYER REQUEST"],
+            textStyle: TextStyle(
+                fontSize: 30.0, fontFamily: "Canterbury", color: Colors.red),
+            textAlign: TextAlign.start,
+          )),
       SingleChildScrollView(
         child: Column(
           children: <Widget>[
             CustomHeader(),
-            IconButton(
-              //PrayerList
-              color: Colors.red,
-              icon: Image.asset('image/prayerlist.png'),
-              iconSize: 150,
+            FlatButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 var wepage = WebViewLoad(
@@ -73,11 +82,43 @@ class CustomBody extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => wepage),
                 );
               },
+              padding: EdgeInsets.all(0.0),
+              child: Image.asset('image/prayerlist.png'),
             ),
-            IconButton(
-              //MassIntention
-              icon: Image.asset('image/massintention.png'),
-              iconSize: 150,
+            // IconButton(
+            //   //PrayerList
+            //   color: Colors.red,
+            //   icon: Image.asset('image/prayerlist.png'),
+            //   iconSize: 150,
+            //   onPressed: () async {
+            //     SharedPreferences prefs = await SharedPreferences.getInstance();
+            //     var wepage = WebViewLoad(
+            //         weburl: prefs.getString('prayerRequestUtl'),
+            //         isShowAppbar: true,
+            //         pageTitle: "PRAYER REQUEST");
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => wepage),
+            //     );
+            //   },
+            // ),
+            // IconButton(
+            //   //MassIntention
+            //   icon: Image.asset('image/massintention.png'),
+            //   iconSize: 150,
+            //   onPressed: () async {
+            //     SharedPreferences prefs = await SharedPreferences.getInstance();
+            //     var wepage = WebViewLoad(
+            //         weburl: prefs.getString('masstimingintention'),
+            //         isShowAppbar: true,
+            //         pageTitle: "PRAYER REQUEST");
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => wepage),
+            //     );
+            //   },
+            // ),
+            FlatButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 var wepage = WebViewLoad(
@@ -89,23 +130,12 @@ class CustomBody extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => wepage),
                 );
               },
+              padding: EdgeInsets.all(0.0),
+              child: Image.asset('image/massintention.png'),
             )
           ],
         ),
       ),
-      Positioned(
-          left: 70,
-          bottom: 350,
-          child: ScaleAnimatedTextKit(
-            repeatForever: true,
-            onTap: () {
-              print("Tap Event");
-            },
-            text: ["PRAYER REQUEST"],
-            textStyle: TextStyle(
-                fontSize: 30.0, fontFamily: "Canterbury", color: Colors.red),
-            textAlign: TextAlign.start,
-          ))
     ]);
   }
 }

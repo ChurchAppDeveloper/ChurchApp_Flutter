@@ -7,6 +7,7 @@ import 'package:churchapp/Screens/RestService/PushTokenService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Singleton {
@@ -42,23 +43,28 @@ class _LoginScreenState extends State<LoginScreen> {
             image: DecorationImage(
                 image: AssetImage("image/background.png"), fit: BoxFit.fill)),
       ),
-      Container(
-        margin: EdgeInsets.only(left: 20.0, bottom: 40.0, top: 50.0),
-        height: 300,
-        alignment: Alignment.topCenter,
-        child: Image.asset("image/churchLogo.png"),
-      ),
-      Container(
-        alignment: Alignment.center,
-        // width: 350.0,
-        child: Text(
-          'St. Barnabas Pray For Us 🙏\n\n 3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 25,
-            color: Colors.white,
+      Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 20.0, bottom: 40.0, top: 50.0),
+            height: 300,
+            alignment: Alignment.topCenter,
+            child: Image.asset("image/churchLogo.png"),
           ),
-        ),
+          Container(
+            alignment: Alignment.center,
+            // width: 350.0,
+            child: Text(
+                'St. Barnabas Pray For Us 🙏\n\n 3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                  ),
+                )),
+          ),
+        ],
       ),
       SingleChildScrollView(
         child: Container(
@@ -111,14 +117,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      'Please enter your phone number',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
+                    Text('Please enter your phone number',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black87,
+                          ),
+                        )),
                     Container(
                       margin: const EdgeInsets.all(8),
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),

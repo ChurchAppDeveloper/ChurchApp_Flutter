@@ -11,6 +11,7 @@ import 'Screens/LoginPage/login_screen.dart';
 import 'amplifyconfiguration.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

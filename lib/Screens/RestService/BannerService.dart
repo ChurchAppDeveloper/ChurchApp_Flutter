@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
 
 // List<Vendor> vendorFromJson(String str) =>
@@ -159,8 +160,7 @@ class BannerImage {
 }
 
 class BannerService {
-  static final String GET_BANNERS_URL =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/bannerModule';
+  static final String GET_BANNERS_URL = '${Config.baseUrl}/bannerModule';
 
   static final int httpStatusOK = 200;
 

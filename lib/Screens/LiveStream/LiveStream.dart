@@ -90,6 +90,7 @@ class CustomBody extends StatelessWidget {
             FlatButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
+                debugPrint("LiveStream: ${prefs.getString('youtubeUrl')}");
                 var wepage = WebViewLoad(
                     weburl: prefs.getString('youtubeUrl'),
                     isShowAppbar: true,

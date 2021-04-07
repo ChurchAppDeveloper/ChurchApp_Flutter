@@ -215,7 +215,7 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
           tabs: [
             TabData(
               iconData: Icons.weekend,
-              title: "Weekday",
+              title: "Daily",
             ),
             TabData(iconData: Icons.weekend, title: "Eucharistic"),
             TabData(iconData: Icons.weekend, title: "Rosary")

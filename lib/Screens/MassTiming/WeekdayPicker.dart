@@ -241,7 +241,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
 
     return Column(children: <Widget>[
       Container(
-          width: 110,
+          // width: 110,
           margin: EdgeInsets.only(left: 20, top: 10),
           child: ColorizeAnimatedTextKit(
             repeatForever: true,
@@ -260,7 +260,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
       ),
       Row(children: <Widget>[
         Text(
-          "\tFirst Alarm:\t\t\t\t\t ",
+          "\tMASS TIMING:\t",
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         InkWell(
@@ -313,7 +313,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
       ]),
       Row(children: <Widget>[
         Text(
-          "\tSecond Alarm:\t",
+          "\tMASS TIMING:\t",
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         InkWell(

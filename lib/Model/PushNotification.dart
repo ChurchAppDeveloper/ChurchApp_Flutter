@@ -12,11 +12,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+class PushNotificationMessage {
+  final String title;
+  final String body;
+
+  PushNotificationMessage({
+    @required this.title,
+    @required this.body,
+  });
+}
+
 class ReceivedNotification {
   final int id;
   final String title;
   final String body;
   final String payload;
+
   ReceivedNotification({
     @required this.id,
     @required this.title,
@@ -77,7 +88,20 @@ class PushNotificationService {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        displayNotification(message);
+        if (Platform.isAndroid) {
+          PushNotificationMessage notification = PushNotificationMessage(
+            title: message['notification']['title'],
+            body: message['notification']['body'],
+          );
+          displayNotification(notification);
+        } else {
+          PushNotificationMessage notification = PushNotificationMessage(
+            title: message['aps']['alert']['title'],
+            body: message['aps']['alert']['body'],
+          );
+          displayNotification(notification);
+        }
+
         await Aws.onMessage(message);
       },
       // onBackgroundMessage: myBackgroundMessageHandler,
@@ -136,7 +160,7 @@ class PushNotificationService {
     // print(response.body.toString());
   }
 
-  Future displayNotification(Map<String, dynamic> message) async {
+  Future displayNotification(PushNotificationMessage message) async {
     var androidPlatformChannelSpecifics =
         new AndroidNotificationDetails('channel-id', 'fcm', 'androidcoding.in');
     var iOSPlatformChannelSpecifics =
@@ -146,8 +170,8 @@ class PushNotificationService {
         iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
-      message["default"],
-      message["default"],
+      message.title,
+      message.body,
       platformChannelSpecifics,
       payload: 'Default_Sound',
     );

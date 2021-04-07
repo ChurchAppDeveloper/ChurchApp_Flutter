@@ -1,10 +1,9 @@
 import 'dart:convert';
+import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
-  static final String GET_Users_URL =
-      'https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/userModule';
+  static final String GET_Users_URL = '${Config.baseUrl}/userModule';
 
   static final int httpStatusOK = 200;
 
