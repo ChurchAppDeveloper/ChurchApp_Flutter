@@ -106,20 +106,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         color: Colors.red,
                       ),
                     ),
-            )
+                  )
                 : SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width,
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: Carousel(
-                        boxFit: BoxFit.cover,
-                        autoplay: true,
-                        animationCurve: Curves.decelerate,
-                        animationDuration: Duration(milliseconds: 500),
-                        dotSize: 6.0,
-                        dotIncreasedColor: Colors.green,
-                        dotBgColor: Colors.transparent,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height / 2,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              child: FadeTransition(
+                opacity: animation,
+                child: Carousel(
+                  boxFit: BoxFit.cover,
+                  autoplay: true,
+                  animationCurve: Curves.decelerate,
+                  animationDuration: Duration(milliseconds: 500),
+                  dotSize: 6.0,
+                  dotIncreasedColor: Colors.green,
+                  dotBgColor: Colors.transparent,
                   dotPosition: DotPosition.topRight,
                   dotVerticalPadding: 10.0,
                   showIndicator: false,

@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrayerRequest extends StatefulWidget {
@@ -54,23 +55,25 @@ class CustomBody extends StatelessWidget {
     // double listheight = (45 * songs.length).toDouble();
     return Stack(children: <Widget>[
       Positioned(
-          left: 70,
-          bottom: 125,
-          child: ScaleAnimatedTextKit(
+        left: 70,
+        right: 70,
+        bottom: 150,
+        child: ScaleAnimatedTextKit(
             repeatForever: true,
             onTap: () {
               print("Tap Event");
             },
             text: ["PRAYER REQUEST"],
-            textStyle: TextStyle(
-                fontSize: 30.0, fontFamily: "Canterbury", color: Colors.red),
-            textAlign: TextAlign.start,
-          )),
+            textStyle: GoogleFonts.lato(
+              textStyle: TextStyle(
+                  fontSize: 22, color: Colors.red, fontWeight: FontWeight.w600),
+            )),
+      ),
       SingleChildScrollView(
         child: Column(
           children: <Widget>[
             CustomHeader(),
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 var wepage = WebViewLoad(
@@ -82,7 +85,6 @@ class CustomBody extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => wepage),
                 );
               },
-              padding: EdgeInsets.all(0.0),
               child: Image.asset('image/prayerlist.png'),
             ),
             // IconButton(
@@ -118,7 +120,7 @@ class CustomBody extends StatelessWidget {
             //     );
             //   },
             // ),
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 var wepage = WebViewLoad(
@@ -130,8 +132,9 @@ class CustomBody extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => wepage),
                 );
               },
-              padding: EdgeInsets.all(0.0),
-              child: Image.asset('image/massintention.png'),
+              child: Image.asset(
+                'image/massintention.png',
+              ),
             )
           ],
         ),

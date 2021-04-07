@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'package:analog_clock/analog_clock.dart';
 import 'package:churchapp/Model/PushNotification.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
@@ -11,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
@@ -34,11 +33,14 @@ class _EucharisticState extends State<Eucharistic>
   List<EchurasticRosaryData> modeldata;
 
   int currentIndex = 0;
+
   // final items = ["Clock", "List", "Settings"];
   final icons = [Icons.alarm, Icons.list, Icons.settings];
 
   double _secondPercent() => stopwatch.elapsed.inSeconds / 60;
+
   double _minutesPercent() => minute / 60;
+
   double _hoursPercent() => hour / 24;
   PushNotificationService notification;
 
@@ -249,6 +251,7 @@ class _EucharisticState extends State<Eucharistic>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
       home: Scaffold(
           backgroundColor: bgColor,
@@ -260,176 +263,151 @@ class _EucharisticState extends State<Eucharistic>
                       size: 100.0,
                       color: Colors.red,
                     ),
-                  ),
-                )
+            ),
+          )
               : Container(
-                  decoration: new BoxDecoration(
-                    // color: Colors.transparent,
-                    image: new DecorationImage(
-                      fit: BoxFit.cover,
-                      colorFilter: new ColorFilter.mode(
-                          Colors.black.withOpacity(0.5), BlendMode.dstATop),
-                      image: AssetImage('image/MassTiming.jpg'),
-                    ),
+            decoration: new BoxDecoration(
+              // color: Colors.transparent,
+              image: new DecorationImage(
+                fit: BoxFit.cover,
+                colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                image: AssetImage('image/MassTiming.jpg'),
+              ),
+            ),
+            child: Stack(
+              children: <Widget>[
+                // Positioned(
+                //   top: 40,
+                //   child: _addButton(),
+                // ),
+                if (!Singleton().isAdmin)
+                  Positioned(
+                    top: 40,
+                    right: 16,
+                    child: _editButton(),
                   ),
-                  child: Stack(
-                    children: <Widget>[
-                      // Positioned(
-                      //   top: 40,
-                      //   child: _addButton(),
-                      // ),
-                      if (!Singleton().isAdmin)
-                        Positioned(
-                          top: 40,
-                          right: 16,
-                          child: _editButton(),
-                        ),
-                      Column(
-                        children: <Widget>[
-                          Center(
-                              child: new AnimatedSize(
-                                  child: Container(
-                                    height: _height,
-                                    width: _width,
-                                    child: AnalogClock(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 10.0, color: Colors.red),
-                                          color: Colors.transparent,
-                                          shape: BoxShape.circle),
-                                      width: 150.0,
-                                      isLive: true,
-                                      hourHandColor: Colors.red,
-                                      minuteHandColor: Colors.red,
-                                      secondHandColor: Colors.black,
-                                      showSecondHand: true,
-                                      numberColor: Colors.red,
-                                      showNumbers: true,
-                                      textScaleFactor: 1.4,
-                                      showTicks: true,
-                                      showDigitalClock: false,
-                                      showAllNumbers: true,
-                                      tickColor: Colors.black,
-                                      datetime: DateTime(2019, 1, 1, 9, 12, 15),
-                                    ),
-                                  ),
-                                  vsync: this,
-                                  duration: new Duration(seconds: 2))),
+                Column(
+                  children: <Widget>[
+                          Center(child: Container()),
                           SizedBox(
                             height: 40,
                           ),
-                          Text(
-                            "EUCHARISTIC",
-                            style: TextStyle(
-                              color: Colors.redAccent,
-                              fontSize: 32,
-                            ),
-                          ),
+                          Text("EUCHARISTIC",
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.redAccent,
+                                ),
+                              )),
                           Text(
                               "${hour.round()}:${minute.round()} ${TimeOfDay.fromDateTime(now).period == DayPeriod.am ? 'AM' : 'PM'}",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 50,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: 50,
+                                  color: Colors.black,
+                                ),
                               )),
                           if (isEditOptionEabled)
                             Row(
                               children: <Widget>[
-                                Text(
-                                  'Choose Date',
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    _selectDate(context);
-                                  },
-                                  child: Container(
-                                    width: _width,
-                                    height: _height / 7,
-                                    margin: EdgeInsets.only(top: 0),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(color: Colors.red)),
-                                    child: TextFormField(
-                                      style: TextStyle(fontSize: 20),
-                                      textAlign: TextAlign.justify,
-                                      enabled: false,
-                                      keyboardType: TextInputType.text,
-                                      controller: _dateController,
-                                      onSaved: (String val) {
-                                        _setDate = val;
-                                      },
-                                      // decoration: InputDecoration(
-                                      //     disabledBorder: UnderlineInputBorder(
-                                      //         borderSide: BorderSide.none),
-                                      //     contentPadding: EdgeInsets.only(top: 0.0)),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          SizedBox(
-                            height: 10,
+                          Text(
+                            'Choose Date',
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.5),
                           ),
-                          if (isEditOptionEabled)
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  'Choose Time',
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    _selectTime(context);
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 0),
-                                    width: _width,
-                                    height: _height / 7,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(color: Colors.red)),
-                                    child: TextFormField(
-                                      style: TextStyle(fontSize: 20),
-                                      textAlign: TextAlign.justify,
-                                      onSaved: (String val) {
-                                        _setTime = val;
-                                      },
-                                      enabled: false,
-                                      keyboardType: TextInputType.text,
-                                      controller: _timeController,
-                                      // decoration: InputDecoration(
-                                      //     disabledBorder: UnderlineInputBorder(
-                                      //         borderSide: BorderSide.none),
-                                      //     contentPadding: EdgeInsets.all(0)),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          InkWell(
+                            onTap: () {
+                              _selectDate(context);
+                            },
+                            child: Container(
+                              width: _width,
+                              height: _height / 7,
+                              margin: EdgeInsets.only(top: 0),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.red)),
+                              child: TextFormField(
+                                style: TextStyle(fontSize: 20),
+                                textAlign: TextAlign.justify,
+                                enabled: false,
+                                keyboardType: TextInputType.text,
+                                controller: _dateController,
+                                onSaved: (String val) {
+                                  _setDate = val;
+                                },
+                                // decoration: InputDecoration(
+                                //     disabledBorder: UnderlineInputBorder(
+                                //         borderSide: BorderSide.none),
+                                //     contentPadding: EdgeInsets.only(top: 0.0)),
+                              ),
                             ),
-                          SizedBox(
-                            height: 10,
                           ),
-                          if (isEditOptionEabled)
-                            RoundedLoadingButton(
-                              child: Text('Submit',
-                                  style: TextStyle(color: Colors.white)),
-                              color: Colors.red,
-                              controller: _btnController,
-                              onPressed: onSubmitPressed,
-                            ),
                         ],
                       ),
-                    ],
-                  ),
-                )),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    if (isEditOptionEabled)
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            'Choose Time',
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.5),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _selectTime(context);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(top: 0),
+                              width: _width,
+                              height: _height / 7,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.red)),
+                              child: TextFormField(
+                                style: TextStyle(fontSize: 20),
+                                textAlign: TextAlign.justify,
+                                onSaved: (String val) {
+                                  _setTime = val;
+                                },
+                                enabled: false,
+                                keyboardType: TextInputType.text,
+                                controller: _timeController,
+                                // decoration: InputDecoration(
+                                //     disabledBorder: UnderlineInputBorder(
+                                //         borderSide: BorderSide.none),
+                                //     contentPadding: EdgeInsets.all(0)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    if (isEditOptionEabled)
+                      RoundedLoadingButton(
+                        child: Text('Submit',
+                            style: TextStyle(color: Colors.white)),
+                        color: Colors.red,
+                        controller: _btnController,
+                        onPressed: onSubmitPressed,
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          )),
     );
   }
 
@@ -458,105 +436,4 @@ class _EucharisticState extends State<Eucharistic>
       ),
     );
   }
-}
-
-enum LineType { hour, minute, second }
-
-class LinesPainter extends CustomPainter {
-  final Paint linePainter;
-
-  final double lineHeight = 8;
-  final int maxLines = 30;
-
-  LinesPainter()
-      : linePainter = Paint()
-          ..color = Colors.redAccent
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.translate(size.width / 2, size.height / 2);
-
-    canvas.save();
-
-    final radius = size.width / 2;
-
-    List.generate(maxLines, (i) {
-      canvas.drawLine(Offset(0, radius), Offset(0, radius - 8), linePainter);
-      canvas.rotate(2 * pi / maxLines);
-    });
-
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-}
-
-class TimeLinesPainter extends CustomPainter {
-  final Paint linePainter;
-  final Paint hourPainter;
-  final Paint minutePainter;
-  final double tick;
-  final LineType lineType;
-
-  TimeLinesPainter({this.tick, this.lineType})
-      : linePainter = Paint()
-          ..color = Colors.redAccent
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.5,
-        minutePainter = Paint()
-          ..color = Colors.black38
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3.5,
-        hourPainter = Paint()
-          ..color = Colors.black
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 4.5;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final radius = size.width / 2;
-
-    canvas.translate(radius, radius);
-
-    switch (lineType) {
-      case LineType.hour:
-        canvas.rotate(24 * pi * tick);
-        canvas.drawPath(_hourPath(radius), hourPainter);
-        break;
-      case LineType.minute:
-        canvas.rotate(2 * pi * tick);
-        canvas.drawPath(_minutePath(radius), minutePainter);
-        break;
-      case LineType.second:
-        canvas.rotate(2 * pi * tick);
-        canvas.drawPath(_secondPath(radius), linePainter);
-        canvas.drawShadow(_secondPath(radius), Colors.black26, 100, true);
-
-        break;
-    }
-  }
-
-  Path _hourPath(double radius) {
-    return Path()
-      ..lineTo(0, -((radius / 1.4) / 2))
-      ..close();
-  }
-
-  Path _minutePath(double radius) {
-    return Path()
-      ..lineTo(0, -(radius / 1.4))
-      ..close();
-  }
-
-  Path _secondPath(double radius) {
-    return Path()
-      ..lineTo(0, -(radius + 10))
-      ..close();
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

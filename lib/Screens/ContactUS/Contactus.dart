@@ -5,6 +5,7 @@ import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mailto/mailto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,15 +52,25 @@ class ContactUSState extends State<ContactUS> {
         ),
         Positioned(
           left: 0.0,
-          bottom: 125.0,
-          child: Text(
-              'For more details about the app please \ncontact Maryam Tech LLC',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                  color: Colors.white,
-                  fontStyle: FontStyle.italic)),
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height / 8,
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                  'For more details about the app please contact \n Maryam Tech LLC',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  )),
+            ),
+          ),
         ),
       ]),
       floatingActionButton: FabCircularMenu(
