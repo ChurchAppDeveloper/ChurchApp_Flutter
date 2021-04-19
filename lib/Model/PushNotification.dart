@@ -1,16 +1,13 @@
-import 'dart:convert';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_aws/flutter_aws.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'dart:io' show File, Platform;
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+
+// import 'package:timezone/data/latest.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
 
 class PushNotificationMessage {
   final String title;
@@ -36,7 +33,7 @@ class ReceivedNotification {
   });
 }
 
-class PushNotificationService {
+/*class PushNotificationService {
   final FirebaseMessaging _fcm;
   PushNotificationService(this._fcm);
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -85,7 +82,7 @@ class PushNotificationService {
       // Or do other work.
     }
 
-    _fcm.configure(
+ */ /*   _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         if (Platform.isAndroid) {
@@ -122,7 +119,7 @@ class PushNotificationService {
     _fcm.requestNotificationPermissions(const IosNotificationSettings(
         sound: true, badge: true, alert: true, provisional: false));
 
-    _fcm.onIosSettingsRegistered.listen((IosNotificationSettings settings) {});
+    _fcm.onIosSettingsRegistered.listen((IosNotificationSettings settings) {});*/ /*
 
     _fcm.onTokenRefresh.listen((String token) {
       // ignore: deprecated_member_use
@@ -368,4 +365,4 @@ class PushNotificationService {
   cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
-}
+}*/

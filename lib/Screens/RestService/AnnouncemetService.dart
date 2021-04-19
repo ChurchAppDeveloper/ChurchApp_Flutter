@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:churchapp/Screens/RestService/app_config.dart';
-import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
-import 'package:mime_type/mime_type.dart';
 import 'dart:math' as math;
 
+import 'package:churchapp/Screens/RestService/app_config.dart';
+import 'package:http/http.dart' as http;
+import 'package:mime_type/mime_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AnnouncementService {
@@ -28,7 +27,7 @@ class AnnouncementService {
 
   Future<List<AnnouncementListItem>> getAnnouncementModel() async {
     try {
-      final response = await http.get(FetchAnnouncement);
+      final response = await http.get(Uri.parse(FetchAnnouncement));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
       List<AnnouncementListItem> list = rest
@@ -55,7 +54,7 @@ class AnnouncementService {
         "&extension=" +
         mimeType;
     try {
-      final response = await http.get(geturl);
+      final response = await http.get(Uri.parse(geturl));
       var data = json.decode(response.body);
       String uploadurl = data["uploadURL"] as String;
       String filename = data["photoFilename"] as String;
@@ -73,7 +72,7 @@ class AnnouncementService {
   uploadDataFileHttp(String uploadurl, String format, String filepath) async {
     final String url = uploadurl;
     String mimeType = mime(filepath);
-    http.Response response = await http.put(url,
+    http.Response response = await http.put(Uri.parse(url),
         headers: {"Content-Type": mimeType},
         body: uploadfile.readAsBytesSync());
     print(response.body.toString());
@@ -95,7 +94,7 @@ class AnnouncementService {
       'readStatus': true
     };
     String body = json.encode(data);
-    http.Response response = await http.post(url,
+    http.Response response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }

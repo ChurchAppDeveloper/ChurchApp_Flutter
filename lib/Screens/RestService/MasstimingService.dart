@@ -1,7 +1,7 @@
 import 'dart:convert';
+
 import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MassTimingService {
   static final String GET_MassTiming_URL =
@@ -17,7 +17,7 @@ class MassTimingService {
 
   static Future<List<MassTiming>> getTimings() async {
     try {
-      final response = await http.get(GET_MassTiming_URL);
+      final response = await http.get(Uri.parse(GET_MassTiming_URL));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
       // print("rest $rest");
@@ -32,7 +32,7 @@ class MassTimingService {
 
   Future<List<EchurasticRosaryData>> getEchrasticData() async {
     try {
-      final response = await http.get(GET_Echrastic_URL);
+      final response = await http.get(Uri.parse(GET_Echrastic_URL));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
 
@@ -49,7 +49,7 @@ class MassTimingService {
 
   Future<List<EchurasticRosaryData>> getRosaryData() async {
     try {
-      final response = await http.get(GET_Rosary_URL);
+      final response = await http.get(Uri.parse(GET_Rosary_URL));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
 
@@ -76,7 +76,7 @@ class MassTimingService {
       'startReminder': true
     };
     String body = json.encode(data);
-    http.Response response = await http.put(url,
+    http.Response response = await http.put(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }
@@ -93,7 +93,7 @@ class MassTimingService {
       'startReminder': masstiming.startReminder
     };
     String body = json.encode(data);
-    http.Response response = await http.put(url,
+    http.Response response = await http.put(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }
@@ -109,7 +109,7 @@ class MassTimingService {
       'phoneNumber': masstiming.phoneNumber,
     };
     String body = json.encode(data);
-    http.Response response = await http.put(url,
+    http.Response response = await http.put(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }

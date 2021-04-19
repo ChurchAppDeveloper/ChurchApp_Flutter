@@ -1,10 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:churchapp/Model/PushNotification.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
 import 'package:date_format/date_format.dart';
 import 'package:day_picker/day_picker.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,16 +19,16 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
   double _width;
   List<MassTiming> masstimings;
   bool _fetching;
-  PushNotificationService notification;
+  // PushNotificationService notification;
 
   @override
   void initState() {
     super.initState();
     _fetching = true;
-    final FirebaseMessaging fcm = FirebaseMessaging();
+    /* final FirebaseMessaging fcm = FirebaseMessaging.instance;
     notification = PushNotificationService(fcm);
     notification.notificationPluginInitilization();
-    notification.context = context;
+    notification.context = context;*/
     // notification.cancelAllNotifications();
     MassTimingService.getTimings().then((masstimig) {
       setState(() {
@@ -72,7 +70,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
           physics: BouncingScrollPhysics(),
           children: <Widget>[
             WeekdayBar(),
-            DayTimeWidget(masstime: masstimings[0], notification: notification),
+            /* DayTimeWidget(masstime: masstimings[0], notification: notification),
             SizedBox(height: 10),
             DayTimeWidget(masstime: masstimings[1], notification: notification),
             SizedBox(height: 10),
@@ -84,7 +82,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
             SizedBox(height: 10),
             DayTimeWidget(masstime: masstimings[5], notification: notification),
             SizedBox(height: 10),
-            DayTimeWidget(masstime: masstimings[6], notification: notification),
+            DayTimeWidget(masstime: masstimings[6], notification: notification),*/
           ],
         ),
         // ),
@@ -96,10 +94,10 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
 //
 
 class DayTimeWidget extends StatefulWidget {
-  final MassTiming masstime;
-  final PushNotificationService notification;
-  const DayTimeWidget({Key key, this.masstime, this.notification})
-      : super(key: key);
+  // final MassTiming masstime;
+  // final PushNotificationService notification;
+  // const DayTimeWidget({Key key, this.masstime, this.notification})
+  //     : super(key: key);
   @override
   _DayTimeWidgetState createState() => _DayTimeWidgetState();
 }
@@ -131,7 +129,8 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
   TimeOfDay selectedSecondTime = TimeOfDay(hour: 14, minute: 00);
   TextEditingController _timeController = TextEditingController();
   TextEditingController _secondTimeController = TextEditingController();
-  PushNotificationService notification;
+
+  // PushNotificationService notification;
   bool isFirstAlaramSwitched = false;
   bool isSecondAlaramSwitched = false;
   int firstAlaramNotificationid = 0;
@@ -151,8 +150,8 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
     // _timeController.text = formatDate(
     //     DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
     //     [hh, ':', nn, " ", am]).toString();
-    masstime = widget.masstime;
-    notification = widget.notification;
+    // masstime = widget.masstime;
+    // notification = widget.notification;
     isFirstAlaramSwitched = masstime.startReminder;
     isSecondAlaramSwitched = masstime.endReminder;
 
@@ -173,8 +172,8 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
     int notifficationday = daysArr.indexOf(day);
     firstAlaramNotificationid = notifficationday + 500;
     secondAlaramNotificationid = notifficationday + 600;
-    updateFirstNotification();
-    updateSecondNottfication();
+    // updateFirstNotification();
+    // updateSecondNottfication();
     // // First Alaram
     // notification.scheduleWeeklyNotificationForRespectiveDays(selectedTime.hour,
     //     selectedTime.minute, notifficationday, firstAlaramNotificationid);
@@ -206,7 +205,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
         _timeController.text = formatDate(
             DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
             [hh, ':', nn, " ", am]).toString();
-        updateFirstNotification();
+        // updateFirstNotification();
       });
   }
 
@@ -229,7 +228,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
             DateTime(2019, 08, 1, selectedSecondTime.hour,
                 selectedSecondTime.minute),
             [hh, ':', nn, " ", am]).toString();
-        updateSecondNottfication();
+        // updateSecondNottfication();
       });
   }
 
@@ -304,7 +303,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
           onChanged: (value) {
             setState(() {
               isFirstAlaramSwitched = value;
-              updateFirstNotification();
+              // updateFirstNotification();
               print(isFirstAlaramSwitched);
             });
           },
@@ -357,7 +356,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
           onChanged: (value) {
             setState(() {
               isSecondAlaramSwitched = value;
-              updateSecondNottfication();
+              // updateSecondNottfication();
               print(isSecondAlaramSwitched);
             });
           },
@@ -368,7 +367,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
     ]);
   }
 
-  updateSecondNottfication() {
+/*updateSecondNottfication() {
     if (isSecondAlaramSwitched) {
       //Cancel the existing notification
       notification.cancelNotification(secondAlaramNotificationid);
@@ -426,7 +425,7 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
         startReminder: isFirstAlaramSwitched);
 
     MassTimingService().updateWeelyMassTiming(masstiming);
-  }
+  }*/
 }
 
 class WeekdayBar extends StatelessWidget {

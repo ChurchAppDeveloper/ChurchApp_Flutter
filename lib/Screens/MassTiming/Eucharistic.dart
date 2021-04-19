@@ -4,7 +4,6 @@ import 'package:churchapp/Model/PushNotification.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
 import 'package:date_format/date_format.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,17 +41,17 @@ class _EucharisticState extends State<Eucharistic>
   double _minutesPercent() => minute / 60;
 
   double _hoursPercent() => hour / 24;
-  PushNotificationService notification;
+  // PushNotificationService notification;
 
   @override
   void initState() {
     super.initState();
     _fetching = true;
     SystemChrome.setEnabledSystemUIOverlays([]);
-    final FirebaseMessaging fcm = FirebaseMessaging();
+    /*  final FirebaseMessaging fcm = FirebaseMessaging.instance;
     notification = PushNotificationService(fcm);
     notification.notificationPluginInitilization();
-    notification.context = context;
+    notification.context = context;*/
 
     MassTimingService().getEchrasticData().then((masstiming) {
       setState(() {
@@ -65,9 +64,9 @@ class _EucharisticState extends State<Eucharistic>
           minute = datetime.minute.toDouble(); //now.minute.toDouble();
 
           //Schedule Local notification
-          notification.cancelNotification(777);
-          notification.scheduleNotificationForCelebrityDay(
-              datetime, 777, "Eucharistic");
+          // notification.cancelNotification(777);
+          // notification.scheduleNotificationForCelebrityDay(
+          //     datetime, 777, "Eucharistic");
         }
       });
     });
@@ -197,8 +196,8 @@ class _EucharisticState extends State<Eucharistic>
     var date = DateTime(selectedDate.year, selectedDate.month, selectedDate.day,
         selectedTime.hour, selectedTime.minute);
     print(date);
-    notification.cancelNotification(777);
-    notification.scheduleNotificationForCelebrityDay(date, 777, "Eucharistic");
+    // notification.cancelNotification(777);
+    // notification.scheduleNotificationForCelebrityDay(date, 777, "Eucharistic");
     Timer(Duration(seconds: 3), () {
       setState(() {
         _width = 310;

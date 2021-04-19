@@ -41,7 +41,7 @@ class ClassifieldService {
       'businessType': businessname
     };
     String body = json.encode(data);
-    http.Response response = await http.post(url,
+    http.Response response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }
@@ -55,7 +55,7 @@ class ClassifieldService {
 
   Future<List<BusinessModel>> getBusinessType(filter) async {
     try {
-      final response = await http.get(FetchBusiness);
+      final response = await http.get(Uri.parse(FetchBusiness));
       var data = json.decode(response.body);
       print("models $data");
       var rest = data["Items"] as List;
@@ -72,7 +72,7 @@ class ClassifieldService {
 
   Future<List<Classifield>> getClassifieldList() async {
     try {
-      final response = await http.get(FetchClassifields);
+      final response = await http.get(Uri.parse(FetchClassifields));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
 
@@ -97,7 +97,7 @@ class ClassifieldService {
     //     UploadDoc + "fname=" + filename + "&extension=image/" + format;
     print("geturl  $geturl");
     try {
-      final response = await http.get(geturl);
+      final response = await http.get(Uri.parse(geturl));
       var data = json.decode(response.body);
       print("data $data");
       String uploadurl = data["uploadURL"] as String;
@@ -220,7 +220,7 @@ class ClassifieldService {
     final String url = uploadurl;
     // Map data = {'businessType': businesstype};
     // String body = json.encode(uploadfile.readAsBytesSync());
-    http.Response response = await http.put(url,
+    http.Response response = await http.put(Uri.parse(url),
         headers: {"Content-Type": "image/" + format},
         body: uploadfile.readAsBytesSync());
     print(response.body.toString());
@@ -242,7 +242,7 @@ class ClassifieldService {
       'businessType': businesstype
     };
     String body = json.encode(data);
-    http.Response response = await http.post(url,
+    http.Response response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }

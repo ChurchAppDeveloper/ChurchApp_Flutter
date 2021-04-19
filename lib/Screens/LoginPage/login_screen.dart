@@ -1,5 +1,3 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/LoginPage/Widget/custom_button.dart';
 import 'package:churchapp/Screens/RestService/LoginService.dart';
@@ -263,42 +261,6 @@ class _LoginScreenState extends State<LoginScreen> {
     // }
     // signin();
   }
-
-  void _signOut() async {
-    try {
-      await Amplify.Auth.signOut(
-          options: CognitoSignOutOptions(globalSignOut: true));
-    } on AuthError catch (e) {
-      print(e);
-    }
-  }
-
-  signin() async {
-    print("signin");
-    try {
-      SignInResult res = await Amplify.Auth.signIn(
-        username: '+919994490142',
-        password: 'mysupersecurepassword',
-      );
-
-      if (res.isSignedIn) {
-        print("Signin Completed");
-      }
-    } on AuthException catch (e) {
-      print(e.exception);
-    } on AuthError catch (e) {
-      print(e.exceptionList[0].detail);
-      print(e.exceptionList[0].exception);
-      print("signin Second");
-      print(e.exceptionList[1].detail);
-      print(e.exceptionList[1].exception);
-    }
-  }
-
-  //callback function of country picker
-  // void _callBackFunction(String name, String dialCode, String flag) {
-  //   _dialCode = dialCode;
-  // }
 
   //Alert dialogue to show error and response
   void showErrorDialog(BuildContext context, String message) {

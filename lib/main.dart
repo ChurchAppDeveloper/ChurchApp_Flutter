@@ -5,7 +5,6 @@ import 'package:churchapp/Model/PushNotification.dart';
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'Screens/LoginPage/login_screen.dart';
 import 'amplifyconfiguration.dart';
@@ -23,17 +22,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 // class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   bool _isAmplifyConfigured = false;
 
   @override
   initState() {
     super.initState();
-    final pushNotificationService = PushNotificationService(_firebaseMessaging);
+    // final pushNotificationService = PushNotificationService(_firebaseMessaging);
     // pushNotificationService.notificationPluginInitilization(); //Test
     // MassTimingService().updateWeelyMassTiming1(); //Test
-    pushNotificationService.initialise();
-    pushNotificationService.context = context;
+    // pushNotificationService.initialise();
+    // pushNotificationService.context = context;
 
     // configureAmplify();
   }

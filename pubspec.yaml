@@ -30,67 +30,65 @@ dependencies:
   cupertino_icons: ^1.0.2
   pin_entry_text_field: ^0.1.4
   hidden_drawer_menu: ^2.0.1
-  url_launcher: ^5.7.10
-  webview_flutter: ^2.0.2
-  # firebase_core: "^0.7.0"
+  url_launcher: ^6.0.3
+  webview_flutter: ^2.0.4
+  firebase_core: ^1.0.3
   # firebase_messaging: "^8.0.0-dev.13"
-  firebase_messaging: ^7.0.3
-  flutter_local_notifications:
-  flutter_native_timezone: ^1.0.4
+  #  firebase_messaging: ^9.1.1
+  #  flutter_local_notifications:
+  flutter_native_timezone: ^1.0.10
   carousel_pro: ^1.0.0
-  flutter_staggered_animations: "^1.0.0"
+  flutter_staggered_animations: ^1.0.0
   # circle_wheel_scroll: ^0.0.1+1
   page_transition: ^1.1.7+6
-  cube_transition: "^1.0.0"
-  file_picker: ^2.1.5+1
+  cube_transition: ^1.0.2
+  file_picker: ^3.0.1
   flutter_stack_card: ^0.2.0+1
-  find_dropdown: ^0.2.2
-  dio: ^3.0.1
-  rounded_loading_button: ^1.0.0
-  image_picker: ^0.6.7+21
-  flutter_animated_dialog: ^1.2.0
-  fancy_bottom_navigation: ^0.3.2
-  intl: ^0.16.1
-  date_format: ^1.0.9
-  analog_clock: ^0.0.1
+  find_dropdown: ^1.0.0
+  dio: ^4.0.0
+  rounded_loading_button: ^1.0.18
+  image_picker: ^0.7.4
+  flutter_animated_dialog: ^2.0.0
+  fancy_bottom_navigation: ^0.3.3
+  intl: ^0.17.0
+  date_format: ^2.0.2
+  analog_clock: ^0.0.4
   day_picker: ^1.0.1
   day_selector: ^1.0.0
-  animated_text_kit: ^3.1.0
+  animated_text_kit: ^4.2.0
   animated_background: ^1.0.5
-  google_maps_flutter: ^1.1.1
-  fab_circular_menu: ^1.0.0
-  badges: ^1.1.6
-  rxdart: ^0.24.1
+  google_maps_flutter: ^2.0.3
+  fab_circular_menu: ^1.0.2
+  badges: ^1.2.0
+  rxdart: ^0.25.0
   flutter_aws:
     git:
       url: https://github.com/yongjhih/flutter_aws.git
-  amplify_flutter: '<1.0.0'
-  amplify_core: '<1.0.0'  
-  amplify_auth_cognito: '<1.0.0'
-  amplify_analytics_pinpoint: '<1.0.0'
-  shared_preferences: ^0.5.12+4
-  http: ^0.12.0+2
-  http_parser: ^3.1.4
+  amplify_flutter: ^0.1.2
+  amplify_core: ^0.1.2
+  amplify_auth_cognito: ^0.1.2
+  amplify_analytics_pinpoint: ^0.1.2
+  shared_preferences: ^2.0.5
+  http: ^0.13.1
+  http_parser: ^4.0.0
   open_file: any
-  mime_type: ^0.3.2
+  mime_type: ^1.0.0
   flutter_filereader: ^2.2.0
-  path_provider: ^1.6.27
+  path_provider: ^2.0.1
   flutter_easyloading: ^3.0.0
   loading: ^1.0.2
-  flutter_launcher_name: "^0.0.1"
-  mailto: ^1.1.0
+  flutter_launcher_name: ^0.0.1
+  mailto: ^2.0.0
   awesome_dialog: ^1.3.2
-  flutter_linkify: ^4.0.2
-  pinch_zoom: ^0.1.0-nullsafety.0
-  google_fonts: ^1.0.0
-  
+  flutter_linkify: ^5.0.2
+  pinch_zoom: ^0.1.0
+  google_fonts: ^2.0.0
+
 flutter_launcher_name:
   name: "ST.BARNABAS"
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  integration_test:
     sdk: flutter
 
 # For information on the generic Dart part of this file, see the

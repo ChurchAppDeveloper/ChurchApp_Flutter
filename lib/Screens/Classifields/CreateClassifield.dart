@@ -25,7 +25,7 @@ String valueText;
 
 class _CreateClassifieldState extends State<CreateClassifield> {
   var countriesKey = GlobalKey<FindDropdownState>();
-  File imageFile = null;
+  PickedFile imageFile = null;
   String name = "";
   String phonenumer = "";
   String businesstype = "";
@@ -97,7 +97,7 @@ class _CreateClassifieldState extends State<CreateClassifield> {
                           image: DecorationImage(
                             image: imageFile == null
                                 ? AssetImage('image/imageplaceholder.png')
-                                : FileImage(imageFile),
+                                : FileImage(File(imageFile.path)),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -202,13 +202,13 @@ class _CreateClassifieldState extends State<CreateClassifield> {
       case "gallery":
 
         /// GALLERY IMAGE PICKER
-        imageFile = await ImagePicker.pickImage(
-            source: ImageSource.gallery, imageQuality: 90);
+        imageFile = (await ImagePicker()
+            .getImage(source: ImageSource.gallery, imageQuality: 90));
         break;
 
       case "camera": // CAMERA CAPTURE CODE
-        imageFile = await ImagePicker.pickImage(
-            source: ImageSource.camera, imageQuality: 90);
+        imageFile = await ImagePicker()
+            .getImage(source: ImageSource.camera, imageQuality: 90);
         break;
     }
 
@@ -269,7 +269,7 @@ class _CreateClassifieldState extends State<CreateClassifield> {
     service.businesstype = businesstype;
     service.contactnumber = phonenumer;
     service.name = name;
-    service.uploadfile = imageFile;
+    service.uploadfile = File(imageFile.path);
     var random = new math.Random();
     var randomNum = random.nextInt(888).toString();
     String format = imageFile.path.split(".").last;
@@ -283,15 +283,15 @@ class _CreateClassifieldState extends State<CreateClassifield> {
     });
   }
 
-  // Future<List<BusinessModel>> getData(filter) async {
-  //   var response = await Dio().get(
-  //     "https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/businessModule",
-  //     queryParameters: {"filter": filter},
-  //   );
+// Future<List<BusinessModel>> getData(filter) async {
+//   var response = await Dio().get(
+//     "https://325p0kj62c.execute-api.us-east-2.amazonaws.com/churchapi/businessModule",
+//     queryParameters: {"filter": filter},
+//   );
 
-  //   var models = BusinessModel.fromJsonList(response.data);
-  //   return models;
-  // }
+//   var models = BusinessModel.fromJsonList(response.data);
+//   return models;
+// }
 }
 
 // CustomPainter class to for the header curved-container

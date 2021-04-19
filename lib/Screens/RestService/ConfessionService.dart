@@ -19,7 +19,7 @@ class ConfessionService {
 
   Future<List<ConfessionData>> getConfessionData() async {
     try {
-      final response = await http.get(FetchConfession);
+      final response = await http.get(Uri.parse(FetchConfession));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
       List<ConfessionData> list = rest
@@ -44,14 +44,14 @@ class ConfessionService {
       "confessionId": slot.confessionId
     };
     String body = json.encode(data);
-    http.Response response = await http.post(url,
+    http.Response response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }
 
   Future<List<ConfessionItem>> getBookedConfessionList() async {
     try {
-      final response = await http.get(FetchBookedSlots);
+      final response = await http.get(Uri.parse(FetchBookedSlots));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
       List<ConfessionItem> list = rest
@@ -67,7 +67,7 @@ class ConfessionService {
 
   Future<List<ConfessionItem>> getAvailableConfessionList() async {
     try {
-      final response = await http.get(FetchAvailableSlots);
+      final response = await http.get(Uri.parse(FetchAvailableSlots));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
       List<ConfessionItem> list = rest

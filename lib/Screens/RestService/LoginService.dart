@@ -9,7 +9,7 @@ class LoginService {
 
   Future<List<UserData>> getProfileDetails() async {
     try {
-      final response = await http.get(GET_Users_URL);
+      final response = await http.get(Uri.parse(GET_Users_URL));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
       List<UserData> list =
@@ -24,7 +24,7 @@ class LoginService {
     final String url = GET_Users_URL;
     Map data = {'phoneNumber': phonenumber, 'userRole': "Contributor"};
     String body = json.encode(data);
-    http.Response response = await http.post(url,
+    http.Response response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print(response.body.toString());
   }

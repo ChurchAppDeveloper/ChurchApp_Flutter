@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
 
@@ -166,7 +167,7 @@ class BannerService {
 
   static Future<List<BannerImage>> getBanners() async {
     try {
-      final response = await http.get(GET_BANNERS_URL);
+      final response = await http.get(Uri.parse(GET_BANNERS_URL));
       var data = json.decode(response.body);
       var rest = data["Items"] as List;
 

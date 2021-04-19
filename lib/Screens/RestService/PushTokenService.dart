@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:churchapp/Screens/RestService/app_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,7 @@ class PushTokenService {
     Map data = {'deviceId': token, "phoneNumber": phonenumber};
     print("Map" + data.toString());
     String body = json.encode(data);
-    http.Response response = await http.post(url,
+    http.Response response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print("create or Push " + response.body.toString());
     // }
@@ -34,7 +35,7 @@ class PushTokenService {
     final String url = GET_DeleteEndPoint_URL;
     Map data = {"phoneNumber": phonenumber};
     String body = json.encode(data);
-    http.Response response = await http.post(url,
+    http.Response response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"}, body: body);
     print("delete" + response.body.toString());
     sendupdatedToken();
