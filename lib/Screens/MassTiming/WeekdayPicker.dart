@@ -69,6 +69,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
         height: _height,
         child: ListView(
           shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
           children: <Widget>[
             WeekdayBar(),
             DayTimeWidget(masstime: masstimings[0], notification: notification),

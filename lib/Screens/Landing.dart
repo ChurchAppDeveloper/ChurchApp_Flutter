@@ -25,13 +25,13 @@ class _LandingState extends State<Landing> {
   loadAdminStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var newPhone = prefs.getString("phone");
-    var loginservice = LoginService();
-    loginservice.getProfileDetails().then((userdata) {
+    var loginService = LoginService();
+    loginService.getProfileDetails().then((userdata) {
       var contain =
           userdata.where((element) => element.phoneNumber == newPhone);
 
       if (contain.isNotEmpty) {
-        print("No Neeed to create");
+        debugPrint("No Neeed to create");
         var isAdmin = (contain.first.userRole != "Contributor");
         Singleton().isAdmin = isAdmin;
       } else {
