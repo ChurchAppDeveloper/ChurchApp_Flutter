@@ -1,4 +1,4 @@
-package com.example.churchapp;
+package com.robert.barnabas;
 
 import io.flutter.app.FlutterApplication;
 import io.flutter.plugin.common.PluginRegistry;

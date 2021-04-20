@@ -1,4 +1,4 @@
-package com.example.churchapp;
+package com.robert.barnabas;
 //import io.flutter.plugin.common.PluginRegistry;
 //import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin;
 

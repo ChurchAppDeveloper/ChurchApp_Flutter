@@ -1,15 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.churchapp">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA" />    
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    package="com.robert.barnabas">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-   <application
+
+    <application
         android:name=".Application"
         android:label="ST.BARNABAS"
         android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.geo.API_KEY"
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyD1wEvj33T3uGrY9mFzRv58KKtZZwG4DJs"/>        
         <activity
             android:name=".MainActivity"
