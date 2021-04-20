@@ -8,11 +8,12 @@ import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/simple_hidden_drawer/simple_hidden_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../WebViewLoad.dart';
 
 enum MenuList {
@@ -94,6 +95,8 @@ class _DashboardState extends State<Dashboard> {
     var menuposition = MenuList.values[0];
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Barnabas',
       home: SimpleHiddenDrawer(
         menu: Menu(),
         screenSelectedBuilder: (position, controller) {
@@ -136,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
-                  (Route<dynamic> route) => false,
+                      (Route<dynamic> route) => false,
                 );
               });
 
