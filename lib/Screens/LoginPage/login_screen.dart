@@ -115,14 +115,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text('Please enter your phone number',
-                        textAlign: TextAlign.center,
+                    /* Text('Phone number',
+                        textAlign: TextAlign.start,
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(
                             fontSize: 18,
                             color: Colors.black87,
                           ),
-                        )),
+                        )),*/
                     Container(
                       margin: const EdgeInsets.all(8),
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -152,6 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: const InputDecoration(
                                 hintText: 'Contact Number',
                                 border: InputBorder.none,
+                                alignLabelWithHint: true,
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 contentPadding:

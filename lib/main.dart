@@ -1,17 +1,18 @@
 import 'dart:core';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
-import 'package:churchapp/Model/PushNotification.dart';
+
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
-import 'package:churchapp/Screens/RestService/MasstimingService.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'Screens/LoginPage/login_screen.dart';
-import 'amplifyconfiguration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]).then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void configureAmplify() async {
+/* void configureAmplify() async {
     // First add plugins (Amplify native requirements)
 
     AmplifyAuthCognito auth = new AmplifyAuthCognito();
@@ -70,7 +71,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _isAmplifyConfigured = true;
     });
-  }
+  }*/
 }
 
 // Map<String, dynamic> userAttributes = {
@@ -79,9 +80,9 @@ class _MyAppState extends State<MyApp> {
 //       'phone_number': '+919994490142',
 //     };
 
-firebaseSetUP() async {
-  // try {
-  //   SignUpResult res = await Amplify.Auth.signUp(
+// firebaseSetUP() async {
+// try {
+//   SignUpResult res = await Amplify.Auth.signUp(
   //       username: '+919994490142', password: 'mysupersecurepassword');
   //   print(res);
   // } on AuthException catch (e) {
@@ -90,8 +91,8 @@ firebaseSetUP() async {
   // FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   // firebaseMessaging.requestPermission(alert: true, badge: false, sound: true);
   // tokenCreation();
-  // receiveFirebbasePushMessageHadling();
-}
+// receiveFirebbasePushMessageHadling();
+// }
 
 // receiveFirebbasePushMessageHadling() {
 //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
