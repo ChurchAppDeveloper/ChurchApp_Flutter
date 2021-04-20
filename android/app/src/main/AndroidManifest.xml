@@ -10,6 +10,7 @@
     <application
         android:name=".Application"
         android:label="ST.BARNABAS"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   bool _isAmplifyConfigured = false;
+  // final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   initState() {
@@ -40,7 +42,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+ /*   return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return Scaffold(body: Center(child: CircularProgressIndicator()));
+      },
+    );*/
+   return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Barnabas',
       theme: ThemeData(
