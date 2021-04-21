@@ -11,7 +11,14 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        clickOnLogin(context);
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => OtpScreen()));
+        /* Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => OtpScreen()),
+              (Route<dynamic> route) => false,
+        );*/
+        // clickOnLogin(context);
       },
       child: Container(
         margin: const EdgeInsets.all(8),

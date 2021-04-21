@@ -2,9 +2,11 @@ import 'dart:core';
 
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
+import 'package:churchapp/Screens/LoginPage/otp_screen.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import 'Screens/LoginPage/login_screen.dart';
 
@@ -26,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   bool _isAmplifyConfigured = false;
+
   // final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
@@ -42,7 +45,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
- /*   return FutureBuilder(
+    /*   return FutureBuilder(
       future: _initialization,
       builder: (context, snapshot) {
         // Check for errors
@@ -59,17 +62,20 @@ class _MyAppState extends State<MyApp> {
         return Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );*/
-   return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Barnabas',
+      defaultTransition: Transition.rightToLeftWithFade,
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 219, 69, 71),
       ),
-      routes: <String, WidgetBuilder>{
-        '/': (context) => Landing(),
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => Dashboard(),
-      },
+      home: Landing(),
+      getPages: [
+        GetPage(name: '/', page: () => Landing()),
+        GetPage(name: '/login', page: () => LoginScreen()),
+        GetPage(name: '/home', page: () => Dashboard()),
+        GetPage(name: '/otp', page: () => OtpScreen()),
+      ],
     );
   }
 
@@ -102,14 +108,14 @@ class _MyAppState extends State<MyApp> {
 // firebaseSetUP() async {
 // try {
 //   SignUpResult res = await Amplify.Auth.signUp(
-  //       username: '+919994490142', password: 'mysupersecurepassword');
-  //   print(res);
-  // } on AuthException catch (e) {
-  //   print(e.exception);
-  // }
-  // FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-  // firebaseMessaging.requestPermission(alert: true, badge: false, sound: true);
-  // tokenCreation();
+//       username: '+919994490142', password: 'mysupersecurepassword');
+//   print(res);
+// } on AuthException catch (e) {
+//   print(e.exception);
+// }
+// FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+// firebaseMessaging.requestPermission(alert: true, badge: false, sound: true);
+// tokenCreation();
 // receiveFirebbasePushMessageHadling();
 // }
 

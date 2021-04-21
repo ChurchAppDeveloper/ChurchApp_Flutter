@@ -375,6 +375,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  get:
+    dependency: "direct main"
+    description:
+      name: get
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.4"
   google_fonts:
     dependency: "direct main"
     description:
@@ -557,13 +564,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.0"
-  pin_entry_text_field:
+  pin_code_fields:
     dependency: "direct main"
     description:
-      name: pin_entry_text_field
+      name: pin_code_fields
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4"
+    version: "7.0.0"
   pinch_zoom:
     dependency: "direct main"
     description:

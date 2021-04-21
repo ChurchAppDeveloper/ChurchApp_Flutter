@@ -1,10 +1,9 @@
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
-import 'package:churchapp/Screens/LoginPage/Widget/custom_button.dart';
 import 'package:churchapp/Screens/RestService/LoginService.dart';
-import 'package:churchapp/Screens/RestService/PushTokenService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,153 +35,194 @@ class _LoginScreenState extends State<LoginScreen> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Barnabas',
-        home: Scaffold(
-            body: Stack(children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("image/background.png"),
-                    fit: BoxFit.fill)),
-          ),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 20.0, bottom: 20.0, top: 30.0),
-                    height: 300,
-                    alignment: Alignment.topCenter,
-                    child: Image.asset("image/churchLogo.png"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    // width: 350.0,
-                    child: Text(
-                        '3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white,
-                          ),
-                        )),
-                  ),
-                ],
-              ),
-              SingleChildScrollView(
-                child: Container(
-                  // padding: const EdgeInsets.all(16.0),
-                  // width: double.infinity,
-                  color: Colors.transparent,
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: screenHeight * 0.7),
-                      // Text(
-                      //   'LOGIN',
-                      //   style: TextStyle(
-                      //       fontSize: 28,
-                      //       color: Colors.white,
-                      //       fontWeight: FontWeight.w700),
-                      // ),
-                      // SizedBox(
-                      //   height: screenHeight * 0.04,
-                      // ),
-                      // const Text(
-                      //   'St. Barnabas Pray For Us!\n\n 3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
-                      //   textAlign: TextAlign.center,
-                      //   style: TextStyle(
-                      //     fontSize: 25,
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   height: screenHeight * 0.04,
-                      // ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: screenWidth > 600 ? screenWidth * 0.2 : 16),
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            boxShadow: [
-                              const BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(0.0, 1.0), //(x,y)
-                                blurRadius: 6.0,
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(16.0)),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 10,
+        home: SafeArea(
+          maintainBottomViewPadding: true,
+          child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: Stack(children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("image/background.png"),
+                          fit: BoxFit.fill)),
+                ),
+                Column(
+                  children: [
+                    Container(
+                      margin:
+                          EdgeInsets.only(left: 20.0, bottom: 20.0, top: 30.0),
+                      height: 300,
+                      alignment: Alignment.topCenter,
+                      child: Image.asset("image/churchLogo.png"),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      // width: 350.0,
+                      child: Text(
+                          '3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
                             ),
-                            /* Text('Phone number',
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black87,
-                          ),
-                        )),*/
-                            Container(
-                              margin: const EdgeInsets.all(8),
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              height: 45,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromARGB(255, 219, 69, 71),
-                                ),
-                                borderRadius: BorderRadius.circular(36),
-                              ),
-                              child: Row(
+                          )),
+                    ),
+                  ],
+                ),
+                SingleChildScrollView(
+                  reverse: true,
+                  physics: BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Container(
+                      // padding: const EdgeInsets.all(16.0),
+                      // width: double.infinity,
+                      color: Colors.transparent,
+                      child: Column(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: screenHeight * 0.7),
+                          // Text(
+                          //   'LOGIN',
+                          //   style: TextStyle(
+                          //       fontSize: 28,
+                          //       color: Colors.white,
+                          //       fontWeight: FontWeight.w700),
+                          // ),
+                          // SizedBox(
+                          //   height: screenHeight * 0.04,
+                          // ),
+                          // const Text(
+                          //   'St. Barnabas Pray For Us!\n\n 3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(
+                          //     fontSize: 25,
+                          //     color: Colors.white,
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   height: screenHeight * 0.04,
+                          // ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    screenWidth > 600 ? screenWidth * 0.2 : 16),
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
                                 // ignore: prefer_const_literals_to_create_immutables
-                                children: [
-                                  // CountryPicker(
-                                  //   callBackFunction: _callBackFunction,
-                                  //   headerText: 'Select Country',
-                                  //   headerBackgroundColor:
-                                  //       Theme.of(context).primaryColor,
-                                  //   headerTextColor: Colors.red,
-                                  // ),
-                                  // SizedBox(
-                                  //   width: screenWidth * 0.1,
-                                  // ),
-
-                                  Expanded(
-                                    child: TextField(
-                                      decoration: const InputDecoration(
-                                        hintText: 'Contact Number',
-                                        border: InputBorder.none,
-                                        alignLabelWithHint: true,
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        contentPadding:
-                                        EdgeInsets.symmetric(vertical: 13.5),
-                                      ),
-                                      controller: _contactEditingController,
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(10)
-                                      ],
-                                    ),
+                                boxShadow: [
+                                  const BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0.0, 1.0), //(x,y)
+                                    blurRadius: 6.0,
                                   ),
                                 ],
+                                borderRadius: BorderRadius.circular(16.0)),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                /* Text('Phone number',
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.lato(
+                              textStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black87,
                               ),
+                            )),*/
+                                Container(
+                                  margin: const EdgeInsets.all(8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                          255, 219, 69, 71),
+                                    ),
+                                    borderRadius: BorderRadius.circular(36),
+                                  ),
+                                  child: Row(
+                                    // ignore: prefer_const_literals_to_create_immutables
+                                    children: [
+                                      // CountryPicker(
+                                      //   callBackFunction: _callBackFunction,
+                                      //   headerText: 'Select Country',
+                                      //   headerBackgroundColor:
+                                      //       Theme.of(context).primaryColor,
+                                      //   headerTextColor: Colors.red,
+                                      // ),
+                                      // SizedBox(
+                                      //   width: screenWidth * 0.1,
+                                      // ),
+
+                                      Expanded(
+                                        child: TextField(
+                                          decoration: const InputDecoration(
+                                            hintText: 'Contact Number',
+                                            border: InputBorder.none,
+                                            alignLabelWithHint: true,
+                                            enabledBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 13.5),
+                                          ),
+                                          controller: _contactEditingController,
+                                          keyboardType: TextInputType.phone,
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(13)
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                InkWell(
+                                  splashColor: Colors.white,
+                                  onTap: () {
+                                    Get.toNamed("/otp",
+                                        arguments:
+                                            _contactEditingController.text);
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.all(8),
+                                    height: 45,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 219, 69, 71),
+                                      borderRadius: BorderRadius.circular(36),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'LOGIN',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ),
+                                ),
+                                // CustomButton(clickOnLogin),
+                              ],
                             ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            CustomButton(clickOnLogin),
-                          ],
-                        ),
-                      )
-                    ],
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ])));
+              ])),
+        ));
   }
 
   //Login click with contact number validation
@@ -204,11 +244,11 @@ class _LoginScreenState extends State<LoginScreen> {
             userdata.where((element) => element.phoneNumber == newPhone);
 
         if (contain.isNotEmpty) {
-          print("No Neeed to create");
+          print("No Need to create");
           var isAdmin = (contain.first.userRole != "Contributor");
           Singleton._instance.isAdmin = isAdmin;
         } else {
-          print(" Neeed to create");
+          print(" Need to create");
           Singleton._instance.isAdmin = false;
           //Call Reistration API
           loginservice.createNewUser(newPhone);
@@ -219,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('phone', newPhone);
 
       //Compare and send token to server
-      PushTokenService().deleteToken();
+      // PushTokenService().deleteToken();
       // PushTokenService().sendupdatedToken();
 
       Navigator.pushAndRemoveUntil(
