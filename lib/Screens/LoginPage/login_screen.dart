@@ -1,12 +1,10 @@
-import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
-import 'package:churchapp/Screens/RestService/LoginService.dart';
 import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/model_request/login_request.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Singleton {
   Singleton._privateConstructor();
@@ -25,8 +23,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _contactEditingController = TextEditingController();
+  TextEditingController _contactEditingController;
   var _dialCode = '';
+
+  @override
+  void initState() {
+    _contactEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _contactEditingController.dispose();
+    super.dispose();
+  }
 
   //build method for UI Representation
   @override
@@ -35,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Barnabas',
+        title: appName,
         home: SafeArea(
           maintainBottomViewPadding: true,
           child: Scaffold(
@@ -60,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.center,
                       // width: 350.0,
                       child: Text(
-                          '3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
+                          churchAddress,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(
@@ -227,8 +237,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  //Login click with contact number validation
-  Future<void> clickOnLogin(BuildContext context) async {
+//Login click with contact number validation
+/*Future<void> clickOnLogin(BuildContext context) async {
     if (_contactEditingController.text.isEmpty) {
       showErrorDialog(context, 'Contact number can\'t be empty.');
     } else {
@@ -279,8 +289,8 @@ class _LoginScreenState extends State<LoginScreen> {
     // Simulate a future for response after 2 second.
     return await new Future<bool>.delayed(new Duration(seconds: 2), () => true);
   }
-
-  firebaseSetUP() async {
+*/
+/*  firebaseSetUP() async {
     // Map<String, dynamic> userAttributes = {
     //   'email': 'dineshprasanna1987@gmail.com',
     //   // Note: phone_number requires country code
@@ -306,10 +316,10 @@ class _LoginScreenState extends State<LoginScreen> {
     //   // print(e.exceptionList[1].exception);
     // }
     // signin();
-  }
+  }*/
 
-  //Alert dialogue to show error and response
-  void showErrorDialog(BuildContext context, String message) {
+//Alert dialogue to show error and response
+/*  void showErrorDialog(BuildContext context, String message) {
     // set up the AlertDialog
     final CupertinoAlertDialog alert = CupertinoAlertDialog(
       title: const Text('Error'),
@@ -331,5 +341,5 @@ class _LoginScreenState extends State<LoginScreen> {
         return alert;
       },
     );
-  }
+  }*/
 }

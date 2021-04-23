@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -223,7 +224,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 ),
                                 alignment: Alignment.center,
                                 child: const Text(
-                                  'Verify',
+                                  verify,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16.0),
                                 ),
