@@ -1,9 +1,10 @@
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/RestService/LoginService.dart';
+import 'package:churchapp/api/authentication_api.dart';
+import 'package:churchapp/model_request/login_request.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -189,9 +190,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
-                                    Get.toNamed("/otp",
-                                        arguments:
-                                            _contactEditingController.text);
+                                    loginAPI(LoginRequest(
+                                        contactNumber: _contactEditingController
+                                            .text
+                                            .toString()));
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.all(8),

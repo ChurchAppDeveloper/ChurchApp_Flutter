@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   pin_code_fields: ^7.0.0
   get: ^4.1.4
+  jwt_decoder: ^2.0.1
   hidden_drawer_menu: ^2.0.1
   url_launcher: ^6.0.3
   webview_flutter: ^2.0.4
