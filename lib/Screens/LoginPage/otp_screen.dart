@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
+import 'package:churchapp/api/authentication_api.dart';
+import 'package:churchapp/model_request/otp_request.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +60,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void dispose() {
     errorController.close();
-    textEditingController.clear();
+    textEditingController.dispose();
     super.dispose();
   }
 
@@ -198,21 +200,20 @@ class _OtpScreenState extends State<OtpScreen> {
                                     return true;
                                   },
                                   appContext: context,
-                                )
-
-                                /*    PinEntryTextField(
-                            fields: 5,
-                            onSubmit: (text) {
-                              smsOTP = text as String;
-                            },
-                          ),*/
-                                ),
+                                )),
                             SizedBox(
                               height: screenHeight * 0.01,
                             ),
-                            GestureDetector(
+                            InkWell(
+                              splashColor: Colors.white,
                               onTap: () {
-                                verifyOtp();
+                                Map<String, dynamic> otpForm = {
+                                  "grant_type": "password",
+                                  "username": Get.arguments,
+                                  "password": smsOTP,
+                                  "client_id": "barnabas"
+                                };
+                                verifyOTPAPI(otpForm);
                               },
                               child: Container(
                                 margin: const EdgeInsets.all(8),
@@ -223,10 +224,12 @@ class _OtpScreenState extends State<OtpScreen> {
                                   borderRadius: BorderRadius.circular(36),
                                 ),
                                 alignment: Alignment.center,
-                                child: const Text(
+                                child: Text(
                                   verify,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                             ),
@@ -239,96 +242,6 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
             ),
           ])),
-    );
-  }
-
-  //Method for generate otp from firebase
-  Future<void> generateOtp(String contact) async {
-    // final PhoneCodeSent smsOTPSent = (String verId, [int forceCodeResend]) {
-    //   verificationId = verId;
-    // };
-    // try {
-    //   await _auth.verifyPhoneNumber(
-    //       phoneNumber: contact,
-    //       codeAutoRetrievalTimeout: (String verId) {
-    //         verificationId = verId;
-    //       },
-    //       codeSent: smsOTPSent,
-    //       timeout: const Duration(seconds: 60),
-    //       verificationCompleted: (AuthCredential phoneAuthCredential) {},
-    //       verificationFailed: (AuthException exception) {
-    //         // Navigator.pop(context, exception.message);
-    //       });
-    // } catch (e) {
-    //   handleError(e as PlatformException);
-    //   // Navigator.pop(context, (e as PlatformException).message);
-    // }
-  }
-
-  //Method for verify otp entered by user
-  Future<void> verifyOtp() async {
-    print("verify OTP");
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('phone', widget._contact);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Dashboard()));
-
-    // if (smsOTP == null || smsOTP == '') {
-    //   showAlertDialog(context, 'please enter 6 digit otp');
-    //   return;
-    // }
-    // try {
-    //   final AuthCredential credential = PhoneAuthProvider.getCredential(
-    //     verificationId: verificationId,
-    //     smsCode: smsOTP,
-    //   );
-    //   final AuthResult user = await _auth.signInWithCredential(credential);
-    //   final FirebaseUser currentUser = await _auth.currentUser();
-    //   assert(user.user.uid == currentUser.uid);
-    //   Navigator.pushReplacementNamed(context, '/homeScreen');
-    // } catch (e) {
-    //   handleError(e as PlatformException);
-    // }
-  }
-
-  //Method for handle the errors
-  void handleError(PlatformException error) {
-    switch (error.code) {
-      case 'ERROR_INVALID_VERIFICATION_CODE':
-        FocusScope.of(context).requestFocus(FocusNode());
-        setState(() {
-          errorMessage = 'Invalid Code';
-        });
-        showAlertDialog(context, 'Invalid Code');
-        break;
-      default:
-        showAlertDialog(context, error.message);
-        break;
-    }
-  }
-
-  //Basic alert dialogue for alert errors and confirmations
-  void showAlertDialog(BuildContext context, String message) {
-    // set up the AlertDialog
-    final CupertinoAlertDialog alert = CupertinoAlertDialog(
-      title: const Text('Error'),
-      content: Text('\n$message'),
-      actions: <Widget>[
-        CupertinoDialogAction(
-          isDefaultAction: true,
-          child: const Text('Ok'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        )
-      ],
-    );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
     );
   }
 }

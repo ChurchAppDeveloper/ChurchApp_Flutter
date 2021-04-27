@@ -27,7 +27,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _contactEditingController;
-  var _dialCode = '';
+  String _dialCode = "1";
 
   @override
   void initState() {
@@ -85,8 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       alignment: Alignment.center,
                       // width: 350.0,
-                      child: Text(
-                          churchAddress,
+                      child: Text(churchAddress,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(
@@ -104,35 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Container(
-                      // padding: const EdgeInsets.all(16.0),
-                      // width: double.infinity,
                       color: Colors.transparent,
                       child: Column(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(height: screenHeight * 0.7),
-                          // Text(
-                          //   'LOGIN',
-                          //   style: TextStyle(
-                          //       fontSize: 28,
-                          //       color: Colors.white,
-                          //       fontWeight: FontWeight.w700),
-                          // ),
-                          // SizedBox(
-                          //   height: screenHeight * 0.04,
-                          // ),
-                          // const Text(
-                          //   'St. Barnabas Pray For Us!\n\n 3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595',
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStyle(
-                          //     fontSize: 25,
-                          //     color: Colors.white,
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: screenHeight * 0.04,
-                          // ),
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal:
@@ -140,7 +114,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.all(16.0),
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                // ignore: prefer_const_literals_to_create_immutables
                                 boxShadow: [
                                   const BoxShadow(
                                     color: Colors.grey,
@@ -154,14 +127,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                /* Text('Phone number',
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black87,
-                              ),
-                            )),*/
                                 Container(
                                   margin: const EdgeInsets.all(8),
                                   padding: const EdgeInsets.symmetric(
@@ -194,20 +159,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                             (Country a, Country b) =>
                                                 a.isoCode.compareTo(b.isoCode),
                                         onValuePicked: (Country country) {
-                                          print("${country.name}");
+                                          print("Country ${country.phoneCode}");
+                                          _dialCode = country.phoneCode;
                                         },
                                       ),
-                                      // CountryPicker(
-                                      //   callBackFunction: _callBackFunction,
-                                      //   headerText: 'Select Country',
-                                      //   headerBackgroundColor:
-                                      //       Theme.of(context).primaryColor,
-                                      //   headerTextColor: Colors.red,
-                                      // ),
-                                      // SizedBox(
-                                      //   width: screenWidth * 0.1,
-                                      // ),
-
                                       Expanded(
                                         child: TextField(
                                           decoration: const InputDecoration(
@@ -236,10 +191,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
+                                    debugPrint(
+                                        "Dial Code $_dialCode${_contactEditingController.text}");
                                     loginAPI(LoginRequest(
-                                        contactNumber: _contactEditingController
-                                            .text
-                                            .toString()));
+                                        contactNumber:
+                                            "+$_dialCode${_contactEditingController.text.toString()}"));
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.all(8),
@@ -252,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     alignment: Alignment.center,
                                     child: Text(
-                                      'LOGIN',
+                                      login,
                                       style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.white,
@@ -272,110 +228,4 @@ class _LoginScreenState extends State<LoginScreen> {
               ])),
         ));
   }
-
-//Login click with contact number validation
-/*Future<void> clickOnLogin(BuildContext context) async {
-    if (_contactEditingController.text.isEmpty) {
-      showErrorDialog(context, 'Contact number can\'t be empty.');
-    } else {
-      // firebaseSetUP();
-      // final responseMessage = await Navigator.pushNamed(context, '/otpScreen',
-      //     arguments: '$_dialCode${_contactEditingController.text}');
-      // if (responseMessage != null) {
-      //   showErrorDialog(context, responseMessage as String);
-      // }
-      var newPhone = _contactEditingController.text.trim();
-
-      var loginservice = LoginService();
-      loginservice.getProfileDetails().then((userdata) {
-        var contain =
-            userdata.where((element) => element.phoneNumber == newPhone);
-
-        if (contain.isNotEmpty) {
-          print("No Need to create");
-          var isAdmin = (contain.first.userRole != "Contributor");
-          Singleton._instance.isAdmin = isAdmin;
-        } else {
-          print(" Need to create");
-          Singleton._instance.isAdmin = false;
-          //Call Reistration API
-          loginservice.createNewUser(newPhone);
-        }
-      });
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('phone', newPhone);
-
-      //Compare and send token to server
-      // PushTokenService().deleteToken();
-      // PushTokenService().sendupdatedToken();
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => Dashboard()),
-        (Route<dynamic> route) => false,
-      );
-
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => Dashboard()));
-    }
-  }
-
-  Future<bool> login() async {
-    // Simulate a future for response after 2 second.
-    return await new Future<bool>.delayed(new Duration(seconds: 2), () => true);
-  }
-*/
-/*  firebaseSetUP() async {
-    // Map<String, dynamic> userAttributes = {
-    //   'email': 'dineshprasanna1987@gmail.com',
-    //   // Note: phone_number requires country code
-    //   'phone_number': '+919994490142',
-    // };
-    // try {
-    //   SignUpResult res = await Amplify.Auth.signUp(
-    //       username: '+919994490142',
-    //       password: 'mysupersecurepassword',
-    //       options: CognitoSignUpOptions(userAttributes: userAttributes));
-    //   print("login response $res");
-    // } on AuthException catch (e) {
-    //   print(e.exception);
-    // } on AuthError catch (e) {
-    //   print(e.exceptionList[0].exception);
-    //   if (e.exceptionList[1].exception == "USERNAME_EXISTS") {
-    //     signin();
-    //   }
-    //   // print(e.exceptionList[0].detail);
-    //   // print(e.exceptionList[0].exception);
-    //   // print("Second");
-    //   // print(e.exceptionList[1].detail);
-    //   // print(e.exceptionList[1].exception);
-    // }
-    // signin();
-  }*/
-
-//Alert dialogue to show error and response
-/*  void showErrorDialog(BuildContext context, String message) {
-    // set up the AlertDialog
-    final CupertinoAlertDialog alert = CupertinoAlertDialog(
-      title: const Text('Error'),
-      content: Text('\n$message'),
-      actions: <Widget>[
-        CupertinoDialogAction(
-          isDefaultAction: true,
-          child: const Text('Yes'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        )
-      ],
-    );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }*/
 }
