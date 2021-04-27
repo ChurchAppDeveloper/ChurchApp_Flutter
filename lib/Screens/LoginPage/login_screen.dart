@@ -1,6 +1,9 @@
 import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/model_request/login_request.dart';
 import 'package:churchapp/util/string_constants.dart';
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_dropdown.dart';
+import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,6 +46,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
+    Widget _buildDropdownItem(Country country) => Container(
+          child: Row(
+            children: <Widget>[
+              CountryPickerUtils.getDefaultFlagImage(country),
+              SizedBox(
+                width: 8.0,
+              ),
+              Text("+${country.phoneCode}(${country.isoCode})"),
+            ],
+          ),
+        );
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: appName,
@@ -161,6 +177,26 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Row(
                                     // ignore: prefer_const_literals_to_create_immutables
                                     children: [
+                                      CountryPickerDropdown(
+                                        initialValue: 'US',
+
+                                        itemBuilder: _buildDropdownItem,
+                                        // itemFilter: (c) =>
+                                        //     ['AR', 'DE', 'GB', 'CN'].contains(
+                                        //         c.isoCode),
+                                        // priorityList: [
+                                        //   CountryPickerUtils
+                                        //       .getCountryByIsoCode('GB'),
+                                        //   CountryPickerUtils
+                                        //       .getCountryByIsoCode('CN'),
+                                        // ],
+                                        sortComparator:
+                                            (Country a, Country b) =>
+                                                a.isoCode.compareTo(b.isoCode),
+                                        onValuePicked: (Country country) {
+                                          print("${country.name}");
+                                        },
+                                      ),
                                       // CountryPicker(
                                       //   callBackFunction: _callBackFunction,
                                       //   headerText: 'Select Country',
