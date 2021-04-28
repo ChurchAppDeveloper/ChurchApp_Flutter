@@ -7,3 +7,4 @@ const String churchAddress =
 const String verify = "Verify";
 const String login = "Login";
 const String invalidOTP = "Invalid OTP";
+const String invalidNumber = "Contact number should not be empty";

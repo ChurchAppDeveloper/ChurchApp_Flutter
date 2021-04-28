@@ -5,11 +5,12 @@ import 'package:churchapp/Screens/ContactUS/Contactus.dart';
 import 'package:churchapp/Screens/Hamburger/MenuPage.dart';
 import 'package:churchapp/Screens/HomePage/home_screen.dart';
 import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
-import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hidden_drawer_menu/simple_hidden_drawer/simple_hidden_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -78,6 +79,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   SharedPreferences prefs;
+
   @override
   initState() {
     allocatePreference();
@@ -132,17 +134,6 @@ class _DashboardState extends State<Dashboard> {
               break;
             case MenuList.logout:
               clearCredentials();
-
-              // Navigator.pushNamedAndRemoveUntil(
-              //     context, '/login', ModalRoute.withName('/login'));
-              Future.delayed(Duration.zero, () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                      (Route<dynamic> route) => false,
-                );
-              });
-
               break;
             case MenuList.bulletin:
               screenCurrent = WebViewLoad(
@@ -223,9 +214,8 @@ class _DashboardState extends State<Dashboard> {
   }
 
   clearCredentials() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.setString('phone', "");
-    prefs.remove("phone");
+    await SharedPref().setStringPref(SharedPref().token, "");
+    Get.offAndToNamed("/login");
   }
 
   _launchURL(String url) async {

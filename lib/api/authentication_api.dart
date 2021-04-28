@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:churchapp/model_request/login_request.dart';
 import 'package:churchapp/model_response/login_response.dart';
 import 'package:churchapp/model_response/otp_response.dart';
+import 'package:churchapp/model_response/profile_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
@@ -43,9 +44,9 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
   String basicAuth =
       'Basic ' + base64Encode(utf8.encode('$barnabas:$barnabas'));
   Map<String, String> requestHeaders = {
-    "Accept": "application/json",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Authorization": basicAuth,
+    HttpHeaders.acceptHeader: "application/json",
+    HttpHeaders.contentTypeHeader: "application/x-www-form-urlencoded",
+    HttpHeaders.authorizationHeader: basicAuth,
   };
   // var body = json.encode(otpForm);
   debugPrint("otp_response: ${otpForm.toString()}");
@@ -64,5 +65,30 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
   } else {
     snackBarAlert(
         error, invalidOTP, Icon(Icons.error_outline), errorColor, whiteColor);
+  }
+}
+
+void profileAPI() async {
+  String token = await SharedPref().getStringPref(SharedPref().token);
+
+  String url = "$baseUrl/myprofile";
+  Map<String, String> requestHeaders = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader: 'Bearer $token',
+  };
+  final response = await http.get(Uri.parse(url), headers: requestHeaders);
+  var data = ProfileResponse.fromJson(json.decode(response.body));
+  debugPrint("profile_response: ${response.request}");
+  if (response.statusCode == 200) {
+    debugPrint("profile_response: ${response.body}");
+    if (data.success) {
+      debugPrint("content:${data.content}");
+      Get.toNamed("/home");
+    } else {
+      Get.toNamed("/login");
+    }
+  } else {
+    snackBarAlert(error, data.message.toString(), Icon(Icons.error_outline),
+        errorColor, whiteColor);
   }
 }

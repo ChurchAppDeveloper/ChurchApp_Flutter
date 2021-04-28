@@ -45,23 +45,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    /*   return FutureBuilder(
-      future: _initialization,
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          return
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        return Scaffold(body: Center(child: CircularProgressIndicator()));
-      },
-    );*/
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Barnabas',
@@ -73,86 +56,9 @@ class _MyAppState extends State<MyApp> {
       getPages: [
         GetPage(name: '/', page: () => Landing()),
         GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/home', page: () => Dashboard()),
         GetPage(name: '/otp', page: () => OtpScreen()),
+        GetPage(name: '/home', page: () => Dashboard()),
       ],
     );
   }
-
-/* void configureAmplify() async {
-    // First add plugins (Amplify native requirements)
-
-    AmplifyAuthCognito auth = new AmplifyAuthCognito();
-    Amplify.addPlugins([auth]);
-
-    try {
-      // Configure
-      await Amplify.configure(amplifyconfig);
-    } catch (e) {
-      print(
-          'Amplify was already configured. Looks like app restarted on android.');
-    }
-
-    setState(() {
-      _isAmplifyConfigured = true;
-    });
-  }*/
 }
-
-// Map<String, dynamic> userAttributes = {
-//       'email': 'dineshprasanna1987@gmail.com',
-//       // Note: phone_number requires country code
-//       'phone_number': '+919994490142',
-//     };
-
-// firebaseSetUP() async {
-// try {
-//   SignUpResult res = await Amplify.Auth.signUp(
-//       username: '+919994490142', password: 'mysupersecurepassword');
-//   print(res);
-// } on AuthException catch (e) {
-//   print(e.exception);
-// }
-// FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-// firebaseMessaging.requestPermission(alert: true, badge: false, sound: true);
-// tokenCreation();
-// receiveFirebbasePushMessageHadling();
-// }
-
-// receiveFirebbasePushMessageHadling() {
-//   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-//     log('[onMessage] message: $message');
-//     showNotification(message);
-//   });
-//   FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
-// }
-
-// Future<void> onBackgroundMessage(RemoteMessage message) {
-//   log('[onBackgroundMessage] message: $message');
-//   showNotification(message);
-//   return Future.value();
-// }
-
-// tokenCreation() async {
-//   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-//   String token;
-//   if (Platform.isAndroid) {
-//     token = await firebaseMessaging.getToken();
-//   } else if (Platform.isIOS) {
-//     token = await firebaseMessaging.getAPNSToken();
-//   }
-
-//   if (token.isNotEmpty) {
-//     subscribe(token);
-//   }
-
-//   firebaseMessaging.onTokenRefresh.listen((newToken) {
-//     subscribe(newToken);
-//   });
-// }
-
-// subscribe(String token) async {
-//   log('[subscribe] token: $token');
-// }
-
-// void showNotification(RemoteMessage message) {}

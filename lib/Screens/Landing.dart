@@ -4,6 +4,8 @@ import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/LoginService.dart';
 import 'package:churchapp/Screens/RestService/PushTokenService.dart';
+import 'package:churchapp/api/authentication_api.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -14,15 +16,13 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
-  String _username = "";
-
   @override
   void initState() {
+    profileAPI();
     super.initState();
-    _loadUserInfo();
   }
 
-  loadAdminStatus() async {
+  /* loadAdminStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var newPhone = prefs.getString("phone");
     var loginService = LoginService();
@@ -39,9 +39,9 @@ class _LandingState extends State<Landing> {
         Singleton().isAdmin = false;
       }
     });
-  }
+  }*/
 
-  _loadUserInfo() async {
+  /* _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _username = (prefs.getString('phone') ?? "");
 
@@ -65,7 +65,7 @@ class _LandingState extends State<Landing> {
         (Route<dynamic> route) => false,
       );
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

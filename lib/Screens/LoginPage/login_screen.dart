@@ -1,5 +1,7 @@
 import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/model_request/login_request.dart';
+import 'package:churchapp/util/color_constants.dart';
+import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
@@ -181,11 +183,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
-                                    debugPrint(
-                                        "Dial Code $_dialCode${_contactEditingController.text}");
-                                    loginAPI(LoginRequest(
-                                        contactNumber:
-                                            "$_dialCode${_contactEditingController.text.toString()}"));
+                                    if (_contactEditingController
+                                        .text.isNotEmpty) {
+                                      debugPrint(
+                                          "Dial Code $_dialCode${_contactEditingController.text}");
+                                      loginAPI(LoginRequest(
+                                          contactNumber:
+                                              "$_dialCode${_contactEditingController.text.toString()}"));
+                                    } else {
+                                      snackBarAlert(
+                                          error,
+                                          invalidNumber,
+                                          Icon(Icons.error_outline),
+                                          errorColor,
+                                          whiteColor);
+                                    }
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.all(8),
