@@ -1,16 +1,8 @@
-import 'dart:convert';
 
-import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
-import 'package:churchapp/Screens/LoginPage/login_screen.dart';
-import 'package:churchapp/Screens/RestService/LoginService.dart';
-import 'package:churchapp/Screens/RestService/PushTokenService.dart';
 import 'package:churchapp/api/authentication_api.dart';
-import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class Landing extends StatefulWidget {
   @override

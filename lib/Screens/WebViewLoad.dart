@@ -1,7 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:churchapp/util/color_constants.dart';
+import 'package:churchapp/util/common_fun.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -10,6 +14,7 @@ class WebViewLoad extends StatefulWidget {
   final bool isShowAppbar;
   final String pageTitle;
   var contentDesc = "";
+
   WebViewLoad({Key key, this.weburl, this.isShowAppbar, this.pageTitle})
       : super(key: key);
 
@@ -21,6 +26,7 @@ class WebViewLoadUI extends State<WebViewLoad> {
   var pageTitle;
   var loadwebview;
   var contentDesc = "";
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -31,6 +37,11 @@ class WebViewLoadUI extends State<WebViewLoad> {
     loadwebview = WebView(
       initialUrl: "${widget.weburl}",
       javascriptMode: JavascriptMode.unrestricted,
+      onPageFinished: (finish) {
+        setState(() {
+          isLoading = false;
+        });
+      },
     );
   }
 
@@ -66,13 +77,26 @@ class WebViewLoadUI extends State<WebViewLoad> {
                         )
                       ])
             : null,
-        body: loadwebview);
+        body: Stack(
+          children: [
+            widget.weburl != ""
+                ? loadwebview
+                : SvgPicture.asset("image/404.svg", semanticsLabel: appName),
+            isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(),
+          ],
+        ));
   }
 
   Future<void> _onOpen(LinkableElement link) async {
     if (await canLaunch(link.url)) {
       await launch(link.url);
     } else {
+      snackBarAlert(error, "Invalid URL found", Icon(Icons.error_outline),
+          errorColor, whiteColor);
       throw 'Could not launch $link';
     }
   }

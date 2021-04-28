@@ -60,7 +60,8 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
 
   if (response.statusCode == 200) {
     debugPrint("content:${data.accessToken}");
-    await SharedPref().setStringPref(SharedPref().token, data.accessToken);
+    // await SharedPref().setStringPref(SharedPref().token, data.accessToken);
+
     Get.offAllNamed("/home");
   } else {
     snackBarAlert(
@@ -69,6 +70,7 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
 }
 
 void profileAPI() async {
+  await SharedPref().setStringPref(SharedPref().token, "13eeb7ef-a0b7-474e-9a0f-d539dc75cc77");
   String token = await SharedPref().getStringPref(SharedPref().token);
 
   String url = "$baseUrl/myprofile";
@@ -89,5 +91,44 @@ void profileAPI() async {
     }
   } else {
     Get.offAndToNamed("/login");
+  }
+}
+
+void profileDashAPI() async {
+  String token = await SharedPref().getStringPref(SharedPref().token);
+
+  String url = "$baseUrl/myprofile";
+  Map<String, String> requestHeaders = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader: 'Bearer $token',
+  };
+  final response = await http.get(Uri.parse(url), headers: requestHeaders);
+  var dataval = ProfileResponse.fromJson(json.decode(response.body));
+  debugPrint("profile_response: ${response.request}");
+  if (response.statusCode == 200) {
+    debugPrint("profile_response: ${response.body}");
+    if (dataval.success) {
+      debugPrint("content:${dataval.content}");
+      await SharedPref().setStringPref('phoneNumber', dataval.content.churchProfile.contactUs);
+      await SharedPref().setStringPref('aboutUs', dataval.content.churchProfile.aboutUs);
+      await SharedPref().setStringPref('ministersUrl', dataval.content.churchProfile.ministers);
+      await SharedPref().setStringPref('donateUrl', dataval.content.churchProfile.donate);
+      await SharedPref().setStringPref('websiteUrl', dataval.content.churchProfile.website);
+      await SharedPref().setStringPref('youtubeUrl', dataval.content.churchProfile.youtube);
+      await SharedPref().setStringPref('facebookUrl', dataval.content.churchProfile.facebook);
+      await SharedPref().setStringPref('schoolUrl', dataval.content.churchProfile.school);
+      await SharedPref().setStringPref('bulletinUrl', dataval.content.churchProfile.bulletIn);
+      await SharedPref().setStringPref('onlieReadingUrl', dataval.content.churchProfile.onlineReading);
+      await SharedPref().setStringPref('prayerRequestUtl', dataval.content.churchProfile.prayerRequest);
+      await SharedPref().setStringPref('masstimingintention', dataval.content.churchProfile.massTimeIntention);
+      await SharedPref().setStringPref('role', dataval.content.roleName);
+      await SharedPref().setStringPref('userNumber', dataval.content.contactNo);
+    } else {
+      snackBarAlert(warning, dataval.message.toString(),
+          Icon(Icons.warning_amber_outlined), warningColor, blackColor);
+    }
+  } else {
+    snackBarAlert(
+        error, dataval.message, Icon(Icons.error_outline), errorColor, whiteColor);
   }
 }

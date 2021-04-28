@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/model_request/login_request.dart';
-import 'package:churchapp/model_request/otp_request.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class OtpScreen extends StatefulWidget {

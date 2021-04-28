@@ -7,6 +7,7 @@ import 'package:churchapp/Screens/HomePage/home_screen.dart';
 import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
+import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hidden_drawer_menu/simple_hidden_drawer/simple_hidden_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../WebViewLoad.dart';
 
@@ -40,9 +40,9 @@ enum MenuList {
 _titleForSelectedModule(MenuList title) {
   switch (title) {
     case MenuList.dashboard:
-      return "ST. BARNABAS CHURCH";
+      return "St. Barnabas Church";
     case MenuList.parishannouncement:
-      return "PARISH ANNOUNCEMENT";
+      return "Parish Announcement";
     case MenuList.livestream:
       return "Live Stream";
     case MenuList.masstiming:
@@ -50,7 +50,7 @@ _titleForSelectedModule(MenuList title) {
     case MenuList.confession:
       return "Confession";
     case MenuList.classifields:
-      return "CLASSIFIED";
+      return "Classified";
     case MenuList.contactus:
       return "Contact us";
     case MenuList.aboutus:
@@ -60,7 +60,7 @@ _titleForSelectedModule(MenuList title) {
     case MenuList.bulletin:
       return "Bulletin";
     case MenuList.prayerrequest:
-      return "PrayerRequest";
+      return "Prayer Request";
     case MenuList.donate:
       return "Donate";
     case MenuList.readings:
@@ -85,12 +85,12 @@ class _DashboardState extends State<Dashboard> {
   @override
   initState() {
     allocatePreference();
-
     super.initState();
   }
 
   allocatePreference() async {
     prefs = await SharedPreferences.getInstance();
+    debugPrint("about: ${prefs.getString("aboutUs")}");
   }
 
   @override
@@ -102,6 +102,7 @@ class _DashboardState extends State<Dashboard> {
       debugShowCheckedModeBanner: false,
       title: appName,
       home: SimpleHiddenDrawer(
+        enableCornerAnimation: true,
         menu: Menu(),
         screenSelectedBuilder: (position, controller) {
           Widget screenCurrent;
@@ -130,49 +131,43 @@ class _DashboardState extends State<Dashboard> {
               break;
             case MenuList.aboutus:
               screenCurrent = WebViewLoad(
-                  weburl: prefs.getString('aboutUs'),
-                  isShowAppbar: false,
-                  pageTitle: "ABOUT US");
+                  weburl: prefs.getString('aboutUs'), isShowAppbar: false, pageTitle: "About us");
               break;
             case MenuList.logout:
               clearCredentials();
               break;
             case MenuList.bulletin:
               screenCurrent = WebViewLoad(
-                  weburl: prefs.getString('bulletinUrl'),
+                  weburl:prefs.getString('bulletinUrl'),
                   isShowAppbar: false,
-                  pageTitle: "BULLETIN");
+                  pageTitle: "Bulletins");
               break;
             case MenuList.prayerrequest:
               screenCurrent = PrayerRequest(isShowAppbar: false);
-              // screenCurrent = WebViewLoad(
-              //     weburl: prefs.getString('prayerRequestUtl'),
-              //     isShowAppbar: false,
-              //     pageTitle: "PRAYER REQUEEST");
               break;
             case MenuList.donate:
               screenCurrent = WebViewLoad(
                   weburl: prefs.getString('donateUrl'),
                   isShowAppbar: false,
-                  pageTitle: "DONATE");
+                  pageTitle: "Donate");
               break;
             case MenuList.readings:
               screenCurrent = WebViewLoad(
                   weburl: prefs.getString('onlieReadingUrl'),
                   isShowAppbar: false,
-                  pageTitle: "READINGS");
+                  pageTitle: "Readings");
               break;
             case MenuList.ministers:
               screenCurrent = WebViewLoad(
                   weburl: prefs.getString('ministersUrl'),
                   isShowAppbar: false,
-                  pageTitle: "MINISTERS");
+                  pageTitle: "Ministers");
               break;
             case MenuList.school:
               screenCurrent = WebViewLoad(
                   weburl: prefs.getString('schoolUrl'),
                   isShowAppbar: false,
-                  pageTitle: "SCHOOL");
+                  pageTitle: "School");
               break;
           }
 
@@ -181,11 +176,11 @@ class _DashboardState extends State<Dashboard> {
               elevation: 0.0,
               backgroundColor: bgColor,
               // toolbarHeight: 50.0,
-              title:  Text(_titleForSelectedModule(menuposition),
+              title: Text(_titleForSelectedModule(menuposition),
                   textAlign: TextAlign.start,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
-                      fontSize: 28,
+                      fontSize: 22,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -197,25 +192,7 @@ class _DashboardState extends State<Dashboard> {
                   // do something
                 },
               ),
-              // title: Text('Welcome to Flutter'),
-              // actions: <Widget>[
-              //   IconButton(
-              //     iconSize: 50.0,
-              //     icon: new Image.asset('image/background.png'),
-              //     onPressed: () {
-              //       // do something
-              //     },
-              //   )
-              // ],
             ),
-            // appBar: AppBar(
-            //   leading: IconButton(
-            //       icon: Icon(Icons.menu),
-            //       onPressed: () {
-            //         controller.toggle();
-            //       }),
-            // ),
-
             body: screenCurrent,
           );
         },
@@ -226,13 +203,5 @@ class _DashboardState extends State<Dashboard> {
   clearCredentials() async {
     await SharedPref().setStringPref(SharedPref().token, "");
     Get.offAndToNamed("/login");
-  }
-
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }

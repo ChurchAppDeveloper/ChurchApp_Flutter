@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hidden_drawer_menu/controllers/simple_hidden_drawer_controller.dart';
 
 class Menu extends StatefulWidget {
@@ -11,7 +12,7 @@ class _MenuState extends State<Menu> {
 
   List<MenuItem> menus = <MenuItem>[
     MenuItem("Home", Image.asset('image/h_home.png')),
-    MenuItem("Parish Announncement", Image.asset('image/h_announcement.png')),
+    MenuItem("Parish Announcement", Image.asset('image/h_announcement.png')),
     MenuItem("LiveStream", Image.asset('image/h_livestream.png')),
     MenuItem("Bulletins", Image.asset('image/h_bulletin.png')),
     MenuItem("Mass Timings", Image.asset('image/h_masstiming.png')),
@@ -57,6 +58,7 @@ class _MenuState extends State<Menu> {
           color: Colors.transparent,
           child: ListView.builder(
               itemCount: menus.length,
+              physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) => ListTile(
                   leading: Container(
                     width: 48,
@@ -66,7 +68,14 @@ class _MenuState extends State<Menu> {
                     child: menus[index].imageName,
                   ),
                   title: Text(menus[index].title.toString(),
-                      style: TextStyle(color: Colors.white)),
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      )),
                   onTap: () {
                     controller.setSelectedMenuPosition(index);
                   })),
