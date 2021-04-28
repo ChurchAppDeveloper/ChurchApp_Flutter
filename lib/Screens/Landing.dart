@@ -6,7 +6,9 @@ import 'package:churchapp/Screens/RestService/LoginService.dart';
 import 'package:churchapp/Screens/RestService/PushTokenService.dart';
 import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/util/shared_preference.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -69,6 +71,40 @@ class _LandingState extends State<Landing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: CircularProgressIndicator()));
+    return Scaffold(
+        body: Stack(
+          children:[
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("image/background.png"),
+                      fit: BoxFit.fill)),
+            ),
+            Column(
+              children: [
+                Container(
+                  margin:
+                  EdgeInsets.only(left: 20.0, bottom: 20.0, top: 90.0),
+                  height: 300,
+                  alignment: Alignment.topCenter,
+                  child: Image.asset("image/churchLogo.png"),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  // width: 350.0,
+                  child: Text(appName,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 30,
+                           fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      )),
+                ),
+              ],
+            ),
+          ]
+        ));
   }
 }

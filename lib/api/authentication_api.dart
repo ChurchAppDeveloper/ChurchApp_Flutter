@@ -61,7 +61,7 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
   if (response.statusCode == 200) {
     debugPrint("content:${data.accessToken}");
     await SharedPref().setStringPref(SharedPref().token, data.accessToken);
-    Get.toNamed("/home");
+    Get.offAllNamed("/home");
   } else {
     snackBarAlert(
         error, invalidOTP, Icon(Icons.error_outline), errorColor, whiteColor);
@@ -83,12 +83,11 @@ void profileAPI() async {
     debugPrint("profile_response: ${response.body}");
     if (data.success) {
       debugPrint("content:${data.content}");
-      Get.toNamed("/home");
+      Get.offAndToNamed("/home");
     } else {
-      Get.toNamed("/login");
+      Get.offAndToNamed("/login");
     }
   } else {
-    snackBarAlert(error, data.message.toString(), Icon(Icons.error_outline),
-        errorColor, whiteColor);
+    Get.offAndToNamed("/login");
   }
 }

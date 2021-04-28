@@ -16,8 +16,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class OtpScreen extends StatefulWidget {
-  bool _isInit = true;
-  var _contact = '';
 
   @override
   _OtpScreenState createState() => _OtpScreenState();
@@ -28,27 +26,10 @@ class _OtpScreenState extends State<OtpScreen> {
   String smsOTP;
   String verificationId;
   String errorMessage = '';
-
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
   Timer _timer;
   TextEditingController textEditingController = TextEditingController();
 
   StreamController<ErrorAnimationType> errorController;
-
-  //this is method is used to initialize data
-
-  /* @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Load data only once after screen load
-    if (widget._isInit) {
-      widget._contact =
-          '${ModalRoute.of(context).settings.arguments as String}';
-      generateOtp(widget._contact);
-      widget._isInit = false;
-    }
-  }*/
-
   @override
   void initState() {
     errorController = StreamController<ErrorAnimationType>();
@@ -81,6 +62,25 @@ class _OtpScreenState extends State<OtpScreen> {
                       image: new AssetImage("image/Loginbg.png"),
                       fit: BoxFit.fill)),
             ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: InkWell(
+                  child: SizedBox(
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  splashColor: Colors.white,
+                  onTap: () {
+                    Get.back();
+                  },
+                ),
+              ),
+            ),
             SingleChildScrollView(
               reverse: true,
               physics: BouncingScrollPhysics(),
@@ -94,22 +94,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: InkWell(
-                          child: SizedBox(
-                            child: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                          splashColor: Colors.white,
-                          onTap: () {
-                            Get.back();
-                          },
-                        ),
-                      ),
+
                       SizedBox(
                         height: screenHeight * .50,
                       ),
