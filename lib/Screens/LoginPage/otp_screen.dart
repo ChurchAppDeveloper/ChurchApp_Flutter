@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/api/authentication_api.dart';
+import 'package:churchapp/model_request/login_request.dart';
 import 'package:churchapp/model_request/otp_request.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,11 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// import 'package:firebase_auth/firebase_auth.dart';
 
-// ignore: must_be_immutable
 class OtpScreen extends StatefulWidget {
-
   @override
   _OtpScreenState createState() => _OtpScreenState();
 }
@@ -26,14 +24,14 @@ class _OtpScreenState extends State<OtpScreen> {
   String smsOTP;
   String verificationId;
   String errorMessage = '';
-  Timer _timer;
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController textEditingController;
 
   StreamController<ErrorAnimationType> errorController;
+
   @override
   void initState() {
     errorController = StreamController<ErrorAnimationType>();
-
+    textEditingController = TextEditingController();
     super.initState();
   }
 
@@ -62,25 +60,6 @@ class _OtpScreenState extends State<OtpScreen> {
                       image: new AssetImage("image/Loginbg.png"),
                       fit: BoxFit.fill)),
             ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: InkWell(
-                  child: SizedBox(
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                  splashColor: Colors.white,
-                  onTap: () {
-                    Get.back();
-                  },
-                ),
-              ),
-            ),
             SingleChildScrollView(
               reverse: true,
               physics: BouncingScrollPhysics(),
@@ -94,7 +73,6 @@ class _OtpScreenState extends State<OtpScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       SizedBox(
                         height: screenHeight * .50,
                       ),
@@ -218,10 +196,44 @@ class _OtpScreenState extends State<OtpScreen> {
                                 ),
                               ),
                             ),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  loginAPI(LoginRequest(
+                                      contactNumber: Get.arguments));
+                                });
+                              },
+                              child: Text(
+                                resendOTP,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            )
                           ],
                         ),
                       )
                     ],
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: InkWell(
+                splashColor: Colors.white,
+                onTap: () {
+                  Get.back();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),

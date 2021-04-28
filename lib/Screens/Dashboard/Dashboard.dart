@@ -8,9 +8,11 @@ import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
 import 'package:churchapp/util/shared_preference.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hidden_drawer_menu/simple_hidden_drawer/simple_hidden_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -98,7 +100,7 @@ class _DashboardState extends State<Dashboard> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Barnabas',
+      title: appName,
       home: SimpleHiddenDrawer(
         menu: Menu(),
         screenSelectedBuilder: (position, controller) {
@@ -179,7 +181,15 @@ class _DashboardState extends State<Dashboard> {
               elevation: 0.0,
               backgroundColor: bgColor,
               // toolbarHeight: 50.0,
-              title: Text(_titleForSelectedModule(menuposition)),
+              title:  Text(_titleForSelectedModule(menuposition),
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  )),
               leading: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () {
