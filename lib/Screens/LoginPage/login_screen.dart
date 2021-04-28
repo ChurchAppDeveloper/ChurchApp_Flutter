@@ -144,17 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     children: [
                                       CountryPickerDropdown(
                                         initialValue: 'US',
-
                                         itemBuilder: _buildDropdownItem,
-                                        // itemFilter: (c) =>
-                                        //     ['AR', 'DE', 'GB', 'CN'].contains(
-                                        //         c.isoCode),
-                                        // priorityList: [
-                                        //   CountryPickerUtils
-                                        //       .getCountryByIsoCode('GB'),
-                                        //   CountryPickerUtils
-                                        //       .getCountryByIsoCode('CN'),
-                                        // ],
                                         sortComparator:
                                             (Country a, Country b) =>
                                                 a.isoCode.compareTo(b.isoCode),
@@ -195,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         "Dial Code $_dialCode${_contactEditingController.text}");
                                     loginAPI(LoginRequest(
                                         contactNumber:
-                                            "+$_dialCode${_contactEditingController.text.toString()}"));
+                                            "$_dialCode${_contactEditingController.text.toString()}"));
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.all(8),

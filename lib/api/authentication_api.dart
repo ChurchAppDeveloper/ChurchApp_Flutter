@@ -7,6 +7,7 @@ import 'package:churchapp/model_response/otp_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,9 @@ void loginAPI(LoginRequest loginRequest) async {
 
 void verifyOTPAPI(Map<String, dynamic> otpForm) async {
   String url = "$baseUrl/oauth/token";
-  String basicAuth = 'Basic ' + base64Encode(utf8.encode('barnabas:barnabas'));
+  String barnabas = "barnabas";
+  String basicAuth =
+      'Basic ' + base64Encode(utf8.encode('$barnabas:$barnabas'));
   Map<String, String> requestHeaders = {
     "Accept": "application/json",
     "Content-Type": "application/x-www-form-urlencoded",
@@ -56,7 +59,7 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
 
   if (response.statusCode == 200) {
     debugPrint("content:${data.accessToken}");
-
+    await SharedPref().setStringPref(SharedPref().token, data.accessToken);
     Get.toNamed("/home");
   } else {
     snackBarAlert(
