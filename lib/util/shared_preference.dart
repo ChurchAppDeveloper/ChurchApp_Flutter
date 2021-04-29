@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {
   var token = "TOKEN";
+  var role = "ROLE";
 
   setStringPref(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -1,8 +1,10 @@
 import 'dart:core';
 
+import 'package:churchapp/Screens/Announcement/AnnouncemetList.dart';
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
 import 'package:churchapp/Screens/LoginPage/otp_screen.dart';
+import 'package:churchapp/util/string_constants.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Barnabas',
+      title: appName,
       defaultTransition: Transition.rightToLeftWithFade,
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 219, 69, 71),
@@ -58,6 +60,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/otp', page: () => OtpScreen()),
         GetPage(name: '/home', page: () => Dashboard()),
+        GetPage(name: '/announcementList', page: () => AnnouncementList()),
       ],
     );
   }

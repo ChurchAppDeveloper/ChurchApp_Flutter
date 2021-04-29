@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:analog_clock/analog_clock.dart';
-import 'package:churchapp/Screens/Announcemet/AnnouncementCreation.dart';
+import 'package:churchapp/Screens/Announcement/AnnouncementCreation.dart';
 import 'package:churchapp/Screens/RestService/ConfessionService.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:churchapp/Screens/Announcemet/AnnouncemetList.dart';
+import 'package:churchapp/Screens/Announcement/AnnouncemetList.dart';
 import 'package:churchapp/Screens/Classifields/ClassiieldList.dart';
 import 'package:churchapp/Screens/Confession/Confession.dart';
 import 'package:churchapp/Screens/ContactUS/Contactus.dart';
@@ -80,18 +80,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  SharedPreferences prefs;
-
-  @override
-  initState() {
-    allocatePreference();
-    super.initState();
-  }
-
-  allocatePreference() async {
-    prefs = await SharedPreferences.getInstance();
-    debugPrint("about: ${prefs.getString("aboutUs")}");
-  }
 
   @override
   build(BuildContext context) {
@@ -101,102 +89,103 @@ class _DashboardState extends State<Dashboard> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appName,
-      home: SimpleHiddenDrawer(
-        enableCornerAnimation: true,
-        menu: Menu(),
-        screenSelectedBuilder: (position, controller) {
-          Widget screenCurrent;
-          menuposition = MenuList.values[position];
-          switch (menuposition) {
-            case MenuList.dashboard:
-              screenCurrent = HomeScreen();
-              break;
-            case MenuList.parishannouncement:
-              screenCurrent = AnnouncemetList(isShowAppbar: false);
-              break;
-            case MenuList.livestream:
-              screenCurrent = LiveStream(isShowAppbar: false);
-              break;
-            case MenuList.masstiming:
-              screenCurrent = MassTiming(isShowAppbar: false);
-              break;
-            case MenuList.confession:
-              screenCurrent = Confession(isShowAppbar: false);
-              break;
-            case MenuList.classifields:
-              screenCurrent = ClassiieldList(isShowAppbar: false);
-              break;
-            case MenuList.contactus:
-              screenCurrent = ContactUS();
-              break;
-            case MenuList.aboutus:
-              screenCurrent = WebViewLoad(
-                  weburl: prefs.getString('aboutUs'), isShowAppbar: false, pageTitle: "About us");
-              break;
-            case MenuList.logout:
-              clearCredentials();
-              break;
-            case MenuList.bulletin:
-              screenCurrent = WebViewLoad(
-                  weburl:prefs.getString('bulletinUrl'),
-                  isShowAppbar: false,
-                  pageTitle: "Bulletins");
-              break;
-            case MenuList.prayerrequest:
-              screenCurrent = PrayerRequest(isShowAppbar: false);
-              break;
-            case MenuList.donate:
-              screenCurrent = WebViewLoad(
-                  weburl: prefs.getString('donateUrl'),
-                  isShowAppbar: false,
-                  pageTitle: "Donate");
-              break;
-            case MenuList.readings:
-              screenCurrent = WebViewLoad(
-                  weburl: prefs.getString('onlieReadingUrl'),
-                  isShowAppbar: false,
-                  pageTitle: "Readings");
-              break;
-            case MenuList.ministers:
-              screenCurrent = WebViewLoad(
-                  weburl: prefs.getString('ministersUrl'),
-                  isShowAppbar: false,
-                  pageTitle: "Ministers");
-              break;
-            case MenuList.school:
-              screenCurrent = WebViewLoad(
-                  weburl: prefs.getString('schoolUrl'),
-                  isShowAppbar: false,
-                  pageTitle: "School");
-              break;
-          }
-
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 0.0,
-              backgroundColor: bgColor,
-              // toolbarHeight: 50.0,
-              title: Text(_titleForSelectedModule(menuposition),
-                  textAlign: TextAlign.start,
-                  style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  )),
-              leading: IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  controller.toggle();
-                  // do something
-                },
-              ),
-            ),
-            body: screenCurrent,
-          );
-        },
-      ),
+      home: HomeScreen()
+      // home: SimpleHiddenDrawer(
+      //   enableCornerAnimation: true,
+      //   menu: Menu(),
+      //   screenSelectedBuilder: (position, controller) {
+      //     Widget screenCurrent;
+      //     menuposition = MenuList.values[position];
+      //     switch (menuposition) {
+      //       case MenuList.dashboard:
+      //         screenCurrent = HomeScreen();
+      //         break;
+      //       case MenuList.parishannouncement:
+      //         screenCurrent = AnnouncementList();
+      //         break;
+      //       case MenuList.livestream:
+      //         screenCurrent = LiveStream(isShowAppbar: false);
+      //         break;
+      //       case MenuList.masstiming:
+      //         screenCurrent = MassTiming(isShowAppbar: false);
+      //         break;
+      //       case MenuList.confession:
+      //         screenCurrent = Confession(isShowAppbar: false);
+      //         break;
+      //       case MenuList.classifields:
+      //         screenCurrent = ClassiieldList(isShowAppbar: false);
+      //         break;
+      //       case MenuList.contactus:
+      //         screenCurrent = ContactUS();
+      //         break;
+      //       case MenuList.aboutus:
+      //         screenCurrent = WebViewLoad(
+      //             weburl: prefs.getString('aboutUs'), isShowAppbar: false, pageTitle: "About us");
+      //         break;
+      //       case MenuList.logout:
+      //         clearCredentials();
+      //         break;
+      //       case MenuList.bulletin:
+      //         screenCurrent = WebViewLoad(
+      //             weburl:prefs.getString('bulletinUrl'),
+      //             isShowAppbar: false,
+      //             pageTitle: "Bulletins");
+      //         break;
+      //       case MenuList.prayerrequest:
+      //         screenCurrent = PrayerRequest(isShowAppbar: false);
+      //         break;
+      //       case MenuList.donate:
+      //         screenCurrent = WebViewLoad(
+      //             weburl: prefs.getString('donateUrl'),
+      //             isShowAppbar: false,
+      //             pageTitle: "Donate");
+      //         break;
+      //       case MenuList.readings:
+      //         screenCurrent = WebViewLoad(
+      //             weburl: prefs.getString('onlieReadingUrl'),
+      //             isShowAppbar: false,
+      //             pageTitle: "Readings");
+      //         break;
+      //       case MenuList.ministers:
+      //         screenCurrent = WebViewLoad(
+      //             weburl: prefs.getString('ministersUrl'),
+      //             isShowAppbar: false,
+      //             pageTitle: "Ministers");
+      //         break;
+      //       case MenuList.school:
+      //         screenCurrent = WebViewLoad(
+      //             weburl: prefs.getString('schoolUrl'),
+      //             isShowAppbar: false,
+      //             pageTitle: "School");
+      //         break;
+      //     }
+      //
+      //     return Scaffold(
+      //       appBar: AppBar(
+      //         elevation: 0.0,
+      //         backgroundColor: bgColor,
+      //         // toolbarHeight: 50.0,
+      //         title: Text(_titleForSelectedModule(menuposition),
+      //             textAlign: TextAlign.start,
+      //             style: GoogleFonts.lato(
+      //               textStyle: TextStyle(
+      //                 fontSize: 22,
+      //                 fontWeight: FontWeight.w600,
+      //                 color: Colors.white,
+      //               ),
+      //             )),
+      //         leading: IconButton(
+      //           icon: Icon(Icons.menu),
+      //           onPressed: () {
+      //             controller.toggle();
+      //             // do something
+      //           },
+      //         ),
+      //       ),
+      //       body: screenCurrent,resizeToAvoidBottomInset: true,
+      //     );
+      //   },
+      // ),
     );
   }
 

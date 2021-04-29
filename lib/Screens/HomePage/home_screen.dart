@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:churchapp/Screens/Announcemet/AnnouncemetList.dart';
 import 'package:churchapp/Screens/Classifields/ClassiieldList.dart';
 import 'package:churchapp/Screens/Confession/Confession.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
@@ -12,6 +11,7 @@ import 'package:churchapp/Screens/RestService/ProfileService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
@@ -23,11 +23,15 @@ enum HomeMenu {
   bulletin,
   masstiming,
   prayerrequest,
+  donate,
   confession,
   classifields,
   readings,
   ministers,
-  donate
+  school,
+  contactus,
+  aboutus,
+  logout
 }
 
 class HomeScreen extends StatefulWidget {
@@ -108,6 +112,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Color.fromARGB(255, 245, 246, 250), //Color.fromARGB(255, 219, 69, 71)
       body: Stack(
         children: [
+          Container(
+            color: Color.fromARGB(255, 219, 69, 71),
+          ),
+          Container(
+            child: Transform.scale(
+              scale: 1.5,
+              child: Image.asset(
+                "image/background.png",
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
           ClipPath(
             child: (_fetching)
                 ? Container(
@@ -143,14 +159,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             clipper: BottomWaveClipper(),
           ),
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(left:24.0,top:48),
               child: Text("Good ${greeting()}",
                   textAlign: TextAlign.start,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -184,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 ? Badge(
                                     padding: EdgeInsets.all(15.0),
                                     position: BadgePosition.topStart(
-                                        top: 15, start: 5),
+                                        top: 15, start: 10),
                                     badgeContent: Text('99+',
                                         style: TextStyle(color: Colors.white)),
                                     child: EmptyCard(
@@ -211,11 +227,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     switch (homemenu) {
       case HomeMenu.parishannouncement:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AnnouncemetList(isShowAppbar: true)),
-        );
+        Get.toNamed("/announcementList", arguments: true);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => AnnouncementList(isShowAppbar: true)),
+        // );
         // Navigator.of(context).push(
         //   CubePageRoute(
         //     enterPage: AnnouncemetList(isShowAppbar: true),
@@ -368,11 +385,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem("Bulletins", "image/bulletin.png"));
     homelist.add(HomeItem("Mass Timings", "image/masstiming.png"));
     homelist.add(HomeItem("Prayer Request", "image/prayerrequest.png"));
-    homelist.add(HomeItem("Conefssion", "image/confession.png"));
-    homelist.add(HomeItem("CLASSIFIED", "image/classifield.png"));
+    homelist.add(HomeItem("Donate", "image/prayerrequest.png"));
+    homelist.add(HomeItem("Confession", "image/confession.png"));
+    homelist.add(HomeItem("Classified", "image/classifield.png"));
     homelist.add(HomeItem("Readings", "image/reading.png"));
+    homelist.add(HomeItem("Ministers", "image/reading.png"));
     homelist.add(HomeItem("School", "image/school.png"));
-    homelist.add(HomeItem("Donate", "image/donate.png"));
+    homelist.add(HomeItem("Contact Us", "image/donate.png"));
+    homelist.add(HomeItem("About Us", "image/donate.png"));
+    homelist.add(HomeItem("Logout", "image/donate.png"));
   }
 }
 
