@@ -12,6 +12,7 @@ import 'package:churchapp/Screens/RestService/ProfileService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,6 +45,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
   int bannerindex = 0;
+
+  String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Morning';
+    }
+    if (hour < 16) {
+      return 'Afternoon';
+    }
+    return 'Evening';
+  }
 
   @override
   void initState() {
@@ -130,6 +142,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
             clipper: BottomWaveClipper(),
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text("Good ${greeting()}",
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  )),
+            ),
+          ),
           Expanded(
             // AnimationLimiter(
             child: GridView.count(
@@ -172,7 +199,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 },
               ),
             ),
-          )
+          ),
+
         ],
       ),
     );
