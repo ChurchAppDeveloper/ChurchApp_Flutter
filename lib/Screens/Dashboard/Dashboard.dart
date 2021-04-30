@@ -1,4 +1,4 @@
-import 'package:churchapp/Screens/Announcement/AnnouncemetList.dart';
+import 'package:churchapp/Screens/Announcement/AnnouncementList.dart';
 import 'package:churchapp/Screens/Classifields/ClassiieldList.dart';
 import 'package:churchapp/Screens/Confession/Confession.dart';
 import 'package:churchapp/Screens/ContactUS/Contactus.dart';

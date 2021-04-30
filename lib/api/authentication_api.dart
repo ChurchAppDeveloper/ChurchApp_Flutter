@@ -71,8 +71,8 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
 }
 
 void profileAPI() async {
-  // await SharedPref().setStringPref(SharedPref().token, "13eeb7ef-a0b7-474e-9a0f-d539dc75cc77");
-  await SharedPref().setStringPref(SharedPref().token, "607a0204-198d-420d-98b4-ca2cd42d28d9");
+  // await SharedPref().setStringPref(SharedPref().token, "ab7e95c9-20a5-4922-8482-9a310230539c");
+  await SharedPref().setStringPref(SharedPref().token, "784e37cb-78f6-4a1d-bf07-aee955781157");
   String token = await SharedPref().getStringPref(SharedPref().token);
 
   String url = "$baseUrl/myprofile";
@@ -83,8 +83,9 @@ void profileAPI() async {
   final response = await http.get(Uri.parse(url), headers: requestHeaders);
   var data = ProfileResponse.fromJson(json.decode(response.body));
   debugPrint("profile_response: ${response.request}");
+  debugPrint("profile_response: ${response.body}");
+
   if (response.statusCode == 200) {
-    debugPrint("profile_response: ${response.body}");
     if (data.success) {
       debugPrint("content:${data.content}");
       Get.offAndToNamed("/home");

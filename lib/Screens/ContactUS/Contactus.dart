@@ -18,7 +18,7 @@ class ContactUS extends StatefulWidget {
 
 class ContactUSState extends State<ContactUS> {
   Completer<GoogleMapController> _controller = Completer();
-
+  var isShowAppbar = true;
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(33.83104, -118.17676),
     zoom: 16.4746,
@@ -38,6 +38,22 @@ class ContactUSState extends State<ContactUS> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: isShowAppbar
+          ? AppBar(
+              title: Text("Contact Us"),
+              backgroundColor: Color.fromARGB(255, 219, 69, 71),
+              leading: IconButton(
+                // iconSize: 50.0,
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  // do something
+                },
+              ))
+          : null,
       body: Stack(children: <Widget>[
         Container(
           child: GoogleMap(

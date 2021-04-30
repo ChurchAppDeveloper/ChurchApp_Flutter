@@ -3,20 +3,23 @@ import 'dart:io';
 import 'package:churchapp/Screens/RestService/AnnouncemetService.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'dart:math' as math;
 
-class AnnouncemetCreation extends StatefulWidget {
+class AnnouncementCreation extends StatefulWidget {
   final bool isShowAppbar;
 
-  const AnnouncemetCreation({Key key, this.isShowAppbar}) : super(key: key);
+  const AnnouncementCreation({Key key, this.isShowAppbar}) : super(key: key);
 
   @override
-  _AnnouncemetCreationState createState() => _AnnouncemetCreationState();
+  _AnnouncementCreationState createState() => _AnnouncementCreationState();
 }
 
-class _AnnouncemetCreationState extends State<AnnouncemetCreation> {
+class _AnnouncementCreationState extends State<AnnouncementCreation> {
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
   String announceTitle = "";
@@ -27,127 +30,175 @@ class _AnnouncemetCreationState extends State<AnnouncemetCreation> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         builder: EasyLoading.init(),
         home: Scaffold(
             appBar: AppBar(
                 backgroundColor: Color.fromARGB(255, 219, 69, 71),
-                title: Text('Announcement Creation'),
+                title:Text("Announcement Creation",
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    )),
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 )),
-            body: Column(
-              children: [
-                Container(
-                    child: Stack(
-                  children: [
-                    Opacity(
-                      opacity: 0.5,
-                      child: ClipPath(
-                          clipper: WaveClipper(),
-                          child: Container(
-                              color: Colors.deepOrangeAccent, height: 200)),
-                    ),
-                    ClipPath(
-                      clipper: WaveClipper(),
-                      child: Container(
-                          padding: EdgeInsets.only(bottom: 50),
-                          color: Colors.red,
-                          height: 180,
-                          alignment: Alignment.center,
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('image/bg1.jpg'),
-                          )),
-                    )
-                  ],
-                )),
-                TextField(
-                    decoration:
-                        InputDecoration(hintText: 'Enter a Announcement Title'),
-                    onChanged: (text) {
-                      announceTitle = text;
-                    }),
-                // TextField(
-                //     decoration: InputDecoration(
-                //         hintText: 'Enter a Announcement Description'),
-                //     maxLines: null,
-                //     onChanged: (text) {
-                //       announcedesc = text;
-                //     }),
-                Container(
-                  // margin: EdgeInsets.all(12),
-                  height: maxLines * 24.0,
-                  child: TextField(
-                    maxLines: maxLines,
-                    decoration: InputDecoration(
-                      hintText: "Enter a Announcement Description",
-                      fillColor: Colors.white,
-                      filled: true,
+            body: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Container(
+                      child: Stack(
+                    children: [
+                      Opacity(
+                        opacity: 0.5,
+                        child: ClipPath(
+                            clipper: WaveClipper(),
+                            child: Container(
+                                color: Colors.deepOrangeAccent,
+                                height:
+                                    MediaQuery.of(context).size.height / 3.2)),
+                      ),
+                      ClipPath(
+                        clipper: WaveClipper(),
+                        child: Container(
+                            padding: EdgeInsets.only(bottom: 50),
+                            color: Colors.red,
+                            height: MediaQuery.of(context).size.height / 3.4,
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage: AssetImage('image/bg1.jpg'),
+                            )),
+                      )
+                    ],
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                        enableSuggestions: true,
+                        inputFormatters: [LengthLimitingTextInputFormatter(30)],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            labelText: 'Announcement Title'),
+                        onChanged: (text) {
+                          announceTitle = text;
+                        }),
+                  ),
+                  // TextField(
+                  //     decoration: InputDecoration(
+                  //         hintText: 'Enter a Announcement Description'),
+                  //     maxLines: null,
+                  //     onChanged: (text) {
+                  //       announcedesc = text;
+                  //     }),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      // margin: EdgeInsets.all(12),
+                      height: maxLines * 18.0,
+                      child: TextFormField(
+                        maxLines: maxLines,
+                        enableSuggestions: true,
+                        inputFormatters: [LengthLimitingTextInputFormatter(100)],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          labelText: "Announcement Description",
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                RaisedButton(
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  child: Text('Browse Documents'),
-                  onPressed: () async {
-                    FilePickerResult result = await FilePicker.platform
-                        .pickFiles(type: FileType.custom, allowedExtensions: [
-                      'pdf',
-                      'docx',
-                      'doc',
-                      'xlsx',
-                      'xls',
-                      'pptx',
-                      'ppt',
-                      'txt',
-                      'jpg',
-                      'jpeg',
-                      'png',
-                      'm3u',
-                      'm4a',
-                      'm4b',
-                      'm4p',
-                      'mp2',
-                      'mp3',
-                      'mpga',
-                      'ogg',
-                      'rmvb',
-                      'wav',
-                      'wma',
-                      'wmv',
-                      '3gp',
-                      'asf',
-                      'avi',
-                      'm4u',
-                      'm4v',
-                      'mov',
-                      'mp4',
-                      'mpe',
-                      'mpeg',
-                      'mpg',
-                      'mpg4'
-                    ]);
+                  ElevatedButton(
+                    // color: Colors.red,
+                    // textColor: Colors.white,
+                    child:Text("Browse Attachments",
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        )),
+                    onPressed: () async {
+                      FilePickerResult result = await FilePicker.platform
+                          .pickFiles(type: FileType.custom, allowedExtensions: [
+                        'pdf',
+                        'docx',
+                        'doc',
+                        'xlsx',
+                        'xls',
+                        'pptx',
+                        'ppt',
+                        'txt',
+                        'jpg',
+                        'jpeg',
+                        'png',
+                        'm3u',
+                        'm4a',
+                        'm4b',
+                        'm4p',
+                        'mp2',
+                        'mp3',
+                        'mpga',
+                        'ogg',
+                        'rmvb',
+                        'wav',
+                        'wma',
+                        'wmv',
+                        '3gp',
+                        'asf',
+                        'avi',
+                        'm4u',
+                        'm4v',
+                        'mov',
+                        'mp4',
+                        'mpe',
+                        'mpeg',
+                        'mpg',
+                        'mpg4'
+                      ]);
 
-                    if (result != null) {
-                      selectedFile = File(result.files.single.path);
-                    } else {
-                      // User canceled the picker
-                    }
-                  },
-                ),
-              ],
+                      if (result != null) {
+                        selectedFile = File(result.files.single.path);
+                      } else {
+                        // User canceled the picker
+                      }
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: RoundedLoadingButton(
+                      animateOnTap: true,
+                      child: Text('Submit',
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          )),
+                      color: Colors.red,
+                      successColor: Colors.red,
+                      controller: _btnController,
+                      onPressed: onSubmitPressed,
+                    ),
+                  )
+                ],
+              ),
             ),
-            floatingActionButton: RoundedLoadingButton(
-              child: Text('Submit', style: TextStyle(color: Colors.white)),
-              color: Colors.red,
-              successColor: Colors.red,
-              controller: _btnController,
-              onPressed: onSubmitPressed,
-            )));
+          ));
   }
 
   onSubmitPressed() async {

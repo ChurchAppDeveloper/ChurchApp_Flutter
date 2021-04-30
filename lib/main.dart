@@ -1,6 +1,7 @@
 import 'dart:core';
 
-import 'package:churchapp/Screens/Announcement/AnnouncemetList.dart';
+import 'package:churchapp/Screens/Announcement/AnnouncementCreation.dart';
+import 'package:churchapp/Screens/Announcement/AnnouncementList.dart';
 import 'package:churchapp/Screens/ContactUS/Contactus.dart';
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
@@ -62,6 +63,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/otp', page: () => OtpScreen()),
         GetPage(name: '/home', page: () => Dashboard()),
         GetPage(name: '/announcementList', page: () => AnnouncementList()),
+        GetPage(name: '/announcementCreate', page: () => AnnouncementCreation()),
         GetPage(name: '/contact', page: () => ContactUS()),
       ],
     );

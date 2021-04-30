@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _fetching = true;
-    ProfileService().getProfileDetails();
+    // ProfileService().getProfileDetails();
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 5000));
     animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
