@@ -13,6 +13,7 @@ import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 void loginAPI(LoginRequest loginRequest) async {
   String url =
@@ -70,7 +71,8 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
 }
 
 void profileAPI() async {
-  await SharedPref().setStringPref(SharedPref().token, "13eeb7ef-a0b7-474e-9a0f-d539dc75cc77");
+  // await SharedPref().setStringPref(SharedPref().token, "13eeb7ef-a0b7-474e-9a0f-d539dc75cc77");
+  await SharedPref().setStringPref(SharedPref().token, "607a0204-198d-420d-98b4-ca2cd42d28d9");
   String token = await SharedPref().getStringPref(SharedPref().token);
 
   String url = "$baseUrl/myprofile";
@@ -121,8 +123,9 @@ void profileDashAPI() async {
       await SharedPref().setStringPref('onlieReadingUrl', dataval.content.churchProfile.onlineReading);
       await SharedPref().setStringPref('prayerRequestUtl', dataval.content.churchProfile.prayerRequest);
       await SharedPref().setStringPref('masstimingintention', dataval.content.churchProfile.massTimeIntention);
-      await SharedPref().setStringPref('role', dataval.content.roleName);
+      await SharedPref().setStringPref(SharedPref().role, dataval.content.roleName);
       await SharedPref().setStringPref('userNumber', dataval.content.contactNo);
+
     } else {
       snackBarAlert(warning, dataval.message.toString(),
           Icon(Icons.warning_amber_outlined), warningColor, blackColor);

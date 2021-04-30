@@ -9,6 +9,7 @@ import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
 import 'package:churchapp/Screens/RestService/BannerService.dart';
 import 'package:churchapp/Screens/RestService/ProfileService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
@@ -161,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left:24.0,top:48),
+              padding: const EdgeInsets.only(left: 24.0, top: 48),
               child: Text("Good ${greeting()}",
                   textAlign: TextAlign.start,
                   style: GoogleFonts.lato(
@@ -216,7 +217,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -373,6 +373,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           context,
           MaterialPageRoute(builder: (context) => bulletin),
         );
+
+        break;
+      case HomeMenu.school:
+        var bulletin = WebViewLoad(
+            weburl: prefs.getString('schoolUrl'),
+            isShowAppbar: true,
+            pageTitle: "School");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => bulletin),
+        );
+
+        break;
+      case HomeMenu.contactus:
+        Get.toNamed("/contact");
+        break;
+      case HomeMenu.aboutus:
+        var bulletin = WebViewLoad(
+            weburl: prefs.getString('aboutUs'),
+            isShowAppbar: true,
+            pageTitle: "About us");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => bulletin),
+        );
+        break;
+      case HomeMenu.logout:
+        await SharedPref().setStringPref(SharedPref().token, "");
+        Get.offAndToNamed("/login");
 
         break;
       default:

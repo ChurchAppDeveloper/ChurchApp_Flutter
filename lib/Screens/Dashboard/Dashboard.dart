@@ -80,7 +80,11 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
+@override
+  void initState() {
+  profileDashAPI();
+    super.initState();
+  }
   @override
   build(BuildContext context) {
     var bgColor = Color.fromARGB(255, 219, 69, 71);
@@ -187,10 +191,5 @@ class _DashboardState extends State<Dashboard> {
       //   },
       // ),
     );
-  }
-
-  clearCredentials() async {
-    await SharedPref().setStringPref(SharedPref().token, "");
-    Get.offAndToNamed("/login");
   }
 }

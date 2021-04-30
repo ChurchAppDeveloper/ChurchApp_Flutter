@@ -25,7 +25,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
   List<AnnouncementListItem> menus;
   var random = new math.Random();
   final List<Color> _colors = Colors.primaries;
-  String role;
+  var role;
 
   @override
   void initState() {
@@ -33,6 +33,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
     isShowAppbar = Get.arguments;
 
     initData();
+    debugPrint("Role: ${role.toString()}");
     super.initState();
     AnnouncementService().getAnnouncementModel().then((announcemets) {
       setState(() {
@@ -187,6 +188,10 @@ class _AnnouncementListState extends State<AnnouncementList> {
   }
 
   void initData() async{
-    role = await SharedPref().getStringPref(SharedPref().role);
+   role = await SharedPref().getStringPref(SharedPref().role).then((value) {
+     debugPrint("role: $value");
+     return value;
+   } );
+
   }
 }

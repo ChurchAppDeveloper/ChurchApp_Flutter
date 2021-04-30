@@ -16,7 +16,6 @@ class SharedPref {
     await prefs.setString(key, value);
     return true;
   }
-
   getStringPref(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? "";
