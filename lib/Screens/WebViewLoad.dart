@@ -1,10 +1,8 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -90,15 +88,5 @@ class WebViewLoadUI extends State<WebViewLoad> {
                 : Container(),
           ],
         ));
-  }
-
-  Future<void> _onOpen(LinkableElement link) async {
-    if (await canLaunch(link.url)) {
-      await launch(link.url);
-    } else {
-      snackBarAlert(error, "Invalid URL found", Icon(Icons.error_outline),
-          errorColor, whiteColor);
-      throw 'Could not launch $link';
-    }
   }
 }

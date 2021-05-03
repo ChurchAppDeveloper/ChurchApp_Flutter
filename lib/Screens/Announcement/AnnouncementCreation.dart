@@ -91,6 +91,7 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                       enableSuggestions: true,
                       inputFormatters: [LengthLimitingTextInputFormatter(30)],
                       keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
                       decoration:
                           InputDecoration(labelText: 'Announcement Title'),
                       onChanged: (text) {
@@ -114,6 +115,7 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                       enableSuggestions: true,
                       inputFormatters: [LengthLimitingTextInputFormatter(100)],
                       keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                         labelText: "Announcement Description",
                       ),
@@ -135,40 +137,40 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                   onPressed: () async {
                     FilePickerResult result = await FilePicker.platform
                         .pickFiles(type: FileType.custom, allowedExtensions: [
-                      'pdf',
-                      'docx',
-                      'doc',
-                      'xlsx',
-                      'xls',
-                      'pptx',
-                      'ppt',
-                      'txt',
+                      // 'pdf',
+                      // 'docx',
+                      // 'doc',
+                      // 'xlsx',
+                      // 'xls',
+                      // 'pptx',
+                      // 'ppt',
+                      // 'txt',
                       'jpg',
                       'jpeg',
                       'png',
-                      'm3u',
-                      'm4a',
-                      'm4b',
-                      'm4p',
-                      'mp2',
-                      'mp3',
-                      'mpga',
-                      'ogg',
-                      'rmvb',
-                      'wav',
-                      'wma',
-                      'wmv',
-                      '3gp',
-                      'asf',
-                      'avi',
-                      'm4u',
-                      'm4v',
-                      'mov',
-                      'mp4',
-                      'mpe',
-                      'mpeg',
-                      'mpg',
-                      'mpg4'
+                      // 'm3u',
+                      // 'm4a',
+                      // 'm4b',
+                      // 'm4p',
+                      // 'mp2',
+                      // 'mp3',
+                      // 'mpga',
+                      // 'ogg',
+                      // 'rmvb',
+                      // 'wav',
+                      // 'wma',
+                      // 'wmv',
+                      // '3gp',
+                      // 'asf',
+                      // 'avi',
+                      // 'm4u',
+                      // 'm4v',
+                      // 'mov',
+                      // 'mp4',
+                      // 'mpe',
+                      // 'mpeg',
+                      // 'mpg',
+                      // 'mpg4'
                     ]);
 
                     if (result != null) {
@@ -210,7 +212,7 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
   onSubmitPressed() async {
     EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 2000)
-      ..indicatorType = EasyLoadingIndicatorType.pouringHourGlass
+      ..indicatorType = EasyLoadingIndicatorType.wanderingCubes
       ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorSize = 45.0
       ..radius = 10.0
@@ -223,15 +225,27 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
       status: 'loading...',
       maskType: EasyLoadingMaskType.custom,
     );
-    String format = selectedFile.path.split(".").last;
     // Map<String, dynamic> otpForm = {
     //   "grant_type": "password",
     //   "username": Get.arguments,
     //   "password": smsOTP,
     //   "client_id": "barnabas"
     // };
-    // createAnnouncementAPI(AnnouncementCreateRequest(title: announceTitle, description: announcedesc, urls: );
-   /* var random = new math.Random();
+    createAnnouncementAPI(
+            AnnouncementCreateRequest(
+                title: announceTitle, description: announcedesc),
+            file: selectedFile)
+        .then((value) {
+        _btnController.success();
+        EasyLoading.dismiss();
+        Get.offNamed('/announcementCreate');
+
+    }).catchError((error) {
+      debugPrint("Error : $error");
+      _btnController.error();
+      EasyLoading.dismiss();
+    });
+    /* var random = new math.Random();
     var randomNum = random.nextInt(888).toString();
     AnnouncementService anservice = AnnouncementService();
     anservice.announcettitle = announceTitle;

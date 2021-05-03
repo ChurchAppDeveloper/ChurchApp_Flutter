@@ -5,6 +5,7 @@ import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mailto/mailto.dart';
@@ -49,17 +50,17 @@ class ContactUSState extends State<ContactUS> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Get.back();
                   // do something
                 },
               ))
-          : null,
+          : Container(),
       body: Stack(children: <Widget>[
         Container(
           child: GoogleMap(
             myLocationEnabled: true,
             zoomControlsEnabled: true,
-            mapType: MapType.hybrid,
+            mapType: MapType.normal,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);

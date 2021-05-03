@@ -9,3 +9,4 @@ const String login = "Login";
 const String invalidOTP = "Invalid OTP";
 const String resendOTP = "Resend OTP";
 const String invalidNumber = "Contact number should not be empty";
+const String attachmentError = "Attachment not uploaded. Try again Later!";
