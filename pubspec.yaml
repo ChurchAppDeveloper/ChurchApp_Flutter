@@ -69,13 +69,13 @@ dependencies:
   fab_circular_menu: ^1.0.2
   badges: ^1.2.0
   rxdart: ^0.25.0
-  flutter_aws:
-    git:
-      url: https://github.com/yongjhih/flutter_aws.git
-  amplify_flutter: ^0.1.2
-  amplify_core: ^0.1.2
-  amplify_auth_cognito: ^0.1.2
-  amplify_analytics_pinpoint: ^0.1.2
+#  flutter_aws:
+#    git:
+#      url: https://github.com/yongjhih/flutter_aws.git
+#  amplify_flutter: ^0.1.2
+#  amplify_core: ^0.1.2
+#  amplify_auth_cognito: ^0.1.2
+#  amplify_analytics_pinpoint: ^0.1.2
   open_file: any
   mime_type: ^1.0.0
   flutter_filereader: ^2.2.0

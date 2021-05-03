@@ -9,6 +9,8 @@ import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
 import 'package:churchapp/Screens/RestService/BannerService.dart';
 import 'package:churchapp/Screens/RestService/ProfileService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
+import 'package:churchapp/api/announcement_api.dart';
+import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/util/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -50,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
   int bannerindex = 0;
+  Future apiAnnouncementCount;
 
   String greeting() {
     var hour = DateTime.now().hour;
@@ -90,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
 
     loadData();
+    apiAnnouncementCount = getAnnouncementCountAPI();
     BannerService.getBanners().then((banners) {
       var localBannerImages = List<NetworkImage>();
       for (var i = 0; i < banners.length; i++) {
@@ -174,47 +178,63 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   )),
             ),
           ),
-          Expanded(
-            // AnimationLimiter(
-            child: GridView.count(
-              childAspectRatio: 1.0,
-              padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 0),
-              crossAxisCount: columnCount,
-              children: List.generate(
-                homelist.length,
-                (int index) {
-                  var homelistitem = homelist[index];
-                  return AnimationConfiguration.staggeredGrid(
-                    columnCount: columnCount,
-                    position: index,
-                    duration: const Duration(milliseconds: 750),
-                    child: ScaleAnimation(
-                      scale: 0.5,
-                      child: FadeInAnimation(
-                        child: GestureDetector(
-                            onTap: () async {
-                              menuposition = HomeMenu.values[index];
-                              pushToCubicNavigationCotroller(
-                                  context, menuposition);
-                            },
-                            child: (index == 0)
-                                ? Badge(
-                                    padding: EdgeInsets.all(15.0),
-                                    position: BadgePosition.topStart(
-                                        top: 15, start: 10),
-                                    badgeContent: Text('99+',
-                                        style: TextStyle(color: Colors.white)),
-                                    child: EmptyCard(
-                                        imagename: homelistitem.imageName,
-                                        title: homelistitem.title))
-                                : EmptyCard(
-                                    imagename: homelistitem.imageName,
-                                    title: homelistitem.title)),
-                      ),
+          GridView.count(
+            childAspectRatio: 1.0,
+            padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 0),
+            crossAxisCount: columnCount,
+            children: List.generate(
+              homelist.length,
+              (int index) {
+                var homelistitem = homelist[index];
+                return AnimationConfiguration.staggeredGrid(
+                  columnCount: columnCount,
+                  position: index,
+                  duration: const Duration(milliseconds: 750),
+                  child: ScaleAnimation(
+                    scale: 0.5,
+                    child: FadeInAnimation(
+                      child: GestureDetector(
+                          onTap: () async {
+                            menuposition = HomeMenu.values[index];
+                            pushToCubicNavigationCotroller(
+                                context, menuposition);
+                          },
+                          child: (index == 0)
+                              ? FutureBuilder<AnnouncementCountResponse>(
+                                  future: apiAnnouncementCount,
+                                  builder: (context, projectSnap) {
+                                    if (projectSnap.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    } else if (projectSnap.connectionState ==
+                                        ConnectionState.done) {
+                                      return (projectSnap.data.content != 0)
+                                          ? Badge(
+                                              padding: EdgeInsets.all(15.0),
+                                              position: BadgePosition.topStart(
+                                                  top: 15, start: 10),
+                                              badgeContent: Text(
+                                                  projectSnap.data.content
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
+                                              child: EmptyCard(
+                                                  imagename:
+                                                      homelistitem.imageName,
+                                                  title: homelistitem.title))
+                                          : Container();
+                                    } else {
+                                      return Container();
+                                    }
+                                  })
+                              : EmptyCard(
+                                  imagename: homelistitem.imageName,
+                                  title: homelistitem.title)),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ],

@@ -52,30 +52,31 @@ class WebViewLoadUI extends State<WebViewLoad> {
             ? AppBar(
                 backgroundColor: Color.fromARGB(255, 219, 69, 71),
                 title: Text(pageTitle),
-                actions: (contentDesc.length == 0)
-                    ? []
-                    : <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.add_ic_call,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            // do something
-                            AwesomeDialog(
-                              context: context,
-                              animType: AnimType.SCALE,
-                              dialogType: DialogType.INFO,
-                              body: Center(
-                                child: Linkify(
-                                  onOpen: _onOpen,
-                                  text: contentDesc,
-                                ),
-                              ),
-                            )..show();
-                          },
-                        )
-                      ])
+                // actions: (contentDesc.length == 0)
+                //     ? []
+                //     : <Widget>[
+                //         IconButton(
+                //           icon: Icon(
+                //             Icons.add_ic_call,
+                //             color: Colors.white,
+                //           ),
+                //           onPressed: () {
+                //             // do something
+                //             AwesomeDialog(
+                //               context: context,
+                //               animType: AnimType.SCALE,
+                //               dialogType: DialogType.INFO,
+                //               body: Center(
+                //                 child: Linkify(
+                //                   onOpen: _onOpen,
+                //                   text: contentDesc,
+                //                 ),
+                //               ),
+                //             )..show();
+                //           },
+                //         )
+                //       ]
+        )
             : null,
         body: Stack(
           children: [

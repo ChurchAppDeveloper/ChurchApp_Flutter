@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aws/flutter_aws.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'dart:io' show File, Platform;
 import 'package:http/http.dart' as http;

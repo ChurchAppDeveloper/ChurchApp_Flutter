@@ -96,60 +96,59 @@ class _AnnouncementListState extends State<AnnouncementList> {
                 itemBuilder: (context, index) {
                   if (projectSnap.data.content.isNotEmpty) {
                     return GestureDetector(
-                      child: Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 15, right: 15, top: 10),
-                          decoration: new BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(255, 219, 69, 71)
-                                    .withOpacity(0.1),
-                                spreadRadius: 15,
-                                blurRadius: 10,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
-                              ),
-                            ],
-                            // gradient: LinearGradient(
-                            //     begin: Alignment.centerLeft,
-                            //     end: Alignment.centerRight,
-                            //     colors: [Colors.white, Colors.white]),
-                          ),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    projectSnap.data.content[index].title
-                                        .toString(),
-                                    textAlign: TextAlign.start,
-                                    style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                    )),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    projectSnap.data.content[index].description
-                                        .toString(),
-                                    textAlign: TextAlign.start,
-                                    style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black,
-                                      ),
-                                    )),
-                              ),
-                            ],
-                          ),
+                      child: Container(
+                        margin: EdgeInsets.only(left: 15, right: 15, top: 10),
+                        decoration: new BoxDecoration(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(15.0)),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 219, 69, 71)
+                                  .withOpacity(0.1),
+                              spreadRadius: 15,
+                              blurRadius: 10,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                          // gradient: LinearGradient(
+                          //     begin: Alignment.centerLeft,
+                          //     end: Alignment.centerRight,
+                          //     colors: [Colors.white, Colors.white]),
+                        ),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left:8.0,right:8.0, top:8.0),
+                              child: Text(
+                                  projectSnap.data.content[index].title
+                                      .toString(),
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  projectSnap.data.content[index].description
+                                      .toString(),
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                            ),
+                          ],
                         ),
                       ),
                       onTap: () async {
@@ -198,7 +197,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                                 .first
                                 .userAnouncementImageurl,
                             isShowAppbar: true,
-                            pageTitle: "ANNOUNCEMENT DETAIL");
+                            pageTitle: "Announcement Details");
                         bulletin.contentDesc =
                             projectSnap.data.content[index].description;
                         Navigator.push(
