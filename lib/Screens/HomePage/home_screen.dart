@@ -429,20 +429,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   loadData() {
-    homelist.add(HomeItem("Announcement", "image/announcement.png"));
-    homelist.add(HomeItem("Livestream", "image/livestreaming.png"));
-    homelist.add(HomeItem("Bulletins", "image/bulletin.png"));
-    homelist.add(HomeItem("Mass Timings", "image/masstiming.png"));
-    homelist.add(HomeItem("Prayer Request", "image/prayerrequest.png"));
-    homelist.add(HomeItem("Donate", "image/prayerrequest.png"));
-    homelist.add(HomeItem("Confession", "image/confession.png"));
-    homelist.add(HomeItem("Classified", "image/classifield.png"));
-    homelist.add(HomeItem("Readings", "image/reading.png"));
-    homelist.add(HomeItem("Ministers", "image/reading.png"));
-    homelist.add(HomeItem("School", "image/school.png"));
-    homelist.add(HomeItem("Contact Us", "image/donate.png"));
-    homelist.add(HomeItem("About Us", "image/donate.png"));
-    homelist.add(HomeItem("Logout", "image/donate.png"));
+    homelist.add(HomeItem("Announcement", "image/megaphone.svg"));
+    homelist.add(HomeItem("Livestream", "image/live.svg"));
+    homelist.add(HomeItem("Bulletins", "image/news.svg"));
+    homelist.add(HomeItem("Mass Timings", "image/candle_light.svg"));
+    homelist.add(HomeItem("Prayer Request", "image/christianity.svg"));
+    homelist.add(HomeItem("Donate", "image/donation.svg"));
+    homelist.add(HomeItem("Confession", "image/jesus.svg"));
+    homelist.add(HomeItem("Classified", "image/handshake.svg"));
+    homelist.add(HomeItem("Readings", "image/bible.svg"));
+    homelist.add(HomeItem("Ministers", "image/priest.svg"));
+    homelist.add(HomeItem("School", "image/church.svg"));
+    homelist.add(HomeItem("Contact Us", "image/email.svg"));
+    homelist.add(HomeItem("About Us", "image/group.svg"));
+    homelist.add(HomeItem("Logout", "image/logout.svg"));
   }
 }
 

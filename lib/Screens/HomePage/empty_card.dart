@@ -1,4 +1,6 @@
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class EmptyCard extends StatelessWidget {
   final double width;
@@ -25,7 +27,7 @@ class EmptyCard extends StatelessWidget {
           Container(
             alignment: Alignment.topCenter,
             margin: const EdgeInsets.only(top: 20.0),
-            child: Image.asset(imagename, width: 300, height: 300),
+            child: SvgPicture.asset(imagename, semanticsLabel: appName,width: 90,height: 90,)
           ),
           Container(
               alignment: Alignment.bottomCenter,
