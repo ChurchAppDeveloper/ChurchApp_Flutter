@@ -10,15 +10,23 @@ import 'package:churchapp/Screens/RestService/BannerService.dart';
 import 'package:churchapp/Screens/RestService/ProfileService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:churchapp/api/announcement_api.dart';
+import 'package:churchapp/api/notification_api.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
+import 'package:churchapp/util/color_constants.dart';
+import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/shared_preference.dart';
+import 'package:churchapp/util/string_constants.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 enum HomeMenu {
   parishannouncement,
@@ -53,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Animation<double> animation;
   int bannerindex = 0;
   Future apiAnnouncementCount;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   String greeting() {
     var hour = DateTime.now().hour;
@@ -70,6 +79,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _fetching = true;
     // ProfileService().getProfileDetails();
+    firebaseSetup(_firebaseMessaging);
+    _firebaseMessaging.getToken().then((String token) {
+      print("token $token");
+      sendTokenToServer(token);
+    });
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 5000));
     animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
@@ -444,6 +458,103 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem("About Us", "image/group.svg"));
     homelist.add(HomeItem("Logout", "image/logout.svg"));
   }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+
+  }
+  void firebaseSetup(FirebaseMessaging _firebaseMessaging) async {
+    await FirebaseMessaging.instance.subscribeToTopic('barnabas');
+    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+    var initializationSettingsAndroid = AndroidInitializationSettings(
+        '@mipmap/ic_launcher'); // <- default icon name is @mipmap/ic_launcher
+    var initializationSettingsIOS = IOSInitializationSettings(
+      requestSoundPermission: true,
+      requestBadgePermission: false,
+      requestAlertPermission: true,
+    );
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      const AndroidNotificationChannel channel = AndroidNotificationChannel(
+          'barnabas_channel', // id
+          'New Announcement Notifications', // title
+          'New Announcement is arrived.', // description
+          importance: Importance.max,
+          enableLights: true,
+          enableVibration: true,
+          playSound: true,
+          showBadge: true);
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+      // RemoteMessage initialMessage =
+      //     await FirebaseMessaging.instance.getInitialMessage();
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        RemoteNotification notification = message.notification;
+        AndroidNotification android = message.notification?.android;
+
+        // If `onMessage` is triggered with a notification, construct our own
+        // local notification to show to users using the created channel.
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
+              notification.hashCode,
+              notification.title,
+              notification.body,
+              NotificationDetails(
+                android: AndroidNotificationDetails(
+                  channel.id, channel.name, channel.description,
+                  icon: android?.smallIcon,
+                  playSound: true,
+                  enableVibration: true,
+                  enableLights: true,
+                  autoCancel: true,
+                  category: "New Announcement",
+                  channelShowBadge: true,
+                  visibility: NotificationVisibility.public,
+                  ticker: "New Announcement",
+                  importance: Importance.max,
+                  showWhen: true,
+                  priority: Priority.max,
+
+                  // other properties...
+                ),
+              ));
+        }
+      });
+      // if (initialMessage?.data['type'] == 'task') {
+      //   /* Navigator.pushNamed(context, '/chat',
+      //       arguments: ChatArguments(initialMessage));*/
+      // }
+    } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
+      snackBarAlert(error, "Notification Permission is denied", Icon(Icons.error_outline),
+          errorColor, whiteColor);
+    }
+  }
+
+
 }
 
 class HomeItem {
@@ -479,4 +590,5 @@ class BottomWaveClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+
 }

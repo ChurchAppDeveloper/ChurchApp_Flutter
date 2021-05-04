@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "16946593253",
+    "project_id": "barnabas-a9438",
+    "storage_bucket": "barnabas-a9438.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16946593253:android:8d3fa5fa2a8ae8d1a5030c",
+        "android_client_info": {
+          "package_name": "com.robert.barnabas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16946593253-is3tg2g3d1lu9o60hd2sep53uit9aglq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChITp_iWT7yTMPlhH8JPkzQ71cMDaFtmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "16946593253-is3tg2g3d1lu9o60hd2sep53uit9aglq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "16946593253-ue38ki6hjhoelma7o3n738pmdtjno0mn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.robert.barnabas"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

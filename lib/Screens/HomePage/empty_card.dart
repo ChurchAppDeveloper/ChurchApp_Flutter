@@ -27,7 +27,7 @@ class EmptyCard extends StatelessWidget {
           Container(
             alignment: Alignment.topCenter,
             margin: const EdgeInsets.only(top: 20.0),
-            child: SvgPicture.asset(imagename, semanticsLabel: appName,width: 90,height: 90,)
+            child: SvgPicture.asset(imagename, semanticsLabel: appName,width: 90,height: 90,color: Colors.red,)
           ),
           Container(
               alignment: Alignment.bottomCenter,
@@ -35,7 +35,7 @@ class EmptyCard extends StatelessWidget {
               child: Text(
                 title.toUpperCase(),
                 style: TextStyle(
-                    color: Colors.pink,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0),
               )),
