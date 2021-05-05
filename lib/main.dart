@@ -2,6 +2,8 @@ import 'dart:core';
 
 import 'package:churchapp/Screens/Announcement/AnnouncementCreation.dart';
 import 'package:churchapp/Screens/Announcement/AnnouncementList.dart';
+import 'package:churchapp/Screens/Classifields/ClassifiedCreate.dart';
+import 'package:churchapp/Screens/Classifields/ClassifiedList.dart';
 import 'package:churchapp/Screens/ContactUS/Contactus.dart';
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
@@ -78,6 +80,8 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/announcementCreate', page: () => AnnouncementCreation()),
         GetPage(name: '/contact', page: () => ContactUS()),
         GetPage(name: '/liveStream', page: () => LiveStream()),
+        GetPage(name: '/classifiedList', page: () => ClassifiedList()),
+        GetPage(name: '/classifiedCreate', page: () => ClassifiedCreate()),
       ],
     );
   }

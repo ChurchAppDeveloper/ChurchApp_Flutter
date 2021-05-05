@@ -1,9 +1,11 @@
-import 'package:churchapp/Screens/Classifields/CreateClassifield.dart';
+import 'package:churchapp/Screens/Classifields/ClassifiedCreate.dart';
 import 'package:churchapp/Screens/Classifields/ImageZoomView.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/ClassifieldService.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'dart:math' as math;
@@ -21,25 +23,25 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
-class ClassiieldList extends StatefulWidget {
+class ClassifiedList extends StatefulWidget {
   final bool isShowAppbar;
-  ClassiieldList({Key key, this.isShowAppbar}) : super(key: key);
+  ClassifiedList({Key key, this.isShowAppbar}) : super(key: key);
 
   @override
-  _ClassiieldListState createState() => _ClassiieldListState();
+  _ClassifiedListState createState() => _ClassifiedListState();
 }
 
-class _ClassiieldListState extends State<ClassiieldList> {
+class _ClassifiedListState extends State<ClassifiedList> {
   var isShowAppbar;
   List<Classifield> classifields = [];
   StackedList stackedlist;
   bool _fetching;
-
+  String role;
+  Future apiClassified, getRole;
   @override
   void initState() {
-    super.initState();
     _fetching = true;
-    isShowAppbar = widget.isShowAppbar;
+    isShowAppbar = Get.arguments;
     ClassifieldService().getClassifieldList().then((classifields) {
       setState(() {
         classifields = classifields;
@@ -49,25 +51,32 @@ class _ClassiieldListState extends State<ClassiieldList> {
         _fetching = false;
       });
     });
+    // apiClassified = getClassifiedAPI();
+    getRole = initData();
+    super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CLASSIFIED',
-      home: Scaffold(
+    return  Scaffold(
           appBar: isShowAppbar
               ? AppBar(
-                  title: Text("CLASSIFIED"),
+                  title: Text("Classifieds"),
                   backgroundColor: Color.fromARGB(255, 219, 69, 71),
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
+              leading: IconButton(
+                // iconSize: 50.0,
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Get.back();
+                  // do something
+                },
+              )
                 )
-              : null,
+              : Container(),
           body: (_fetching)
               ? Container(
                   child: Center(
@@ -79,25 +88,34 @@ class _ClassiieldListState extends State<ClassiieldList> {
                   ),
                 )
               : stackedlist,
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: (Singleton().isAdmin)
-              ? FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     PageTransition(
-                    //         alignment: Alignment.bottomCenter,
-                    //         curve: Curves.easeInOut,
-                    //         duration: Duration(milliseconds: 300),
-                    //         reverseDuration: Duration(milliseconds: 300),
-                    //         type: PageTransitionType.bottomToTop,
-                    //         child: CreateClassifield()));
-                  },
-                  child: new Icon(Icons.add),
-                )
-              : null),
-    );
+          floatingActionButton: FutureBuilder(
+              future: getRole,
+              builder: (context, projectSnap) {
+                if (projectSnap.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (projectSnap.connectionState == ConnectionState.done) {
+                  return (projectSnap.data == 'Admin')
+                      ? FloatingActionButton(
+                    backgroundColor: Colors.red,
+                    onPressed: () {
+                      Get.toNamed("/classifiedCreate");
+                    },
+                    child: new Icon(Icons.add),
+                  )
+                      : Container();
+                } else {
+                  return Text("Error ${projectSnap.error}");
+                }
+              }));
+
+  }
+  Future initData() async {
+    return role =
+    await SharedPref().getStringPref(SharedPref().role).then((value) {
+      debugPrint("role: $value");
+
+      return value;
+    });
   }
 }
 
@@ -302,4 +320,6 @@ class _StackedListDelegate extends SliverPersistentHeaderDelegate {
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
   }
+
+
 }

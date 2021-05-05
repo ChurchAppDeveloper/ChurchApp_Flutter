@@ -37,24 +37,8 @@ class _AnnouncementListState extends State<AnnouncementList> {
     isShowAppbar = Get.arguments;
     apiAnnouncement = getAnnouncementAPI();
     getRole = initData();
-    // getAnnouncementAPI().then((value) {
-    //   setState(() {
-    //     menus = value;
-    //     print("object $value");
-    //     _fetching = false;
-    //   });
-    // });
     super.initState();
-    // AnnouncementService().getAnnouncementModel().then((announcemets) {
-    //   setState(() {
-    //     menus = announcemets;
-    //     print("object $announcemets");
-    //     _fetching = false;
-    //   });
-    // });
   }
-
-  // List<Color> colours = [];
 
   @override
   Widget build(BuildContext context) {
@@ -216,8 +200,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
             }
           },
         ),
-        // floatingActionButtonLocation:
-        //     role == 'Admin' ? FloatingActionButtonLocation.endFloat : null,
+
         floatingActionButton: FutureBuilder(
             future: getRole,
             builder: (context, projectSnap) {
@@ -229,16 +212,6 @@ class _AnnouncementListState extends State<AnnouncementList> {
                         backgroundColor: Colors.red,
                         onPressed: () {
                           Get.toNamed("/announcementCreate");
-
-                          // Navigator.push(
-                          //     context,
-                          //     PageTransition(
-                          //         alignment: Alignment.bottomCenter,
-                          //         curve: Curves.easeInOut,
-                          //         duration: Duration(milliseconds: 300),
-                          //         reverseDuration: Duration(milliseconds: 300),
-                          //         type: PageTransitionType.bottomToTop,
-                          //         child: AnnouncementCreation()));
                         },
                         child: new Icon(Icons.add),
                       )

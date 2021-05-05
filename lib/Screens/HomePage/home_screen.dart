@@ -1,6 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:churchapp/Screens/Classifields/ClassiieldList.dart';
+import 'package:churchapp/Screens/Classifields/ClassifiedList.dart';
 import 'package:churchapp/Screens/Confession/Confession.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
@@ -31,7 +31,7 @@ enum HomeMenu {
   prayerrequest,
   donate,
   confession,
-  classifields,
+  classifieds,
   readings,
   ministers,
   school,
@@ -374,12 +374,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         );
 
         break;
-      case HomeMenu.classifields:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ClassiieldList(isShowAppbar: true)),
-        );
+      case HomeMenu.classifieds:
+        Get.toNamed("/classifiedList", arguments: true);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => ClassifiedList(isShowAppbar: true)),
+        // );
 
         break;
       case HomeMenu.readings:

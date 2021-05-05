@@ -10,19 +10,19 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:math' as math;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-class CreateClassifield extends StatefulWidget {
-  CreateClassifield({Key key, this.title}) : super(key: key);
+class ClassifiedCreate extends StatefulWidget {
+  ClassifiedCreate({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _CreateClassifieldState createState() => _CreateClassifieldState();
+  _ClassifiedCreateState createState() => _ClassifiedCreateState();
 }
 
 // class to draw the profile screen
 String codeDialog;
 String valueText;
 
-class _CreateClassifieldState extends State<CreateClassifield> {
+class _ClassifiedCreateState extends State<ClassifiedCreate> {
   var countriesKey = GlobalKey<FindDropdownState>();
   PickedFile imageFile = null;
   String name = "";
