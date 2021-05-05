@@ -432,9 +432,71 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         );
         break;
       case HomeMenu.logout:
-        await SharedPref().setStringPref(SharedPref().token, "");
-        Get.offAndToNamed("/login");
-
+         Get.dialog(
+          AlertDialog(
+              elevation: 6.0,
+              title: Text(
+                logout,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20.0),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    logoutDesc,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18.0),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.red,
+                            onSurface: Colors.grey,
+                          ),
+                          child: Text(
+                            "No",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18.0),
+                          ),
+                          onPressed: () {
+                            Get.back();
+                          },
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                            onPrimary: Colors.white,
+                            onSurface: Colors.grey,
+                          ),
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18.0),
+                          ),
+                          onPressed: () {
+                            SharedPref().setStringPref(SharedPref().token, "");
+                            Get.offAndToNamed("/login");
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+        );
         break;
       default:
     }
@@ -461,8 +523,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (payload != null) {
       debugPrint('notification payload: $payload');
     }
-
   }
+
   void firebaseSetup(FirebaseMessaging _firebaseMessaging) async {
     await FirebaseMessaging.instance.subscribeToTopic('barnabas');
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -481,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       sound: true,
     );
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
     var initializationSettingsAndroid = AndroidInitializationSettings(
         '@mipmap/ic_launcher'); // <- default icon name is @mipmap/ic_launcher
     var initializationSettingsIOS = IOSInitializationSettings(
@@ -505,7 +567,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           showBadge: true);
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
       // RemoteMessage initialMessage =
       //     await FirebaseMessaging.instance.getInitialMessage();
@@ -547,12 +609,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       //       arguments: ChatArguments(initialMessage));*/
       // }
     } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
-      snackBarAlert(error, "Notification Permission is denied", Icon(Icons.error_outline),
-          errorColor, whiteColor);
+      snackBarAlert(error, "Notification Permission is denied",
+          Icon(Icons.error_outline), errorColor, whiteColor);
     }
   }
-
-
 }
 
 class HomeItem {
@@ -588,5 +648,4 @@ class BottomWaveClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-
 }
