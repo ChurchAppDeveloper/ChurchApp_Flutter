@@ -59,15 +59,14 @@ dependencies:
   fab_circular_menu: ^1.0.2
   badges: ^1.2.0
   rxdart: ^0.25.0
-
   find_dropdown: ^1.0.0
+
   dio: ^4.0.0
   image_picker: ^0.7.4
 
   flutter_easyloading: ^3.0.0
   loading: ^1.0.2
   flutter_launcher_name: ^0.0.1
-  mailto: ^2.0.0
   pinch_zoom: ^0.1.0
 
 

@@ -268,14 +268,6 @@ class _StackedListState extends State<StackedList>
             )
             .toList(),
       );
-
-  Future<void> _makePhoneCall(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 }
 
 class StackedListChild extends StatelessWidget {

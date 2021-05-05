@@ -5,10 +5,10 @@ import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mailto/mailto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,7 +22,7 @@ class ContactUSState extends State<ContactUS> {
   var isShowAppbar = true;
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(33.83104, -118.17676),
-    zoom: 16.4746,
+    zoom: 30.4746,
   );
 
   static final CameraPosition _kLake = CameraPosition(
@@ -59,7 +59,11 @@ class ContactUSState extends State<ContactUS> {
         Container(
           child: GoogleMap(
             myLocationEnabled: true,
-            zoomControlsEnabled: true,
+            buildingsEnabled: true,
+            compassEnabled: true,
+            indoorViewEnabled: true,
+            rotateGesturesEnabled: true,
+            zoomGesturesEnabled: true,
             mapType: MapType.normal,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
@@ -89,17 +93,17 @@ class ContactUSState extends State<ContactUS> {
       ]),
       floatingActionButton: FabCircularMenu(
         ringWidth: 100,
-        ringColor: Color.fromARGB(255, 219, 69, 71),
+        ringColor: Colors.redAccent.shade100,
         fabCloseColor: Color.fromARGB(255, 219, 69, 71),
         fabOpenColor: Color.fromARGB(255, 219, 69, 71),
         fabColor: Color.fromARGB(255, 219, 69, 71),
         alignment: Alignment.bottomLeft,
+
         children: [
           IconButton(
-              alignment: Alignment.topLeft,
-              iconSize: 0,
+              iconSize: 30,
               color: Colors.white,
-              icon: Icon(Icons.home),
+              icon:  SvgPicture.asset('image/church_colored.svg',width: 50,height: 50,),
               onPressed: () async {
                 final GoogleMapController controller = await _controller.future;
                 controller
@@ -108,31 +112,23 @@ class ContactUSState extends State<ContactUS> {
           IconButton(
               iconSize: 30,
               color: Colors.white,
-              icon: Icon(Icons.home),
-              onPressed: () async {
-                final GoogleMapController controller = await _controller.future;
-                controller
-                    .animateCamera(CameraUpdate.newCameraPosition(_kLake));
-              }),
-          IconButton(
-              iconSize: 30,
-              color: Colors.white,
-              icon: Icon(Icons.call),
+              icon: SvgPicture.asset('image/phone_call.svg',width: 50,height: 50,),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                launch("tel://" + prefs.getString("phoneNumber"));
+                launch(
+                    'tel:${prefs.getString("phoneNumber").toString()}');
               }),
           IconButton(
               iconSize: 30,
               color: Colors.white,
-              icon: Icon(Icons.email),
+              icon: SvgPicture.asset('image/mail.svg',width: 50,height: 50,),
               onPressed: () async {
                 openMailApp(context);
               }),
           IconButton(
               iconSize: 30,
               color: Colors.white,
-              icon: Icon(Icons.web),
+              icon: SvgPicture.asset('image/web.svg',width: 50,height: 50,),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 var bulletin = WebViewLoad(
@@ -147,7 +143,7 @@ class ContactUSState extends State<ContactUS> {
           IconButton(
               iconSize: 30,
               color: Colors.white,
-              icon: new Image.asset("image/contactusFB.png"),
+              icon:  SvgPicture.asset('image/facebook.svg',width: 50,height: 50,),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 print(prefs.getString("facebookUrl"));
@@ -159,42 +155,39 @@ class ContactUSState extends State<ContactUS> {
                   context,
                   MaterialPageRoute(builder: (context) => bulletin),
                 );
+              }),
+          IconButton(
+              iconSize: 30,
+              color: Colors.white,
+              icon: SvgPicture.asset('image/youtube.svg',width: 50,height: 50,),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                print(prefs.getString("youtubeUrl"));
+                var bulletin = WebViewLoad(
+                    weburl: prefs.getString("youtubeUrl"),
+                    isShowAppbar: true,
+                    pageTitle: "Youtube");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => bulletin),
+                );
               })
         ],
       ),
     );
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-
   Future<void> openMailApp(BuildContext context) async {
-    final mailto = Mailto(
-      to: [
-        'church@stbarnabaslb.org',
-      ],
-      // cc: [
-      //   'percentage%100@example.com',
-      //   'QuestionMark?address@example.com',
-      // ],
-      // bcc: [
-      //   'Mike&family@example.org',
-      // ],
-      subject: 'ST.Barnabas',
-      body: 'Hello this is the Church 🤪💙👍',
+    final Uri _emailLaunchUri = Uri(
+        scheme: 'mailto',
+        path: 'church@stbarnabaslb.org',
+        queryParameters: {
+          'subject': 'ST.Barnabas'
+        }
+
     );
 
-    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 3000);
-    String renderHtml(Mailto mailto) =>
-        '''<html><head><title>mailto example</title></head><body><a href="$mailto">Open mail client</a></body></html>''';
-    await for (HttpRequest request in server) {
-      request.response
-        ..statusCode = HttpStatus.ok
-        ..headers.contentType = ContentType.html
-        ..write(renderHtml(mailto));
-      await request.response.close();
-    }
+    launch(_emailLaunchUri.toString());
+
   }
 }
