@@ -6,6 +6,7 @@ import 'package:churchapp/util/shared_preference.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'dart:math' as math;
@@ -25,6 +26,7 @@ class HexColor extends Color {
 
 class ClassifiedList extends StatefulWidget {
   final bool isShowAppbar;
+
   ClassifiedList({Key key, this.isShowAppbar}) : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class _ClassifiedListState extends State<ClassifiedList> {
   bool _fetching;
   String role;
   Future apiClassified, getRole;
+
   @override
   void initState() {
     _fetching = true;
@@ -54,64 +57,62 @@ class _ClassifiedListState extends State<ClassifiedList> {
     // apiClassified = getClassifiedAPI();
     getRole = initData();
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-          appBar: isShowAppbar
-              ? AppBar(
-                  title: Text("Classifieds"),
-                  backgroundColor: Color.fromARGB(255, 219, 69, 71),
-              leading: IconButton(
-                // iconSize: 50.0,
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Get.back();
-                  // do something
-                },
-              )
-                )
-              : Container(),
-          body: (_fetching)
-              ? Container(
-                  child: Center(
-                    child: Loading(
-                      indicator: BallPulseIndicator(),
-                      size: 100.0,
-                      color: Colors.red,
-                    ),
+    return Scaffold(
+        appBar: isShowAppbar
+            ? AppBar(
+                title: Text("Classifieds"),
+                backgroundColor: Color.fromARGB(255, 219, 69, 71),
+                leading: IconButton(
+                  // iconSize: 50.0,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
                   ),
-                )
-              : stackedlist,
-          floatingActionButton: FutureBuilder(
-              future: getRole,
-              builder: (context, projectSnap) {
-                if (projectSnap.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (projectSnap.connectionState == ConnectionState.done) {
-                  return (projectSnap.data == 'Admin')
-                      ? FloatingActionButton(
-                    backgroundColor: Colors.red,
-                    onPressed: () {
-                      Get.toNamed("/classifiedCreate");
-                    },
-                    child: new Icon(Icons.add),
-                  )
-                      : Container();
-                } else {
-                  return Text("Error ${projectSnap.error}");
-                }
-              }));
-
+                  onPressed: () {
+                    Get.back();
+                    // do something
+                  },
+                ))
+            : Container(),
+        body: (_fetching)
+            ? Container(
+                child: Center(
+                  child: Loading(
+                    indicator: BallPulseIndicator(),
+                    size: 100.0,
+                    color: Colors.red,
+                  ),
+                ),
+              )
+            : stackedlist,
+        floatingActionButton: FutureBuilder(
+            future: getRole,
+            builder: (context, projectSnap) {
+              if (projectSnap.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (projectSnap.connectionState == ConnectionState.done) {
+                return (projectSnap.data == 'Admin')
+                    ? FloatingActionButton(
+                        backgroundColor: Colors.red,
+                        onPressed: () {
+                          Get.toNamed("/classifiedCreate");
+                        },
+                        child: new Icon(Icons.add),
+                      )
+                    : Container();
+              } else {
+                return Text("Error ${projectSnap.error}");
+              }
+            }));
   }
+
   Future initData() async {
     return role =
-    await SharedPref().getStringPref(SharedPref().role).then((value) {
+        await SharedPref().getStringPref(SharedPref().role).then((value) {
       debugPrint("role: $value");
 
       return value;
@@ -121,6 +122,7 @@ class _ClassifiedListState extends State<ClassifiedList> {
 
 class StackedList extends StatefulWidget {
   List<Classifield> classifields;
+
   StackedList({Key key, this.classifields}) : super(key: key);
 
   @override
@@ -130,6 +132,7 @@ class StackedList extends StatefulWidget {
 class _StackedListState extends State<StackedList>
     with TickerProviderStateMixin {
   List<Classifield> classifields;
+
   @override
   void initState() {
     super.initState();
@@ -142,6 +145,7 @@ class _StackedListState extends State<StackedList>
   static const _dynamicheight = 300.0;
   var selectedIndex = 0;
   var random = new math.Random();
+
   @override
   Widget build(BuildContext context) => CustomScrollView(
         slivers: classifields
@@ -187,18 +191,30 @@ class _StackedListState extends State<StackedList>
                     child: Stack(
                       children: [
                         ListTile(
-                          title: Text(classifieldData.name,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25)),
-                          subtitle: Text(
-                            classifieldData.businesstype,
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
+                          title: Text(classifieldData.name.toString(),
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          subtitle:
+                              Text(classifieldData.businesstype.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                    ),
+                                  )),
                           trailing: RichText(
                             text: TextSpan(
                               text: classifieldData.phonenumber.toString(),
                               style: new TextStyle(
-                                  color: Colors.blue, fontSize: 18),
+                                  color: Colors.black, fontSize: 18, fontWeight: FontWeight.w400),
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () {
                                   launch(
@@ -320,6 +336,4 @@ class _StackedListDelegate extends SliverPersistentHeaderDelegate {
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
   }
-
-
 }

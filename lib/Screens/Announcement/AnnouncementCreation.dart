@@ -2,14 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'package:churchapp/api/announcement_api.dart';
 import 'package:churchapp/model_request/annoucement_create_request.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'dart:math' as math;
 
 class AnnouncementCreation extends StatefulWidget {
   final bool isShowAppbar;
@@ -27,6 +26,7 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
   String announcedesc = "";
   File selectedFile;
   final maxLines = 5;
+  PickedFile imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -57,30 +57,37 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                     child: Stack(
+                      alignment: Alignment.topCenter,
                   children: [
-                    Opacity(
-                      opacity: 0.5,
-                      child: ClipPath(
-                          clipper: WaveClipper(),
-                          child: Container(
-                              color: Colors.deepOrangeAccent,
-                              height:
-                                  MediaQuery.of(context).size.height / 3.2)),
-                    ),
                     ClipPath(
-                      clipper: WaveClipper(),
+                        clipper: WaveClipper(),
+                        child: Container(
+                            color: const Color(0xffea5d49),
+                            height:
+                                MediaQuery.of(context).size.height / 3.2)),
+                    GestureDetector(
+                      onTap: () {
+                        _settingModalBottomSheet(context);
+                      },
                       child: Container(
-                          padding: EdgeInsets.only(bottom: 50),
-                          color: Colors.red,
-                          height: MediaQuery.of(context).size.height / 3.4,
-                          alignment: Alignment.center,
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('image/bg1.jpg'),
-                          )),
+                        width: MediaQuery.of(context).size.width / 2.0,
+                        height: MediaQuery.of(context).size.width / 2.0,
+                        margin: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                            image: imageFile == null
+                                ? AssetImage('image/imageplaceholder.png')
+                                : FileImage(File(imageFile.path)),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 )),
@@ -97,13 +104,6 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                         announceTitle = text;
                       }),
                 ),
-                // TextField(
-                //     decoration: InputDecoration(
-                //         hintText: 'Enter a Announcement Description'),
-                //     maxLines: null,
-                //     onChanged: (text) {
-                //       announcedesc = text;
-                //     }),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -120,66 +120,6 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                       ),
                     ),
                   ),
-                ),
-                ElevatedButton(
-                  // color: Colors.red,
-                  // textColor: Colors.white,
-                  child: Text("Browse Attachments",
-                      textAlign: TextAlign.start,
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      )),
-                  onPressed: () async {
-                    FilePickerResult result = await FilePicker.platform
-                        .pickFiles(type: FileType.custom, allowedExtensions: [
-                      // 'pdf',
-                      // 'docx',
-                      // 'doc',
-                      // 'xlsx',
-                      // 'xls',
-                      // 'pptx',
-                      // 'ppt',
-                      // 'txt',
-                      'jpg',
-                      'jpeg',
-                      'png',
-                      // 'm3u',
-                      // 'm4a',
-                      // 'm4b',
-                      // 'm4p',
-                      // 'mp2',
-                      // 'mp3',
-                      // 'mpga',
-                      // 'ogg',
-                      // 'rmvb',
-                      // 'wav',
-                      // 'wma',
-                      // 'wmv',
-                      // '3gp',
-                      // 'asf',
-                      // 'avi',
-                      // 'm4u',
-                      // 'm4v',
-                      // 'mov',
-                      // 'mp4',
-                      // 'mpe',
-                      // 'mpeg',
-                      // 'mpg',
-                      // 'mpg4'
-                    ]);
-
-                    if (result != null) {
-                      setState(() {
-                        selectedFile = File(result.files.single.path);
-                      });
-                    } else {
-                      // User canceled the picker
-                    }
-                  },
                 ),
                 selectedFile != null
                     ? (Padding(
@@ -207,7 +147,59 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
           ),
         ));
   }
+  Future imageSelector(BuildContext context, String pickerType) async {
+    switch (pickerType) {
+      case "gallery":
 
+      /// GALLERY IMAGE PICKER
+        imageFile = (await ImagePicker()
+            .getImage(source: ImageSource.gallery, imageQuality: 90));
+        selectedFile = File(imageFile.path);
+        break;
+
+      case "camera": // CAMERA CAPTURE CODE
+        imageFile = await ImagePicker()
+            .getImage(source: ImageSource.camera, imageQuality: 90);
+         selectedFile = File(imageFile.path);
+        break;
+    }
+
+    if (imageFile != null) {
+      print("You selected  image : " + imageFile.path);
+      setState(() {
+        debugPrint("SELECTED IMAGE PICK   $imageFile");
+      });
+    } else {
+      print("You have not taken image");
+    }
+  }
+
+  // Image picker
+  void _settingModalBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    title: new Text('Gallery'),
+                    onTap: () => {
+                      imageSelector(context, "gallery"),
+                      Get.back()
+                    }),
+                new ListTile(
+                  title: new Text('Camera'),
+                  onTap: () => {
+                    imageSelector(context, "camera"),
+                    Get.back()
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
   onSubmitPressed() async {
     EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 2000)
@@ -261,7 +253,7 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
   }
 }
 
-//Costom CLipper class with Path
+//Custom Clipper class with Path
 class WaveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

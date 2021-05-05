@@ -2,10 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:churchapp/Screens/RestService/ClassifieldService.dart';
+import 'package:churchapp/util/color_constants.dart';
+import 'package:churchapp/util/common_fun.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:math' as math;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -24,33 +29,40 @@ String valueText;
 
 class _ClassifiedCreateState extends State<ClassifiedCreate> {
   var countriesKey = GlobalKey<FindDropdownState>();
-  PickedFile imageFile = null;
+  PickedFile imageFile;
   String name = "";
   String phonenumer = "";
   String businesstype = "";
   TextEditingController _textFieldController = TextEditingController();
-
+  File selectedFile;
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         builder: EasyLoading.init(),
         home: SafeArea(
           child: Scaffold(
             appBar: AppBar(
                 elevation: 0.0,
                 backgroundColor: const Color(0xffea5d49),
+                title: Text('Create Classified'),
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
+                  // iconSize: 50.0,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Get.back();
+                    // do something
                   },
                 ),
                 actions: <Widget>[
                   IconButton(
-                    iconSize: 50.0,
+                    iconSize: 25.0,
                     icon: Icon(Icons.add_business_rounded),
                     onPressed: () {
                       _displayTextInputDialog(context);
@@ -67,84 +79,119 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                   ),
                   painter: HeaderCurvedContainer(),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        'CreateClassifield',
-                        style: TextStyle(
-                          fontSize: 35.0,
-                          letterSpacing: 1.5,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _settingModalBottomSheet(context);
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        height: MediaQuery.of(context).size.width / 2,
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.transparent,
-                          image: DecorationImage(
-                            image: imageFile == null
-                                ? AssetImage('image/imageplaceholder.png')
-                                : FileImage(File(imageFile.path)),
-                            fit: BoxFit.cover,
+                SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _settingModalBottomSheet(context);
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2.0,
+                          height: MediaQuery.of(context).size.width / 2.0,
+                          margin: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Colors.transparent,
+                            image: DecorationImage(
+                              image: imageFile == null
+                                  ? AssetImage('image/imageplaceholder.png')
+                                  : FileImage(File(imageFile.path)),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextField(
-                        decoration: InputDecoration(hintText: 'Enter a Name'),
-                        onChanged: (text) {
-                          name = text;
-                        }),
-                    TextField(
-                        decoration:
-                            InputDecoration(hintText: 'Enter a Phone Number'),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [LengthLimitingTextInputFormatter(10)],
-                        onChanged: (text) {
-                          phonenumer = text;
-                        }),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                            enableSuggestions: true,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(30)
+                            ],
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelText: "Business Name",
+                            ),
+                            onChanged: (text) {
+                              name = text;
+                            }),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: TextFormField(
+                            enableSuggestions: true,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10)
+                            ],
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              labelText: "Phone Number",
+                            ),
+                            onChanged: (text) {
+                              phonenumer = text;
+                            }),
+                      ),
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
 
-                        // dropdown below..
-                        child: FindDropdown<BusinessModel>(
-                          label: "Business Type",
-                          // onFind: (String filter) => getData(filter),
-                          onFind: (String filter) =>
-                              ClassifieldService().getBusinessType(filter),
-                          searchBoxDecoration: InputDecoration(
-                            hintText: "Search",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (BusinessModel data) {
-                            businesstype = data.name;
-                          },
-                        )),
-                    RoundedLoadingButton(
-                      child:
-                          Text('Submit', style: TextStyle(color: Colors.white)),
-                      color: Colors.red,
-                      successColor: Colors.red,
-                      controller: _btnController,
-                      onPressed: onSubmitPressed,
-                    )
-                  ],
+                          // dropdown below..
+                          child: FindDropdown<BusinessModel>(
+                            label: "Business Type",
+                            showSearchBox: true,
+                            labelVisible: true,
+                            selectedItem: BusinessModel(name: ""),
+                            validate: (BusinessModel item) {
+                              if (item.name == "")
+                                return "Required field";
+                              else
+                                return null;
+                            },
+                            onFind: (String filter) =>
+                                ClassifieldService().getBusinessType(filter),
+                            labelStyle: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            searchBoxDecoration: InputDecoration(
+                              labelText: "Search",
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (BusinessModel data) {
+                              businesstype = data.name;
+                            },
+                          )),
+                      selectedFile != null
+                          ? (Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: RoundedLoadingButton(
+                                animateOnTap: true,
+                                child: Text('Submit',
+                                    textAlign: TextAlign.start,
+                                    style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                color: Colors.red,
+                                successColor: Colors.red,
+                                controller: _btnController,
+                                onPressed: onSubmitPressed,
+                              ),
+                            ))
+                          : Container()
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -157,36 +204,70 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Create Business Type'),
-            content: TextField(
+            title: Text("Create Business Type",
+                textAlign: TextAlign.start,
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                )),
+            content: TextFormField(
               onChanged: (value) {
                 setState(() {
                   valueText = value;
                 });
               },
+              enableSuggestions: true,
+              inputFormatters: [LengthLimitingTextInputFormatter(20)],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                labelText: "Business Name",
+              ),
               controller: _textFieldController,
-              decoration: InputDecoration(hintText: "Enter business name"),
             ),
             actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
-                child: Text('CANCEL'),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.red,
+                  onSurface: Colors.grey,
+                ),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18.0),
+                ),
                 onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
+                  Get.back();
                 },
               ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: Text('SUBMIT'),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  onPrimary: Colors.white,
+                  onSurface: Colors.grey,
+                ),
+                child: Text(
+                  "Submit",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18.0),
+                ),
                 onPressed: () {
                   setState(() {
                     codeDialog = valueText;
-                    ClassifieldService().createNewBusiness(valueText);
-                    Navigator.pop(context);
+                    if (_textFieldController.text.toString().isNotEmpty) {
+                      ClassifieldService().createNewBusiness(valueText);
+                      Get.back();
+                    } else {
+                      snackBarAlert(error, invalidBusiness,
+                          Icon(Icons.error_outline), errorColor, whiteColor);
+                    }
                   });
                 },
               ),
@@ -203,11 +284,13 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
         /// GALLERY IMAGE PICKER
         imageFile = (await ImagePicker()
             .getImage(source: ImageSource.gallery, imageQuality: 90));
+        selectedFile = File(imageFile.path);
         break;
 
       case "camera": // CAMERA CAPTURE CODE
         imageFile = await ImagePicker()
             .getImage(source: ImageSource.camera, imageQuality: 90);
+        selectedFile = File(imageFile.path);
         break;
     }
 
@@ -231,16 +314,11 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
               children: <Widget>[
                 new ListTile(
                     title: new Text('Gallery'),
-                    onTap: () => {
-                          imageSelector(context, "gallery"),
-                          Navigator.pop(context),
-                        }),
+                    onTap: () =>
+                        {imageSelector(context, "gallery"), Get.back()}),
                 new ListTile(
                   title: new Text('Camera'),
-                  onTap: () => {
-                    imageSelector(context, "camera"),
-                    Navigator.pop(context)
-                  },
+                  onTap: () => {imageSelector(context, "camera"), Get.back()},
                 ),
               ],
             ),
@@ -249,9 +327,9 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
   }
 
   onSubmitPressed() async {
-    await EasyLoading.instance
+    EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 2000)
-      ..indicatorType = EasyLoadingIndicatorType.pouringHourGlass
+      ..indicatorType = EasyLoadingIndicatorType.wanderingCubes
       ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorSize = 45.0
       ..radius = 10.0
