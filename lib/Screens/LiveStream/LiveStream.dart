@@ -3,10 +3,14 @@ import 'dart:ffi';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LiveStream extends StatefulWidget {
   final bool isShowAppbar;
+
   const LiveStream({Key key, this.isShowAppbar}) : super(key: key);
 
   @override
@@ -18,9 +22,8 @@ class _LiveStreamState extends State<LiveStream> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    isShowAppbar = Get.arguments;
     super.initState();
-    isShowAppbar = widget.isShowAppbar;
   }
 
   @override
@@ -32,13 +35,16 @@ class _LiveStreamState extends State<LiveStream> {
               backgroundColor: Color.fromARGB(255, 219, 69, 71),
               leading: IconButton(
                 // iconSize: 50.0,
-                icon: Icon(Icons.arrow_back_ios),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Get.back();
                   // do something
                 },
               ))
-          : null,
+          : Container(),
       body: Container(
         child: Stack(
           children: <Widget>[
@@ -54,90 +60,77 @@ class CustomBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // double listheight = (45 * songs.length).toDouble();
-    return Stack(children: <Widget>[
-      Positioned(
-          left: 70,
-          bottom: 125,
-          child: ScaleAnimatedTextKit(
-            repeatForever: true,
-            onTap: () {
-              print("Tap Event");
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Column(
+        children: <Widget>[
+          CustomHeader(),
+          TextButton(
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              var wepage = WebViewLoad(
+                  weburl: prefs.getString('facebookUrl'),
+                  isShowAppbar: true,
+                  pageTitle: "Live Streaming");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => wepage),
+              );
             },
-            text: ["LIVE STREAMING"],
-            textStyle: TextStyle(
-                fontSize: 30.0, fontFamily: "Canterbury", color: Colors.red),
-            textAlign: TextAlign.start,
-          )),
-      SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            CustomHeader(),
-            FlatButton(
-              onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                var wepage = WebViewLoad(
-                    weburl: prefs.getString('facebookUrl'),
-                    isShowAppbar: true,
-                    pageTitle: "LIVE STREAMING");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => wepage),
-                );
-              },
-              padding: EdgeInsets.all(0.0),
-              child: Image.asset('image/FFacebook.png'),
+            child: Row(
+              children: [
+                SvgPicture.asset('image/facebook.svg',width: 70,height: 70,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Watch in Facebook",
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      )),
+                ),
+                Spacer(),
+              ],
             ),
-            FlatButton(
-              onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                debugPrint("LiveStream: ${prefs.getString('youtubeUrl')}");
-                var wepage = WebViewLoad(
-                    weburl: prefs.getString('youtubeUrl'),
-                    isShowAppbar: true,
-                    pageTitle: "LIVE STREAMING");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => wepage),
-                );
-              },
-              padding: EdgeInsets.all(0.0),
-              child: Image.asset('image/Youtube.png'),
+          ),
+          TextButton(
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              debugPrint("LiveStream: ${prefs.getString('youtubeUrl')}");
+              var wepage = WebViewLoad(
+                  weburl: prefs.getString('youtubeUrl'),
+                  isShowAppbar: true,
+                  pageTitle: "Live Streaming in Youtube");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => wepage),
+              );
+            },
+            child: Row(
+              children: [
+                Spacer(),
+                SvgPicture.asset('image/youtube.svg',width: 70,height: 70,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Watch in Youtube",
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      )),
+                ),
+              ],
             ),
-            // IconButton(
-            //   color: Colors.red,
-            //   icon: Image.asset('image/FFacebook.png'),
-            //   iconSize: 150,
-            //   onPressed: () async {
-            //     SharedPreferences prefs = await SharedPreferences.getInstance();
-            //     var wepage = WebViewLoad(
-            //         weburl: prefs.getString('facebookUrl'),
-            //         isShowAppbar: true,
-            //         pageTitle: "LIVE STREAMING");
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => wepage),
-            //     );
-            //   },
-            // ),
-            // IconButton(
-            //   icon: Image.asset('image/Youtube.png'),
-            //   iconSize: 150,
-            //   onPressed: () async {
-            //     SharedPreferences prefs = await SharedPreferences.getInstance();
-            //     var wepage = WebViewLoad(
-            //         weburl: prefs.getString('youtubeUrl'),
-            //         isShowAppbar: true,
-            //         pageTitle: "LIVE STREAMING");
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => wepage),
-            //     );
-            //   },
-            // )
-          ],
-        ),
-      )
-    ]);
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -148,17 +141,17 @@ class CustomHeader extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: <Widget>[
         HeaderBackground(),
-        Container(
-          width: 100,
-          height: 100,
-          margin: EdgeInsets.only(top: 300),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            image:
-                DecorationImage(image: AssetImage('image/livestreaming.png')),
-            borderRadius: BorderRadius.circular(35),
-          ),
-        ),
+        // Container(
+        //   width: 100,
+        //   height: 100,
+        //   margin: EdgeInsets.only(top: 300),
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     image:
+        //         DecorationImage(image: AssetImage('image/livestreaming.png')),
+        //     borderRadius: BorderRadius.circular(35),
+        //   ),
+        // ),
       ],
     );
   }
@@ -184,15 +177,14 @@ class HeaderBackground extends StatelessWidget {
         ClipPath(
           clipper: HeaderClipper(),
           child: Container(
-            margin: EdgeInsets.only(top: 5),
-            height: 450,
+            height: MediaQuery.of(context).size.height/3,
             color: Colors.white,
           ),
         ),
         ClipPath(
           clipper: HeaderClipper(),
           child: Container(
-            height: 450,
+            height: MediaQuery.of(context).size.height/2,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage('image/bg2.jpg'), fit: BoxFit.cover),

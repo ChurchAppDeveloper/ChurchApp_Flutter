@@ -8,7 +8,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  SimpleHiddenDrawerController controller;
+  // SimpleHiddenDrawerController controller;
 
   List<MenuItem> menus = <MenuItem>[
     MenuItem("Home", Image.asset('image/h_home.png')),
@@ -30,7 +30,7 @@ class _MenuState extends State<Menu> {
 
   @override
   void didChangeDependencies() {
-    controller = SimpleHiddenDrawerController.of(context);
+    // controller = SimpleHiddenDrawerController.of(context);
     super.didChangeDependencies();
   }
 
@@ -77,7 +77,7 @@ class _MenuState extends State<Menu> {
                         ),
                       )),
                   onTap: () {
-                    controller.setSelectedMenuPosition(index);
+                    // controller.setSelectedMenuPosition(index);
                   })),
         ),
       ],

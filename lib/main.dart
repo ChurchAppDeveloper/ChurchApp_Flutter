@@ -5,6 +5,7 @@ import 'package:churchapp/Screens/Announcement/AnnouncementList.dart';
 import 'package:churchapp/Screens/ContactUS/Contactus.dart';
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
+import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/LoginPage/otp_screen.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -76,6 +77,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/announcementList', page: () => AnnouncementList()),
         GetPage(name: '/announcementCreate', page: () => AnnouncementCreation()),
         GetPage(name: '/contact', page: () => ContactUS()),
+        GetPage(name: '/liveStream', page: () => LiveStream()),
       ],
     );
   }

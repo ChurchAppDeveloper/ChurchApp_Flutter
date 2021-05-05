@@ -3,11 +3,9 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:churchapp/Screens/Classifields/ClassiieldList.dart';
 import 'package:churchapp/Screens/Confession/Confession.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
-import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
 import 'package:churchapp/Screens/RestService/BannerService.dart';
-import 'package:churchapp/Screens/RestService/ProfileService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:churchapp/api/announcement_api.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
@@ -24,8 +22,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 enum HomeMenu {
   parishannouncement,
@@ -274,11 +270,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         // );
         break;
       case HomeMenu.livestream:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LiveStream(isShowAppbar: true)),
-        );
+        Get.toNamed("/liveStream", arguments: true);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => LiveStream(isShowAppbar: true)),
+        // );
         // Navigator.push(
         //     context,
         //     PageTransition(
@@ -291,7 +288,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         //         childCurrent: this));
         break;
       case HomeMenu.bulletin:
-        print("asdasdad: " + prefs.getString('bulletinUrl'));
         var bulletin = WebViewLoad(
             weburl: prefs.getString('bulletinUrl'),
             isShowAppbar: true,
