@@ -31,6 +31,7 @@ dependencies:
   pin_code_fields: ^7.0.0
   get: ^4.1.4
   country_pickers: ^2.0.0
+  country_list_pick: ^1.0.1+4
   hidden_drawer_menu: ^2.0.1
   url_launcher: ^6.0.3
   webview_flutter: ^2.0.4

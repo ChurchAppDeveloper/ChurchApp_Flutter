@@ -3,9 +3,7 @@ import 'package:churchapp/model_request/login_request.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/string_constants.dart';
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_picker_dropdown.dart';
-import 'package:country_pickers/country_pickers.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _contactEditingController;
   String _dialCode = "1";
 
+
   @override
   void initState() {
     _contactEditingController = TextEditingController();
@@ -46,20 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
   //build method for UI Representation
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    Widget _buildDropdownItem(Country country) => Container(
-          child: Row(
-            children: <Widget>[
-              CountryPickerUtils.getDefaultFlagImage(country),
-              SizedBox(
-                width: 8.0,
-              ),
-              Text("+${country.phoneCode}(${country.isoCode})"),
-            ],
-          ),
-        );
+    final screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -79,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Container(
                       margin:
-                          EdgeInsets.only(left: 20.0, bottom: 20.0, top: 30.0),
+                      EdgeInsets.only(left: 20.0, bottom: 20.0, top: 30.0),
                       height: 300,
                       alignment: Alignment.topCenter,
                       child: Image.asset("image/churchLogo.png"),
@@ -103,7 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   physics: BouncingScrollPhysics(),
                   child: Padding(
                     padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                        bottom: MediaQuery
+                            .of(context)
+                            .viewInsets
+                            .bottom),
                     child: Container(
                       color: Colors.transparent,
                       child: Column(
@@ -112,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal:
-                                    screenWidth > 600 ? screenWidth * 0.2 : 16),
+                                screenWidth > 600 ? screenWidth * 0.2 : 16),
                             padding: const EdgeInsets.all(16.0),
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -144,17 +140,81 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Row(
                                     // ignore: prefer_const_literals_to_create_immutables
                                     children: [
-                                      CountryPickerDropdown(
-                                        initialValue: 'US',
-                                        itemBuilder: _buildDropdownItem,
-                                        sortComparator:
-                                            (Country a, Country b) =>
-                                                a.isoCode.compareTo(b.isoCode),
-                                        onValuePicked: (Country country) {
-                                          print("Country ${country.phoneCode}");
-                                          _dialCode = country.phoneCode;
-                                        },
-                                      ),
+                                      CountryListPick(
+                                          appBar: AppBar(
+                                            backgroundColor: Colors.red,
+                                            title: Text('Pick your country'),
+                                          ),
+                                          pickerBuilder: (context,
+                                              CountryCode countryCode) {
+                                            return Row(
+                                              children: [
+                                                Image.asset(
+                                                  countryCode.flagUri,
+                                                  package: 'country_list_pick',
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                  const EdgeInsets.all(8.0),
+                                                  child: Text(countryCode.code),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                  const EdgeInsets.only(
+                                                      top: 8.0,
+                                                      right: 8.0,
+                                                      bottom: 8.0),
+                                                  child: Text(
+                                                      countryCode.dialCode),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                          // To disable option set to false
+                                          theme: CountryTheme(
+                                            isShowFlag: true,
+                                            isShowCode: true,
+                                            isShowTitle: false,
+                                            isDownIcon: true,
+                                            alphabetSelectedBackgroundColor: Colors.red,
+                                            showEnglishName: true,
+                                          ),
+                                          // Set default value
+                                          initialSelection: 'US',
+                                          // or
+                                          // initialSelection: 'US'
+                                          onChanged: (CountryCode code) {
+                                            print(code.name);
+                                            print(code.code);
+                                            print(code.dialCode);
+                                            print(code.flagUri);
+
+                                            _dialCode = code.dialCode.substring(1);
+                                          },
+                                          // Whether to allow the widget to set a custom UI overlay
+                                          useUiOverlay: true,
+                                          // Whether the country list should be wrapped in a SafeArea
+                                          useSafeArea: true),
+                                      // ListTile(
+                                      //   onTap: _openCountryDialog,
+                                      //   title:
+                                      // ),
+                                      // CountryPickerDialog(
+                                      //   isSearchable: true,
+                                      //   // initialValue: 'US',
+                                      //   titlePadding: EdgeInsets.all(8.0),
+                                      //   searchCursorColor: Colors.pinkAccent,
+                                      //   searchInputDecoration: InputDecoration(hintText: 'Search...'),
+                                      //   itemBuilder: _buildDropdownItem,
+                                      //   title: Text('Select your phone code'),
+                                      //   sortComparator:
+                                      //       (Country a, Country b) =>
+                                      //           a.isoCode.compareTo(b.isoCode),
+                                      //   onValuePicked: (Country country) {
+                                      //     print("Country ${country.phoneCode}");
+                                      //     _dialCode = country.phoneCode;
+                                      //   },
+                                      // ),
                                       Expanded(
                                         child: TextField(
                                           decoration: const InputDecoration(
@@ -164,8 +224,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             enabledBorder: InputBorder.none,
                                             focusedBorder: InputBorder.none,
                                             contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 13.5),
+                                            EdgeInsets.symmetric(
+                                                vertical: 13.5),
                                           ),
                                           controller: _contactEditingController,
                                           keyboardType: TextInputType.phone,
@@ -186,10 +246,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     if (_contactEditingController
                                         .text.isNotEmpty) {
                                       debugPrint(
-                                          "Dial Code $_dialCode${_contactEditingController.text}");
+                                          "Dial Code $_dialCode${_contactEditingController
+                                              .text}");
                                       loginAPI(LoginRequest(
                                           contactNumber:
-                                              "$_dialCode${_contactEditingController.text.toString()}"));
+                                          "$_dialCode${_contactEditingController
+                                              .text.toString()}"));
                                     } else {
                                       snackBarAlert(
                                           error,

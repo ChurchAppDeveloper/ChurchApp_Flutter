@@ -10,7 +10,6 @@ import 'package:churchapp/Screens/RestService/BannerService.dart';
 import 'package:churchapp/Screens/RestService/ProfileService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:churchapp/api/announcement_api.dart';
-import 'package:churchapp/api/notification_api.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
@@ -82,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     firebaseSetup(_firebaseMessaging);
     _firebaseMessaging.getToken().then((String token) {
       print("token $token");
-      sendTokenToServer(token);
     });
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 5000));
