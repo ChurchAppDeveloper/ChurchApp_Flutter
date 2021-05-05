@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hidden_drawer_menu/controllers/simple_hidden_drawer_controller.dart';
 
 class Menu extends StatefulWidget {
   @override

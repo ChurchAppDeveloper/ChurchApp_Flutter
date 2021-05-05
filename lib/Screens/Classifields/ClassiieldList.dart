@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'dart:math' as math;
-import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HexColor extends Color {
@@ -85,15 +84,15 @@ class _ClassiieldListState extends State<ClassiieldList> {
               ? FloatingActionButton(
                   backgroundColor: Colors.red,
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            alignment: Alignment.bottomCenter,
-                            curve: Curves.easeInOut,
-                            duration: Duration(milliseconds: 300),
-                            reverseDuration: Duration(milliseconds: 300),
-                            type: PageTransitionType.bottomToTop,
-                            child: CreateClassifield()));
+                    // Navigator.push(
+                    //     context,
+                    //     PageTransition(
+                    //         alignment: Alignment.bottomCenter,
+                    //         curve: Curves.easeInOut,
+                    //         duration: Duration(milliseconds: 300),
+                    //         reverseDuration: Duration(milliseconds: 300),
+                    //         type: PageTransitionType.bottomToTop,
+                    //         child: CreateClassifield()));
                   },
                   child: new Icon(Icons.add),
                 )
@@ -205,18 +204,18 @@ class _StackedListState extends State<StackedList>
                             width: 200.0,
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        alignment: Alignment.bottomCenter,
-                                        curve: Curves.easeInOut,
-                                        duration: Duration(milliseconds: 300),
-                                        reverseDuration:
-                                            Duration(milliseconds: 300),
-                                        type: PageTransitionType.bottomToTop,
-                                        child: ImageZoomView(
-                                            imageurl:
-                                                classifieldData.imageName)));
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         alignment: Alignment.bottomCenter,
+                                //         curve: Curves.easeInOut,
+                                //         duration: Duration(milliseconds: 300),
+                                //         reverseDuration:
+                                //             Duration(milliseconds: 300),
+                                //         type: PageTransitionType.bottomToTop,
+                                //         child: ImageZoomView(
+                                //             imageurl:
+                                //                 classifieldData.imageName)));
                               },
                               child: Image(
                                 image: NetworkImage(classifieldData.imageName),

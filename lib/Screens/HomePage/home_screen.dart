@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         autoplay: true,
                         animationCurve: Curves.decelerate,
                         animationDuration: Duration(milliseconds: 500),
-                        dotSize: 6.0,
+                        dotSize: 4.0,
                         dotIncreasedColor: Colors.green,
                         dotBgColor: Colors.transparent,
                         dotPosition: DotPosition.topRight,
@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   textAlign: TextAlign.start,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
-                      fontSize: 24,
+                      fontSize: 25,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -190,6 +190,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             childAspectRatio: 1.0,
             padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 0),
             crossAxisCount: columnCount,
+            physics: BouncingScrollPhysics(),
             children: List.generate(
               homelist.length,
               (int index) {
@@ -197,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 return AnimationConfiguration.staggeredGrid(
                   columnCount: columnCount,
                   position: index,
-                  duration: const Duration(milliseconds: 750),
+                  duration: const Duration(milliseconds: 400),
                   child: ScaleAnimation(
                     scale: 0.5,
                     child: FadeInAnimation(
