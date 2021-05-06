@@ -7,16 +7,18 @@
  */
 class LoginRequest {
   String contactNumber;
-
-  LoginRequest({this.contactNumber});
+  String role;
+  LoginRequest({this.contactNumber,this.role});
 
   LoginRequest.fromJson(Map<String, dynamic> json) {
     contactNumber = json['contactNumber'];
+    role = json['role'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['contactNumber'] = this.contactNumber;
+    data['role'] = this.role;
     return data;
   }
 }

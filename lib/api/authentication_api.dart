@@ -28,7 +28,11 @@ void loginAPI(LoginRequest loginRequest) async {
     debugPrint("login_response: ${response.body}");
     if (data.success) {
       debugPrint("content:${data.content}");
-      Get.toNamed("/otp", arguments: loginRequest.contactNumber);
+      if(loginRequest.role=="Admin"){
+        Get.toNamed("/otp", arguments: loginRequest.contactNumber);
+      }else{
+        Get.offAllNamed("/home");
+      }
     } else {
       snackBarAlert(warning, data.message.toString(),
           Icon(Icons.warning_amber_outlined), warningColor, blackColor);
@@ -72,7 +76,7 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
 
 void profileAPI() async {
   // await SharedPref().setStringPref(SharedPref().token, "ab7e95c9-20a5-4922-8482-9a310230539c");
-  await SharedPref().setStringPref(SharedPref().token, "784e37cb-78f6-4a1d-bf07-aee955781157");
+  // await SharedPref().setStringPref(SharedPref().token, "784e37cb-78f6-4a1d-bf07-aee955781157");
   String token = await SharedPref().getStringPref(SharedPref().token);
 
   String url = "$baseUrl/myprofile";
