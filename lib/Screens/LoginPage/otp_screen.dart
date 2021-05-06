@@ -49,7 +49,7 @@ class _OtpScreenState extends State<OtpScreen> {
     return SafeArea(
       maintainBottomViewPadding: true,
       child: Scaffold(
-          backgroundColor: Colors.red,
+          backgroundColor: Color.fromARGB(255, 219, 69, 71),
           resizeToAvoidBottomInset: false,
           body: Stack(children: <Widget>[
             Padding(

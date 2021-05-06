@@ -70,7 +70,7 @@ class CustomBody extends StatelessWidget {
               var wepage = WebViewLoad(
                   weburl: prefs.getString('facebookUrl'),
                   isShowAppbar: true,
-                  pageTitle: "Live Streaming");
+                  pageTitle: "Live Streaming in Facebook");
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => wepage),
@@ -98,7 +98,6 @@ class CustomBody extends StatelessWidget {
           TextButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              debugPrint("LiveStream: ${prefs.getString('youtubeUrl')}");
               var wepage = WebViewLoad(
                   weburl: prefs.getString('youtubeUrl'),
                   isShowAppbar: true,
@@ -140,17 +139,6 @@ class CustomHeader extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: <Widget>[
         HeaderBackground(),
-        // Container(
-        //   width: 100,
-        //   height: 100,
-        //   margin: EdgeInsets.only(top: 300),
-        //   decoration: BoxDecoration(
-        //     color: Colors.white,
-        //     image:
-        //         DecorationImage(image: AssetImage('image/livestreaming.png')),
-        //     borderRadius: BorderRadius.circular(35),
-        //   ),
-        // ),
       ],
     );
   }

@@ -264,36 +264,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     switch (homemenu) {
       case HomeMenu.parishannouncement:
         Get.toNamed("/announcementList", arguments: true);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => AnnouncementList(isShowAppbar: true)),
-        // );
-        // Navigator.of(context).push(
-        //   CubePageRoute(
-        //     enterPage: AnnouncemetList(isShowAppbar: true),
-        //     exitPage: this.,
-        //     duration: const Duration(milliseconds: 900),
-        //   ),
-        // );
         break;
       case HomeMenu.livestream:
         Get.toNamed("/liveStream", arguments: true);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => LiveStream(isShowAppbar: true)),
-        // );
-        // Navigator.push(
-        //     context,
-        //     PageTransition(
-        //         alignment: Alignment.bottomCenter,
-        //         curve: Curves.easeInOut,
-        //         duration: Duration(milliseconds: 600),
-        //         reverseDuration: Duration(milliseconds: 600),
-        //         type: PageTransitionType.rightToLeftJoined,
-        //         child: LiveStream(isShowAppbar: true),
-        //         childCurrent: this));
         break;
       case HomeMenu.bulletin:
         var bulletin = WebViewLoad(
@@ -304,16 +277,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           context,
           MaterialPageRoute(builder: (context) => bulletin),
         );
-        // Navigator.push(
-        //     context,
-        //     PageTransition(
-        //         alignment: Alignment.bottomCenter,
-        //         curve: Curves.easeInOut,
-        //         duration: Duration(milliseconds: 600),
-        //         reverseDuration: Duration(milliseconds: 600),
-        //         type: PageTransitionType.rightToLeftJoined,
-        //         child: bulletin,
-        //         childCurrent: this));
         break;
       case HomeMenu.masstiming:
         Navigator.push(
@@ -321,37 +284,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           MaterialPageRoute(
               builder: (context) => MassTiming(isShowAppbar: true)),
         );
-        // Navigator.push(
-        //     context,
-        //     PageTransition(
-        //         alignment: Alignment.bottomCenter,
-        //         curve: Curves.easeInOut,
-        //         duration: Duration(milliseconds: 600),
-        //         reverseDuration: Duration(milliseconds: 600),
-        //         type: PageTransitionType.rightToLeftJoined,
-        //         child: MassTiming(isShowAppbar: true),
-        //         childCurrent: this));
         break;
       case HomeMenu.prayerrequest:
-        // var bulletin = WebViewLoad(
-        //     weburl: prefs.getString('prayerRequestUtl'),
-        //     isShowAppbar: true,
-        //     pageTitle: "PRAYER REQUEST");
-        var prayerRequest = PrayerRequest(isShowAppbar: true);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => prayerRequest),
-        );
-        // Navigator.push(
-        //     context,
-        //     PageTransition(
-        //         alignment: Alignment.bottomCenter,
-        //         curve: Curves.easeInOut,
-        //         duration: Duration(milliseconds: 600),
-        //         reverseDuration: Duration(milliseconds: 600),
-        //         type: PageTransitionType.rightToLeftJoined,
-        //         child: bulletin,
-        //         childCurrent: this));
+        Get.toNamed("/prayerRequest", arguments: true);
         break;
       case HomeMenu.donate:
         var bulletin = WebViewLoad(
@@ -362,16 +297,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           context,
           MaterialPageRoute(builder: (context) => bulletin),
         );
-        // Navigator.push(
-        //     context,
-        //     PageTransition(
-        //         alignment: Alignment.bottomCenter,
-        //         curve: Curves.easeInOut,
-        //         duration: Duration(milliseconds: 600),
-        //         reverseDuration: Duration(milliseconds: 600),
-        //         type: PageTransitionType.rightToLeftJoined,
-        //         child: bulletin,
-        //         childCurrent: this));
         break;
       case HomeMenu.confession:
         Navigator.push(
@@ -383,12 +308,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         break;
       case HomeMenu.classifieds:
         Get.toNamed("/classifiedList", arguments: true);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => ClassifiedList(isShowAppbar: true)),
-        // );
-
         break;
       case HomeMenu.readings:
         var bulletin = WebViewLoad(

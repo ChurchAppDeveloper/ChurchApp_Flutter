@@ -9,6 +9,7 @@ import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
 import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/LoginPage/otp_screen.dart';
+import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -80,6 +81,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/announcementCreate', page: () => AnnouncementCreation()),
         GetPage(name: '/contact', page: () => ContactUS()),
         GetPage(name: '/liveStream', page: () => LiveStream()),
+        GetPage(name: '/prayerRequest', page: () => PrayerRequest()),
         GetPage(name: '/classifiedList', page: () => ClassifiedList()),
         GetPage(name: '/classifiedCreate', page: () => ClassifiedCreate()),
       ],

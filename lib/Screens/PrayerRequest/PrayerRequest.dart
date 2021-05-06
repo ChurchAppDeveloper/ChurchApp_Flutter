@@ -1,11 +1,14 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrayerRequest extends StatefulWidget {
   final bool isShowAppbar;
+
   const PrayerRequest({Key key, this.isShowAppbar}) : super(key: key);
 
   @override
@@ -17,9 +20,8 @@ class _PrayerRequestState extends State<PrayerRequest> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    isShowAppbar = Get.arguments;
     super.initState();
-    isShowAppbar = widget.isShowAppbar;
   }
 
   @override
@@ -27,17 +29,20 @@ class _PrayerRequestState extends State<PrayerRequest> {
     return Scaffold(
       appBar: isShowAppbar
           ? AppBar(
-              title: Text("PRAYER REQUEST"),
+              title: Text("Prayer Request"),
               backgroundColor: Color.fromARGB(255, 219, 69, 71),
               leading: IconButton(
                 // iconSize: 50.0,
-                icon: Icon(Icons.arrow_back_ios),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Get.back();
                   // do something
                 },
               ))
-          : null,
+          : Container(),
       body: Container(
         child: Stack(
           children: <Widget>[
@@ -53,93 +58,84 @@ class CustomBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // double listheight = (45 * songs.length).toDouble();
-    return Stack(children: <Widget>[
-      Positioned(
-        left: 70,
-        right: 70,
-        bottom: 150,
-        child: ScaleAnimatedTextKit(
-            repeatForever: true,
-            onTap: () {
-              print("Tap Event");
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Column(
+        children: <Widget>[
+          CustomHeader(),
+          TextButton(
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              var wepage = WebViewLoad(
+                  weburl: prefs.getString('prayerRequestUtl'),
+                  isShowAppbar: true,
+                  pageTitle: "Prayer Request");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => wepage),
+              );
             },
-            text: ["PRAYER REQUEST"],
-            textStyle: GoogleFonts.lato(
-              textStyle: TextStyle(
-                  fontSize: 22, color: Colors.red, fontWeight: FontWeight.w600),
-            )),
-      ),
-      SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            CustomHeader(),
-            TextButton(
-              onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                var wepage = WebViewLoad(
-                    weburl: prefs.getString('prayerRequestUtl'),
-                    isShowAppbar: true,
-                    pageTitle: "PRAYER REQUEST");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => wepage),
-                );
-              },
-              child: Image.asset('image/prayerlist.png'),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  'image/prayer.svg',
+                  width: 70,
+                  height: 70,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Prayer List",
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      )),
+                ),
+                Spacer(),
+              ],
             ),
-            // IconButton(
-            //   //PrayerList
-            //   color: Colors.red,
-            //   icon: Image.asset('image/prayerlist.png'),
-            //   iconSize: 150,
-            //   onPressed: () async {
-            //     SharedPreferences prefs = await SharedPreferences.getInstance();
-            //     var wepage = WebViewLoad(
-            //         weburl: prefs.getString('prayerRequestUtl'),
-            //         isShowAppbar: true,
-            //         pageTitle: "PRAYER REQUEST");
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => wepage),
-            //     );
-            //   },
-            // ),
-            // IconButton(
-            //   //MassIntention
-            //   icon: Image.asset('image/massintention.png'),
-            //   iconSize: 150,
-            //   onPressed: () async {
-            //     SharedPreferences prefs = await SharedPreferences.getInstance();
-            //     var wepage = WebViewLoad(
-            //         weburl: prefs.getString('masstimingintention'),
-            //         isShowAppbar: true,
-            //         pageTitle: "PRAYER REQUEST");
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => wepage),
-            //     );
-            //   },
-            // ),
-            TextButton(
-              onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                var wepage = WebViewLoad(
-                    weburl: prefs.getString('masstimingintention'),
-                    isShowAppbar: true,
-                    pageTitle: "PRAYER REQUEST");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => wepage),
-                );
-              },
-              child: Image.asset(
-                'image/massintention.png',
-              ),
-            )
-          ],
-        ),
+          ),
+          TextButton(
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              var wepage = WebViewLoad(
+                  weburl: prefs.getString('masstimingintention'),
+                  isShowAppbar: true,
+                  pageTitle: "Mass Intention");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => wepage),
+              );
+            },
+            child: Row(
+              children: [
+                Spacer(),
+                SvgPicture.asset(
+                  'image/bibles.svg',
+                  width: 70,
+                  height: 70,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Mass Intention",
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      )),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-    ]);
+    );
   }
 }
 
@@ -150,17 +146,6 @@ class CustomHeader extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: <Widget>[
         HeaderBackground(),
-        Container(
-          width: 100,
-          height: 100,
-          margin: EdgeInsets.only(top: 300),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            image:
-                DecorationImage(image: AssetImage('image/prayerrequest.png')),
-            borderRadius: BorderRadius.circular(35),
-          ),
-        ),
       ],
     );
   }
@@ -186,15 +171,14 @@ class HeaderBackground extends StatelessWidget {
         ClipPath(
           clipper: HeaderClipper(),
           child: Container(
-            margin: EdgeInsets.only(top: 5),
-            height: 450,
+            height: MediaQuery.of(context).size.height / 3,
             color: Colors.white,
           ),
         ),
         ClipPath(
           clipper: HeaderClipper(),
           child: Container(
-            height: 450,
+            height: MediaQuery.of(context).size.height / 2,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage('image/bg2.jpg'), fit: BoxFit.cover),
