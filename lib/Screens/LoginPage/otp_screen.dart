@@ -6,10 +6,10 @@ import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
 
 class OtpScreen extends StatefulWidget {
   @override
@@ -49,13 +49,18 @@ class _OtpScreenState extends State<OtpScreen> {
     return SafeArea(
       maintainBottomViewPadding: true,
       child: Scaffold(
+          backgroundColor: Colors.red,
           resizeToAvoidBottomInset: false,
           body: Stack(children: <Widget>[
-            new Container(
-              decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                      image: new AssetImage("image/Loginbg.png"),
-                      fit: BoxFit.fill)),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                  child: SvgPicture.asset(
+                'image/church_colored.svg',
+                width: MediaQuery.of(context).size.width/2,
+                height: MediaQuery.of(context).size.height/2.5,
+              )),
             ),
             SingleChildScrollView(
               reverse: true,
@@ -79,7 +84,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             textStyle: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           )),
                       Padding(

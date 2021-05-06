@@ -7,6 +7,7 @@ import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Singleton {
@@ -73,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       margin:
                       EdgeInsets.only(left: 20.0, bottom: 20.0, top: 30.0),
-                      height: 300,
+                      height: MediaQuery.of(context).size.height/2.5,
                       alignment: Alignment.topCenter,
                       child: Image.asset("image/churchLogo.png"),
                     ),
@@ -104,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.transparent,
                       child: Column(
                         children: [
-                          SizedBox(height: screenHeight * 0.7),
+                          SizedBox(height: screenHeight * 0.6),
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal:
@@ -195,26 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           useUiOverlay: true,
                                           // Whether the country list should be wrapped in a SafeArea
                                           useSafeArea: true),
-                                      // ListTile(
-                                      //   onTap: _openCountryDialog,
-                                      //   title:
-                                      // ),
-                                      // CountryPickerDialog(
-                                      //   isSearchable: true,
-                                      //   // initialValue: 'US',
-                                      //   titlePadding: EdgeInsets.all(8.0),
-                                      //   searchCursorColor: Colors.pinkAccent,
-                                      //   searchInputDecoration: InputDecoration(hintText: 'Search...'),
-                                      //   itemBuilder: _buildDropdownItem,
-                                      //   title: Text('Select your phone code'),
-                                      //   sortComparator:
-                                      //       (Country a, Country b) =>
-                                      //           a.isoCode.compareTo(b.isoCode),
-                                      //   onValuePicked: (Country country) {
-                                      //     print("Country ${country.phoneCode}");
-                                      //     _dialCode = country.phoneCode;
-                                      //   },
-                                      // ),
+
                                       Expanded(
                                         child: TextField(
                                           decoration: const InputDecoration(
@@ -280,7 +262,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                // CustomButton(clickOnLogin),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      Get.offAllNamed("/home");
+                                    });
+                                  },
+                                  child: Text(
+                                    "Login as a Supporter",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                )
                               ],
                             ),
                           )
