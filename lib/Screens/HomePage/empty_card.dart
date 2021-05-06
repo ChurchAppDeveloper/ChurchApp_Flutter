@@ -1,6 +1,7 @@
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmptyCard extends StatelessWidget {
   final double width;
@@ -32,28 +33,31 @@ class EmptyCard extends StatelessWidget {
           Container(
               alignment: Alignment.bottomCenter,
               margin: const EdgeInsets.only(bottom: 20.0),
-              child: Text(
-                title.toUpperCase(),
-                style: TextStyle(
-                    color: Colors.black,
+              child: Text(title.toUpperCase(),
+                textAlign: TextAlign.start,
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15.0),
-              )),
+                    color: Colors.black,
+                  ),
+                )),
+          ),
         ],
       ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(70),
-            topLeft: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20)),
+            topRight: Radius.circular(10),
+            topLeft: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-            color: Colors.red[100].withOpacity(0.75),
+            color: Colors.red[100].withOpacity(0.85),
             // offset: Offset(1.0, 6.0), //(x,y)
             // spreadRadius: 20,
-            blurRadius: 20.0,
+            blurRadius: 10.0,
           ),
         ],
         // border: Border.all(
@@ -76,7 +80,7 @@ class EmptyCard extends StatelessWidget {
         gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [Colors.white, Colors.white70]),
+            colors: [Colors.white, Colors.white]),
       ),
     );
   }

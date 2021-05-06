@@ -222,12 +222,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           ? Badge(
                                               padding: EdgeInsets.all(15.0),
                                               position: BadgePosition.topStart(
-                                                  top: 15, start: 10),
+                                                  top: 15, start: 15),
                                               badgeContent: Text(
                                                   projectSnap.data.content
                                                       .toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
+                                                  textAlign: TextAlign.start,
+                                                  style: GoogleFonts.lato(
+                                                    textStyle: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                  )),
                                               child: EmptyCard(
                                                   imagename:
                                                       homelistitem.imageName,
@@ -430,7 +437,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         );
         break;
       case HomeMenu.logout:
-         Get.dialog(
+        Get.dialog(
           AlertDialog(
               elevation: 6.0,
               title: Text(
