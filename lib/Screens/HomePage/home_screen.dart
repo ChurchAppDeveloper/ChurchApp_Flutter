@@ -279,11 +279,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         );
         break;
       case HomeMenu.masstiming:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MassTiming(isShowAppbar: true)),
-        );
+        Get.toNamed("/mass", arguments: true);
         break;
       case HomeMenu.prayerrequest:
         Get.toNamed("/prayerRequest", arguments: true);
@@ -299,12 +295,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         );
         break;
       case HomeMenu.confession:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Confession(isShowAppbar: true)),
-        );
-
+        Get.toNamed("/prayerRequest", arguments: true);
         break;
       case HomeMenu.classifieds:
         Get.toNamed("/classifiedList", arguments: true);

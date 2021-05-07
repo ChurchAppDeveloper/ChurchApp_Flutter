@@ -3,11 +3,13 @@ import 'dart:math';
 
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
@@ -31,12 +33,18 @@ class _RosaryState extends State<Rosary> with TickerProviderStateMixin {
   List<EchurasticRosaryData> modeldata;
 
   int currentIndex = 0;
+
   // final items = ["Clock", "List", "Settings"];
   final icons = [Icons.alarm, Icons.list, Icons.settings];
 
   double _secondPercent() => stopwatch.elapsed.inSeconds / 60;
+
   double _minutesPercent() => minute / 60;
+
   double _hoursPercent() => hour / 24;
+  String role;
+  Future apiRosary, getRole;
+
   // PushNotificationService notification;
 
   @override
@@ -48,6 +56,7 @@ class _RosaryState extends State<Rosary> with TickerProviderStateMixin {
     notification = PushNotificationService(fcm);
     notification.notificationPluginInitilization();
     notification.context = context;*/
+    getRole = initData();
 
     MassTimingService().getRosaryData().then((masstiming) {
       setState(() {
@@ -173,7 +182,7 @@ class _RosaryState extends State<Rosary> with TickerProviderStateMixin {
   }
 
   onSubmitPressed() async {
-    await EasyLoading.instance
+    EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 2000)
       ..indicatorType = EasyLoadingIndicatorType.pouringHourGlass
       ..loadingStyle = EasyLoadingStyle.custom
@@ -206,38 +215,6 @@ class _RosaryState extends State<Rosary> with TickerProviderStateMixin {
     });
   }
 
-  Widget _editButton() {
-    return Container(
-      height: 50,
-      width: 50,
-      margin: EdgeInsets.only(left: 16),
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black12.withOpacity(0.05),
-                blurRadius: 10,
-                spreadRadius: 10)
-          ]),
-      child: GestureDetector(
-          onTap: () {
-            setState(() {
-              _width = 210;
-              _height = 210;
-              isEditOptionEabled = true;
-            });
-          },
-          child: Center(
-            child: Icon(
-              Icons.edit,
-              color: Colors.redAccent,
-              size: 32,
-            ),
-          )),
-    );
-  }
-
   @override
   void dispose() {
     stopwatch?.stop();
@@ -266,144 +243,163 @@ class _RosaryState extends State<Rosary> with TickerProviderStateMixin {
                     image: new DecorationImage(
                       fit: BoxFit.cover,
                       colorFilter: new ColorFilter.mode(
-                          Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                          Colors.black.withOpacity(0.7), BlendMode.dstATop),
                       image: AssetImage('image/rosarybg.jpg'),
                     ),
                   ),
-                  child: Stack(
+                  child: Column(
                     children: <Widget>[
-                      // Positioned(
-                      //   top: 40,
-                      //   child: _addButton(),
-                      // ),
-                      if (!Singleton().isAdmin)
-                        Positioned(
-                          top: 40,
-                          right: 16,
-                          child: _editButton(),
-                        ),
-                      Column(
-                        children: <Widget>[
-                          Center(child: Container()),
-                          SizedBox(
-                            height: 40,
-                          ),
-                          Text("ROSARY",
-                              style: GoogleFonts.lato(
-                                textStyle: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.redAccent,
-                                ),
-                              )),
-                          Text(
-                              "${hour.round()}:${minute.round()} ${TimeOfDay.fromDateTime(now).period == DayPeriod.am ? 'AM' : 'PM'}",
-                              style: GoogleFonts.lato(
-                                textStyle: TextStyle(
-                                  fontSize: 50,
-                                  color: Colors.black,
-                                ),
-                              )),
-                          if (isEditOptionEabled)
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  'Choose Date',
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    _selectDate(context);
-                                  },
-                                  child: Container(
-                                    width: _width,
-                                    height: _height / 7,
-                                    margin: EdgeInsets.only(top: 0),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(color: Colors.red)),
-                                    child: TextFormField(
-                                      style: TextStyle(fontSize: 20),
-                                      textAlign: TextAlign.justify,
-                                      enabled: false,
-                                      keyboardType: TextInputType.text,
-                                      controller: _dateController,
-                                      onSaved: (String val) {
-                                        _setDate = val;
-                                      },
-                                      // decoration: InputDecoration(
-                                      //     disabledBorder: UnderlineInputBorder(
-                                      //         borderSide: BorderSide.none),
-                                      //     contentPadding: EdgeInsets.only(top: 0.0)),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          if (isEditOptionEabled)
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  'Choose Time',
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    _selectTime(context);
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 0),
-                                    width: _width,
-                                    height: _height / 7,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(color: Colors.red)),
-                                    child: TextFormField(
-                                      style: TextStyle(fontSize: 20),
-                                      textAlign: TextAlign.justify,
-                                      onSaved: (String val) {
-                                        _setTime = val;
-                                      },
-                                      enabled: false,
-                                      keyboardType: TextInputType.text,
-                                      controller: _timeController,
-                                      // decoration: InputDecoration(
-                                      //     disabledBorder: UnderlineInputBorder(
-                                      //         borderSide: BorderSide.none),
-                                      //     contentPadding: EdgeInsets.all(0)),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          if (isEditOptionEabled)
-                            RoundedLoadingButton(
-                              child: Text('Submit',
-                                  style: TextStyle(color: Colors.white)),
-                              color: Colors.red,
-                              controller: _btnController,
-                              onPressed: onSubmitPressed,
-                            ),
-                        ],
+                      Center(child: Container()),
+                      SizedBox(
+                        height: 40,
                       ),
+                      Text("ROSARY",
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.redAccent,
+                            ),
+                          )),
+                      Text(
+                          "${hour.round()}:${minute.round()} ${TimeOfDay.fromDateTime(now).period == DayPeriod.am ? 'AM' : 'PM'}",
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 50,
+                              color: Colors.black,
+                            ),
+                          )),
+                      if (isEditOptionEabled)
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Choose Date',
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.5),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _selectDate(context);
+                              },
+                              child: Container(
+                                width: _width,
+                                height: _height / 7,
+                                margin: EdgeInsets.only(top: 0),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: Colors.red)),
+                                child: TextFormField(
+                                  style: TextStyle(fontSize: 20),
+                                  textAlign: TextAlign.justify,
+                                  enabled: false,
+                                  keyboardType: TextInputType.text,
+                                  controller: _dateController,
+                                  onSaved: (String val) {
+                                    _setDate = val;
+                                  },
+                                  // decoration: InputDecoration(
+                                  //     disabledBorder: UnderlineInputBorder(
+                                  //         borderSide: BorderSide.none),
+                                  //     contentPadding: EdgeInsets.only(top: 0.0)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      if (isEditOptionEabled)
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Choose Time',
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.5),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _selectTime(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 0),
+                                width: _width,
+                                height: _height / 7,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: Colors.red)),
+                                child: TextFormField(
+                                  style: TextStyle(fontSize: 20),
+                                  textAlign: TextAlign.justify,
+                                  onSaved: (String val) {
+                                    _setTime = val;
+                                  },
+                                  enabled: false,
+                                  keyboardType: TextInputType.text,
+                                  controller: _timeController,
+                                  // decoration: InputDecoration(
+                                  //     disabledBorder: UnderlineInputBorder(
+                                  //         borderSide: BorderSide.none),
+                                  //     contentPadding: EdgeInsets.all(0)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      if (isEditOptionEabled)
+                        RoundedLoadingButton(
+                          child: Text('Submit',
+                              style: TextStyle(color: Colors.white)),
+                          color: Colors.red,
+                          controller: _btnController,
+                          onPressed: onSubmitPressed,
+                        ),
                     ],
                   ),
-                )),
+                ),
+          floatingActionButton: FutureBuilder(
+              future: getRole,
+              builder: (context, projectSnap) {
+                if (projectSnap.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (projectSnap.connectionState ==
+                    ConnectionState.done) {
+                  return (projectSnap.data == 'Admin')
+                      ? FloatingActionButton(
+                          backgroundColor: Colors.red,
+                          onPressed: () {
+                            setState(() {
+                              _width = 210;
+                              _height = 210;
+                              isEditOptionEabled = true;
+                            });
+                          },
+                          child: new Icon(Icons.edit),
+                        )
+                      : Container();
+                } else {
+                  return Text("Error ${projectSnap.error}");
+                }
+              })),
     );
+  }
+
+  Future initData() async {
+    return role =
+        await SharedPref().getStringPref(SharedPref().role).then((value) {
+      debugPrint("role: $value");
+
+      return value;
+    });
   }
 
   Widget _getItem(String t, int index) {

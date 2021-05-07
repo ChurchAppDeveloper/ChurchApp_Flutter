@@ -48,7 +48,7 @@ dependencies:
   # circle_wheel_scroll: ^0.0.1+1
   file_picker: ^3.0.1
   rounded_loading_button: ^1.0.18
-  fancy_bottom_navigation: ^0.3.3
+  font_awesome_flutter: ^9.0.0
   intl: ^0.17.0
   date_format: ^2.0.2
   analog_clock: ^0.0.4

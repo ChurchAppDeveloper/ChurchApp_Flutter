@@ -4,11 +4,13 @@ import 'package:churchapp/Screens/Announcement/AnnouncementCreation.dart';
 import 'package:churchapp/Screens/Announcement/AnnouncementList.dart';
 import 'package:churchapp/Screens/Classifields/ClassifiedCreate.dart';
 import 'package:churchapp/Screens/Classifields/ClassifiedList.dart';
+import 'package:churchapp/Screens/Confession/Confession.dart';
 import 'package:churchapp/Screens/ContactUS/Contactus.dart';
 import 'package:churchapp/Screens/Dashboard/Dashboard.dart';
 import 'package:churchapp/Screens/Landing.dart';
 import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/LoginPage/otp_screen.dart';
+import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -84,6 +86,8 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/prayerRequest', page: () => PrayerRequest()),
         GetPage(name: '/classifiedList', page: () => ClassifiedList()),
         GetPage(name: '/classifiedCreate', page: () => ClassifiedCreate()),
+        GetPage(name: '/mass', page: () => MassTiming()),
+        GetPage(name: '/confession', page: () => Confession()),
       ],
     );
   }

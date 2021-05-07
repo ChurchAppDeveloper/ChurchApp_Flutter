@@ -6,6 +6,7 @@ import 'package:churchapp/Screens/RestService/ConfessionService.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -46,7 +47,7 @@ class _ConfessionState extends State<Confession> {
   void initState() {
     super.initState();
     _fetching = true;
-    isShowAppbar = widget.isShowAppbar;
+    isShowAppbar = Get.arguments;
     isBarHide = isShowAppbar;
 
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -85,7 +86,7 @@ class _ConfessionState extends State<Confession> {
         appBar: isShowAppbar
             ? AppBar(
                 backgroundColor: Color.fromARGB(255, 219, 69, 71),
-                title: Text('CONFESSION'),
+                title: Text('Confession'),
               )
             : null,
         body: Column(children: [

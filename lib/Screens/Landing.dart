@@ -84,7 +84,7 @@ class _LandingState extends State<Landing> {
                 Container(
                   alignment: Alignment.center,
                   // width: 350.0,
-                  child: Text(appName,
+                  child: Text(appName.toUpperCase(),
                       textAlign: TextAlign.center,
                       style: GoogleFonts.lato(
                         textStyle: TextStyle(

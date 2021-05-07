@@ -51,7 +51,7 @@ int toggleSelected = 0;
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: appName,
+        title: appName.toUpperCase(),
         home: SafeArea(
           maintainBottomViewPadding: true,
           child: Scaffold(
@@ -75,7 +75,7 @@ int toggleSelected = 0;
                     Container(
                       alignment: Alignment.center,
                       // width: 350.0,
-                      child: Text(churchAddress,
+                      child: Text(churchAddress.toUpperCase(),
                           textAlign: TextAlign.center,
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(
