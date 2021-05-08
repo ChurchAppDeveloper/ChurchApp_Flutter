@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:churchapp/Model/PushNotification.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
@@ -34,27 +35,14 @@ class _EucharisticState extends State<Eucharistic>
 
   int currentIndex = 0;
 
-  // final items = ["Clock", "List", "Settings"];
-  final icons = [Icons.alarm, Icons.list, Icons.settings];
-
-  double _secondPercent() => stopwatch.elapsed.inSeconds / 60;
-
-  double _minutesPercent() => minute / 60;
-
-  double _hoursPercent() => hour / 24;
   String role;
   Future apiEucharistic, getRole;
-  // PushNotificationService notification;
 
   @override
   void initState() {
     super.initState();
     _fetching = true;
     SystemChrome.setEnabledSystemUIOverlays([]);
-    /*  final FirebaseMessaging fcm = FirebaseMessaging.instance;
-    notification = PushNotificationService(fcm);
-    notification.notificationPluginInitilization();
-    notification.context = context;*/
     getRole = initData();
 
     MassTimingService().getEchrasticData().then((masstiming) {
@@ -66,11 +54,6 @@ class _EucharisticState extends State<Eucharistic>
           var datetime = convertTimeStampToDateTime(modeldata.first.startTime);
           hour = datetime.hour.toDouble(); //now.hour.toDouble();
           minute = datetime.minute.toDouble(); //now.minute.toDouble();
-
-          //Schedule Local notification
-          // notification.cancelNotification(777);
-          // notification.scheduleNotificationForCelebrityDay(
-          //     datetime, 777, "Eucharistic");
         }
       });
     });
@@ -102,67 +85,34 @@ class _EucharisticState extends State<Eucharistic>
     return tempDate;
   }
 
-  Widget _addButton() {
-    return Container(
-      height: 50,
-      width: 50,
-      margin: EdgeInsets.only(left: 16),
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.redAccent,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.redAccent.withOpacity(0.5),
-                blurRadius: 15,
-                spreadRadius: 2)
-          ]),
-      child: Center(
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 32,
-        ),
-      ),
-    );
-  }
-
-  double _height = 310.0;
-  double _width = 310.0;
   DateTime selectedDate = DateTime.now();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-  String _setTime, _setDate;
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
   String _hour, _minute, _time;
-  bool isEditOptionEabled = false;
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
 
   Future<Null> _selectDate(BuildContext context) async {
-    if (!Singleton().isAdmin) {
-      return;
-    }
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         initialDatePickerMode: DatePickerMode.day,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(2101));
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 30)));
     if (picked != null)
       setState(() {
         selectedDate = picked;
         var date = DateTime(selectedDate.year, selectedDate.month,
             selectedDate.day, selectedTime.hour, selectedTime.minute);
         _dateController.text = DateFormat.yMd().format(date);
+        _selectTime(context);
+
       });
   }
 
   Future<Null> _selectTime(BuildContext context) async {
-    if (!Singleton().isAdmin) {
-      return;
-    }
     final TimeOfDay picked = await showTimePicker(
       context: context,
+      initialEntryMode: TimePickerEntryMode.dial,
       initialTime: selectedTime,
     );
     if (picked != null)
@@ -179,40 +129,6 @@ class _EucharisticState extends State<Eucharistic>
       });
   }
 
-  onSubmitPressed() async {
-    EasyLoading.instance
-      ..displayDuration = const Duration(milliseconds: 2000)
-      ..indicatorType = EasyLoadingIndicatorType.pouringHourGlass
-      ..loadingStyle = EasyLoadingStyle.custom
-      ..indicatorSize = 45.0
-      ..radius = 10.0
-      ..backgroundColor = Colors.red
-      ..indicatorColor = Colors.white
-      ..textColor = Colors.white
-      ..maskColor = Colors.white.withOpacity(0.5)
-      ..userInteractions = false;
-    EasyLoading.show(
-      status: 'loading...',
-      maskType: EasyLoadingMaskType.custom,
-    );
-
-    //Schedule Local notification
-    var date = DateTime(selectedDate.year, selectedDate.month, selectedDate.day,
-        selectedTime.hour, selectedTime.minute);
-    print(date);
-    // notification.cancelNotification(777);
-    // notification.scheduleNotificationForCelebrityDay(date, 777, "Eucharistic");
-    Timer(Duration(seconds: 3), () {
-      setState(() {
-        _width = 310;
-        _height = 310;
-        isEditOptionEabled = false;
-      });
-      _btnController.success();
-      EasyLoading.dismiss();
-    });
-  }
-
   @override
   void dispose() {
     stopwatch?.stop();
@@ -221,6 +137,12 @@ class _EucharisticState extends State<Eucharistic>
 
   @override
   Widget build(BuildContext context) {
+    const colorizeColors = [
+      Colors.white,
+      Colors.red,
+      Colors.orange,
+      Colors.black,
+    ];
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
@@ -247,19 +169,31 @@ class _EucharisticState extends State<Eucharistic>
                     ),
                   ),
                   child: Column(
+                    verticalDirection: VerticalDirection.up,
                     children: <Widget>[
                       Center(child: Container()),
                       SizedBox(
-                        height: 40,
+                        height: 50,
                       ),
-                      Text("EUCHARISTIC",
-                          style: GoogleFonts.lato(
-                            textStyle: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.redAccent,
+                      AnimatedTextKit(
+                        animatedTexts: [
+                          ColorizeAnimatedText(
+                            'EUCHARISTIC',
+                            textStyle: const TextStyle(
+                              fontSize: 32.0,
+                              fontWeight: FontWeight.bold,
                             ),
-                          )),
+                            colors: colorizeColors,
+                            speed: const Duration(milliseconds: 500),
+                          ),
+                        ],
+
+                        isRepeatingAnimation: true,
+                        repeatForever: true,
+                        pause: const Duration(milliseconds: 500),
+                        displayFullTextOnTap: true,
+                        stopPauseOnTap: true,
+                      ),
                       Text(
                           "${hour.round()}:${minute.round()} ${TimeOfDay.fromDateTime(now).period == DayPeriod.am ? 'AM' : 'PM'}",
                           style: GoogleFonts.lato(
@@ -268,100 +202,6 @@ class _EucharisticState extends State<Eucharistic>
                               color: Colors.black,
                             ),
                           )),
-                      if (isEditOptionEabled)
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Choose Date',
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.5),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                _selectDate(context);
-                              },
-                              child: Container(
-                                width: _width,
-                                height: _height / 7,
-                                margin: EdgeInsets.only(top: 0),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(color: Colors.red)),
-                                child: TextFormField(
-                                  style: TextStyle(fontSize: 20),
-                                  textAlign: TextAlign.justify,
-                                  enabled: false,
-                                  keyboardType: TextInputType.text,
-                                  controller: _dateController,
-                                  onSaved: (String val) {
-                                    _setDate = val;
-                                  },
-                                  // decoration: InputDecoration(
-                                  //     disabledBorder: UnderlineInputBorder(
-                                  //         borderSide: BorderSide.none),
-                                  //     contentPadding: EdgeInsets.only(top: 0.0)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      if (isEditOptionEabled)
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Choose Time',
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.5),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                _selectTime(context);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(top: 0),
-                                width: _width,
-                                height: _height / 7,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(color: Colors.red)),
-                                child: TextFormField(
-                                  style: TextStyle(fontSize: 20),
-                                  textAlign: TextAlign.justify,
-                                  onSaved: (String val) {
-                                    _setTime = val;
-                                  },
-                                  enabled: false,
-                                  keyboardType: TextInputType.text,
-                                  controller: _timeController,
-                                  // decoration: InputDecoration(
-                                  //     disabledBorder: UnderlineInputBorder(
-                                  //         borderSide: BorderSide.none),
-                                  //     contentPadding: EdgeInsets.all(0)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      if (isEditOptionEabled)
-                        RoundedLoadingButton(
-                          child: Text('Submit',
-                              style: TextStyle(color: Colors.white)),
-                          color: Colors.red,
-                          controller: _btnController,
-                          onPressed: onSubmitPressed,
-                        ),
                     ],
                   ),
                 ),
@@ -377,9 +217,7 @@ class _EucharisticState extends State<Eucharistic>
                 backgroundColor: Colors.red,
                 onPressed: () {
                   setState(() {
-                    _width = 210;
-                    _height = 210;
-                    isEditOptionEabled = true;
+                    _selectDate(context);
                   });
                 },
                 child: new Icon(Icons.edit),
@@ -398,30 +236,5 @@ class _EucharisticState extends State<Eucharistic>
 
       return value;
     });
-  }
-  Widget _getItem(String t, int index) {
-    final selected = index == currentIndex;
-    final color = selected ? Colors.black : Colors.grey;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          currentIndex = index;
-        });
-      },
-      child: Column(
-        children: <Widget>[
-          Icon(
-            icons.elementAt(index),
-            size: selected ? 40 : 32,
-            color: color,
-          ),
-          Text(
-            t,
-            style: TextStyle(color: color),
-          )
-        ],
-      ),
-    );
   }
 }

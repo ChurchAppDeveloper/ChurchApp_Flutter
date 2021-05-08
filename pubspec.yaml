@@ -53,7 +53,7 @@ dependencies:
   date_format: ^2.0.2
   analog_clock: ^0.0.4
   syncfusion_flutter_calendar: ^19.1.59
-  animated_text_kit: ^4.2.0
+  animated_text_kit: ^4.2.1
   google_maps_flutter: ^2.0.3
   fab_circular_menu: ^1.0.2
   badges: ^1.2.0
