@@ -133,6 +133,7 @@ int toggleSelected = 0;
           activeFgColor: Colors.white,
           inactiveBgColor: Colors.grey,
           inactiveFgColor: Colors.white,
+          initialLabelIndex: 1,
           labels: ['Admin'.toUpperCase(), 'Contributor'.toUpperCase()],
           icons: [Icons.admin_panel_settings_outlined, Icons.people_alt_outlined],
           onToggle: (index) {
@@ -231,9 +232,9 @@ int toggleSelected = 0;
             if (_contactEditingController.text.isNotEmpty) {
               debugPrint(
                   "Dial Code $_dialCode${_contactEditingController.text}");
-              loginAPI(LoginRequest(
-                  contactNumber:
-                      "$_dialCode${_contactEditingController.text.toString()}", role: toggleSelected==0?"Admin":"Contributor"));
+                loginAPI(LoginRequest(
+                    contactNumber:
+                    "$_dialCode${_contactEditingController.text.toString()}"));
             } else {
               snackBarAlert(error, invalidNumber, Icon(Icons.error_outline),
                   errorColor, whiteColor);

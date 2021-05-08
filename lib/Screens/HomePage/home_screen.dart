@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                           onPressed: () {
                             SharedPref().setStringPref(SharedPref().token, "");
-                            Get.offAndToNamed("/login");
+                            Get.offAllNamed("/login");
                           },
                         )
                       ],

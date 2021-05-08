@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 Future<AnnouncementResponse> getAnnouncementAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl//getAnnouncementList";
+  String url = "$baseUrl/getAnnouncementList";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -40,7 +40,7 @@ Future<AnnouncementResponse> getAnnouncementAPI() async {
 Future<AnnouncementCountResponse> getAnnouncementCountAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl//getAnnouncementCount";
+  String url = "$baseUrl/getAnnouncementCount";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: 'Bearer $token',

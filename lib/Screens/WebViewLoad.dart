@@ -45,6 +45,7 @@ class WebViewLoadUI extends State<WebViewLoad> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("  ${widget.weburl}   ");
     return Scaffold(
         appBar: isShowAppbar
             ? AppBar(
@@ -55,35 +56,11 @@ class WebViewLoadUI extends State<WebViewLoad> {
               bottomLeft: Radius.circular(20.0),
               bottomRight: Radius.circular(20.0),
             ),),
-                // actions: (contentDesc.length == 0)
-                //     ? []
-                //     : <Widget>[
-                //         IconButton(
-                //           icon: Icon(
-                //             Icons.add_ic_call,
-                //             color: Colors.white,
-                //           ),
-                //           onPressed: () {
-                //             // do something
-                //             AwesomeDialog(
-                //               context: context,
-                //               animType: AnimType.SCALE,
-                //               dialogType: DialogType.INFO,
-                //               body: Center(
-                //                 child: Linkify(
-                //                   onOpen: _onOpen,
-                //                   text: contentDesc,
-                //                 ),
-                //               ),
-                //             )..show();
-                //           },
-                //         )
-                //       ]
         )
             : null,
         body: Stack(
           children: [
-            widget.weburl != ""
+            widget.weburl != null
                 ? loadwebview
                 : SvgPicture.asset("image/404.svg", semanticsLabel: appName),
             isLoading
