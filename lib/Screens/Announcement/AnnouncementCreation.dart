@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:churchapp/api/announcement_api.dart';
 import 'package:churchapp/model_request/annoucement_create_request.dart';
+import 'package:churchapp/util/color_constants.dart';
+import 'package:churchapp/util/common_fun.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -27,7 +30,13 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
   File selectedFile;
   final maxLines = 5;
   PickedFile imageFile;
-
+@override
+  void dispose() {
+ if(EasyLoading.isShow) {
+   EasyLoading.dismiss();
+ }
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -106,7 +115,9 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                       decoration:
                           InputDecoration(labelText: 'Announcement Title'),
                       onChanged: (text) {
-                        announceTitle = text;
+                        setState(() {
+                          announceTitle = text;
+                        });
                       }),
                 ),
                 Padding(
@@ -123,6 +134,9 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                       decoration: InputDecoration(
                         labelText: "Announcement Description",
                       ),
+                      onChanged: (text){
+                        announcedesc =text;
+                      },
                     ),
                   ),
                 ),
@@ -217,44 +231,31 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
       ..textColor = Colors.white
       ..maskColor = Colors.white.withOpacity(0.5)
       ..userInteractions = false;
-    EasyLoading.show(
-      status: 'loading...',
-      maskType: EasyLoadingMaskType.custom,
-    );
-    // Map<String, dynamic> otpForm = {
-    //   "grant_type": "password",
-    //   "username": Get.arguments,
-    //   "password": smsOTP,
-    //   "client_id": "barnabas"
-    // };
-    createAnnouncementAPI(
-            AnnouncementCreateRequest(
-                title: announceTitle, description: announcedesc),
-            file: selectedFile)
-        .then((value) {
-        _btnController.success();
+
+    if(announceTitle.isNotEmpty && announcedesc.isNotEmpty){
+      EasyLoading.show(
+        status: 'loading...',
+        maskType: EasyLoadingMaskType.custom,
+      );
+      createAnnouncementAPI(
+          AnnouncementCreateRequest(
+              title: announceTitle, description: announcedesc),
+          file: selectedFile)
+          .then((value) {
+        // _btnController.success();
+        // EasyLoading.dismiss();
+        // Get.offNamed('/announcementCreate');
+
+      }).catchError((error) {
+        debugPrint("Error : $error");
+        _btnController.stop();
         EasyLoading.dismiss();
-        Get.offNamed('/announcementCreate');
-
-    }).catchError((error) {
-      debugPrint("Error : $error");
-      _btnController.error();
-      EasyLoading.dismiss();
-    });
-    /* var random = new math.Random();
-    var randomNum = random.nextInt(888).toString();
-    AnnouncementService anservice = AnnouncementService();
-    anservice.announcettitle = announceTitle;
-    anservice.announcedesc = announcedesc;
-    anservice.uploadfile = selectedFile;
-
-    anservice.getMediaUpload(
-        "Announcement" + randomNum, selectedFile.path, format);*/
-    /*Timer(Duration(seconds: 6), () {
-      _btnController.success();
-      EasyLoading.dismiss();
-      Navigator.of(context).pop();
-    });*/
+      });
+    }else{
+      _btnController.stop();
+      snackBarAlert(error, invalidAnnouncement, Icon(Icons.error_outline),
+          errorColor, whiteColor);
+    }
   }
 }
 

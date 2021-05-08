@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:churchapp/model_request/annoucement_create_request.dart';
@@ -11,6 +12,8 @@ import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
 Future<AnnouncementResponse> getAnnouncementAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
@@ -25,18 +28,13 @@ Future<AnnouncementResponse> getAnnouncementAPI() async {
     debugPrint("profile_response: ${response.body}");
 
     var data = json.decode(response.body);
-    // var rest = data["Items"] as List;
-    // List<AnnouncementResponse> list = rest
-    //     .map<AnnouncementResponse>(
-    //         (json) => AnnouncementResponse.fromJson(json)).toList();
-    //
-    // print("models $list");
     return AnnouncementResponse.fromJson(data);
-  }catch (e) {
+  } catch (e) {
     print("error $e");
     return AnnouncementResponse();
   }
 }
+
 Future<AnnouncementCountResponse> getAnnouncementCountAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
@@ -51,52 +49,70 @@ Future<AnnouncementCountResponse> getAnnouncementCountAPI() async {
     debugPrint("profile_response: ${response.body}");
 
     var data = json.decode(response.body);
-    // var rest = data["Items"] as List;
-    // List<AnnouncementResponse> list = rest
-    //     .map<AnnouncementResponse>(
-    //         (json) => AnnouncementResponse.fromJson(json)).toList();
-    //
-    // print("models $list");
     return AnnouncementCountResponse.fromJson(data);
-  }catch (e) {
+  } catch (e) {
     print("error $e");
     return AnnouncementCountResponse();
   }
 }
 
-Future createAnnouncementAPI(AnnouncementCreateRequest announcementForm, {File file}) async {
-
+Future createAnnouncementAPI(AnnouncementCreateRequest announcementForm,
+    {File file}) async {
   var list = List<String>();
-  list.insert(0,"");
-  announcementForm.urls= list;
+  list.insert(0, "");
+  announcementForm.urls = list;
 
   String token = await SharedPref().getStringPref(SharedPref().token);
 
   String url = "$baseUrl/createAnnouncement";
   Map<String, String> requestHeaders = {
-    HttpHeaders.acceptHeader: "application/json",
-    HttpHeaders.contentTypeHeader: "application/x-www-form-urlencoded",
-    HttpHeaders.authorizationHeader: 'Bearer $token',
+    // HttpHeaders.acceptHeader: "application/json",
+    // HttpHeaders.contentTypeHeader: "multipart/form-data",
 
+    HttpHeaders.authorizationHeader: 'Bearer $token',
   };
 
-  // var body = json.encode(otpForm);
-  final response = await http.post(Uri.parse(url),
-      body: announcementForm,
-      headers: requestHeaders,
-      encoding: Encoding.getByName("utf-8"));
-  var data = AnnouncementResponse.fromJson(json.decode(response.body));
-  debugPrint("Announcement_response: ${response.request.toString()}");
-  debugPrint("Announcement_response: ${response.body}");
+  var request = http.MultipartRequest("POST", Uri.parse(url));
+  request.fields["json"] = jsonEncode(announcementForm);
+  request.headers.addAll({"Content-Type": "application/json"});
+  request.headers.addAll(requestHeaders);
+  debugPrint("File ${file.path}");
 
-  if (response.statusCode == 200) {
-    debugPrint("content:${data.content}");
-    // await SharedPref().setStringPref(SharedPref().token, data.accessToken);
+  http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+      'file', file.path, contentType: new MediaType("image", "jpeg"), filename: file.path.split("/").last
+  ); //returns a Future<MultipartFile>
 
-    // Get.offAllNamed("/home");'
-  } else {
-    snackBarAlert(
-        error, attachmentError, Icon(Icons.error_outline), errorColor, whiteColor);
+  request.files.add(multipartFile);
+  debugPrint("Fields ${request.fields.toString()}");
+  try {
+    final response =
+    await request.send().timeout(const Duration(seconds: 60));
+    var res = await http.Response.fromStream(response);
+    // responseJson = responseToJson(res);
+    // responseJson = res;
+    debugPrint("Res ${res.body}");
+    Get.back();
+
+  } on SocketException {
+    throw Exception("You are not connected to internet");
+  } on TimeoutException catch (e) {
+    print('Time out');
+    throw TimeoutException('Time out');
   }
-
+ // await request.send().then((response) {
+ //
+ //    if (response.statusCode == 200) {
+ //      Get.back();
+ //    } else if(response.statusCode == 415){
+ //      snackBarAlert(error, "Invalid file format", Icon(Icons.error_outline),
+ //          errorColor, whiteColor);
+ //    }
+ //    else {
+ //      snackBarAlert(error, response.statusCode.toString(), Icon(Icons.error_outline),
+ //          errorColor, whiteColor);
+ //    }
+ //  }).catchError((error){
+ //    snackBarAlert(error, error.toString(), Icon(Icons.error_outline),
+ //        errorColor, whiteColor);
+ //  });
 }
