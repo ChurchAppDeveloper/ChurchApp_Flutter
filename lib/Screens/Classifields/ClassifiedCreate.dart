@@ -49,6 +49,11 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                 elevation: 0.0,
                 backgroundColor: const Color(0xffea5d49),
                 title: Text('Create Classified'),
+                shape: ContinuousRectangleBorder(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
+                  ),),
                 leading: IconButton(
                   // iconSize: 50.0,
                   icon: Icon(

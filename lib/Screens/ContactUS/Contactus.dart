@@ -43,6 +43,11 @@ class ContactUSState extends State<ContactUS> {
           ? AppBar(
               title: Text("Contact Us"),
               backgroundColor: Color.fromARGB(255, 219, 69, 71),
+          shape: ContinuousRectangleBorder(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),),
               leading: IconButton(
                 // iconSize: 50.0,
                 icon: Icon(

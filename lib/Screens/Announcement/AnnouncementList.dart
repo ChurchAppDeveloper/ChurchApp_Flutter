@@ -54,7 +54,13 @@ class _AnnouncementListState extends State<AnnouncementList> {
                         color: Colors.white,
                       ),
                     )),
-                backgroundColor: Color.fromARGB(255, 219, 69, 71),
+           shape: ContinuousRectangleBorder(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20.0),
+                bottomRight: Radius.circular(20.0),
+              ),),
+
+            backgroundColor: Color.fromARGB(255, 219, 69, 71),
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
@@ -82,7 +88,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                         margin: EdgeInsets.only(left: 15, right: 15, top: 10),
                         decoration: new BoxDecoration(
                           borderRadius:
-                              BorderRadius.all(Radius.circular(15.0)),
+                              BorderRadius.all(Radius.circular(10.0)),
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(

@@ -31,6 +31,11 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
         appBar: isShowAppbar
             ? AppBar(
                 title: Text("Timings"),
+            shape: ContinuousRectangleBorder(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20.0),
+                bottomRight: Radius.circular(20.0),
+              ),),
                 backgroundColor: Color.fromARGB(255, 219, 69, 71))
             : null,
         body: Container(

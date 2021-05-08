@@ -31,6 +31,11 @@ class _PrayerRequestState extends State<PrayerRequest> {
           ? AppBar(
               title: Text("Prayer Request"),
               backgroundColor: Color.fromARGB(255, 219, 69, 71),
+          shape: ContinuousRectangleBorder(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),),
               leading: IconButton(
                 // iconSize: 50.0,
                 icon: Icon(

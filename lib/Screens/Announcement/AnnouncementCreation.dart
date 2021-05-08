@@ -45,6 +45,11 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                       color: Colors.white,
                     ),
                   )),
+              shape: ContinuousRectangleBorder(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
+                ),),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,

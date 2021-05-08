@@ -50,6 +50,11 @@ class WebViewLoadUI extends State<WebViewLoad> {
             ? AppBar(
                 backgroundColor: Color.fromARGB(255, 219, 69, 71),
                 title: Text(pageTitle),
+          shape: ContinuousRectangleBorder(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),),
                 // actions: (contentDesc.length == 0)
                 //     ? []
                 //     : <Widget>[

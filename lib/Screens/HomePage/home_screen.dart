@@ -186,6 +186,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   )),
             ),
           ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+                padding: const EdgeInsets.only(right: 24.0, top: 32),
+                child: Image.asset(
+                  "image/churchLogo.png",
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.contain,
+                )),
+          ),
           GridView.count(
             childAspectRatio: 1.0,
             padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 0),

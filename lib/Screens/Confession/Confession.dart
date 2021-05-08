@@ -86,6 +86,11 @@ class _ConfessionState extends State<Confession> {
         appBar: isShowAppbar
             ? AppBar(
                 backgroundColor: Color.fromARGB(255, 219, 69, 71),
+          shape: ContinuousRectangleBorder(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),),
                 title: Text('Confession'),
               )
             : null,
