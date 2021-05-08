@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: Carousel(
                         boxFit: BoxFit.cover,
                         autoplay: true,
-                        animationCurve: Curves.decelerate,
+                        animationCurve: Curves.easeInCubic,
                         animationDuration: Duration(milliseconds: 500),
                         dotSize: 4.0,
                         dotIncreasedColor: Colors.green,
@@ -306,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         );
         break;
       case HomeMenu.confession:
-        Get.toNamed("/prayerRequest", arguments: true);
+        Get.toNamed("/confession", arguments: true);
         break;
       case HomeMenu.classifieds:
         Get.toNamed("/classifiedList", arguments: true);

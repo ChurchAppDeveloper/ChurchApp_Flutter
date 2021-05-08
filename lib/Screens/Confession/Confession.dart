@@ -6,14 +6,18 @@ import 'package:churchapp/Screens/RestService/ConfessionService.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class Confession extends StatefulWidget {
   final bool isShowAppbar;
+
   const Confession({Key key, this.isShowAppbar}) : super(key: key);
+
   @override
   _ConfessionState createState() => _ConfessionState();
 }
@@ -86,11 +90,12 @@ class _ConfessionState extends State<Confession> {
         appBar: isShowAppbar
             ? AppBar(
                 backgroundColor: Color.fromARGB(255, 219, 69, 71),
-          shape: ContinuousRectangleBorder(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-            ),),
+                shape: ContinuousRectangleBorder(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
+                  ),
+                ),
                 title: Text('Confession'),
               )
             : null,
@@ -102,8 +107,9 @@ class _ConfessionState extends State<Confession> {
                 opacity: 0.5,
                 child: ClipPath(
                     clipper: WaveClipper(),
-                    child:
-                        Container(color: Colors.deepOrangeAccent, height: 200)),
+                    child: Container(
+                        color: Colors.deepOrangeAccent,
+                        height: MediaQuery.of(context).size.height / 3)),
               ),
               ClipPath(
                 clipper: WaveClipper(),
@@ -113,12 +119,15 @@ class _ConfessionState extends State<Confession> {
                       color: Colors.red,
                       // height: 180,
                       alignment: Alignment.centerLeft,
-                      child: CircleAvatar(
-                        radius: 55,
-                        backgroundColor: Color(0xffFDCF09),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16.0, top: 24),
                         child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage('image/bg1.jpg'),
+                          radius: 55,
+                          backgroundColor: Color(0xffFDCF09),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage('image/bg1.jpg'),
+                          ),
                         ),
                       )),
 
@@ -126,22 +135,35 @@ class _ConfessionState extends State<Confession> {
                 ]),
               ),
               Container(
-                  margin: EdgeInsets.only(left: 120),
-                  // padding: EdgeInsets.only(right: 0),
-                  color: Colors.transparent,
-                  width: 250,
-                  height: 100,
-                  alignment: Alignment.centerRight,
-                  child: Text(confessionData,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic)))
+                margin: EdgeInsets.only(left: 120),
+                // padding: EdgeInsets.only(right: 0),
+                color: Colors.transparent,
+                width: 250,
+                height: 100,
+                padding: EdgeInsets.all(8.0),
+                alignment: Alignment.centerRight,
+                child: Text(confessionData,
+                    textAlign: TextAlign.end,
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    )),
+              )
             ],
           )),
           Container(
-            child: Text("Scheduled List"),
-          ),
+              child: Text("Scheduled List",
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ))),
           Expanded(
             child: (_fetching)
                 ? Container(
@@ -154,99 +176,57 @@ class _ConfessionState extends State<Confession> {
                     ),
                   )
                 : SizedBox(
-                    height: 200.0,
+                    height: MediaQuery.of(context).size.height / 2,
                     child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         itemCount: menus.length,
                         itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                                "Parishioner " + confessionNameArr[index],
-                                style: TextStyle(
+                            trailing: Icon(FontAwesomeIcons.church),
+                            title:
+                                Text("Parishioner " + confessionNameArr[index],
+                                    style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    )),
+                            subtitle: Text(
+                                menus[index].startTime.toString() +
+                                    " to " +
+                                    menus[index].endTime.toString(),
+                                style: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
                                     color: Colors.black,
-                                    fontSize: 20.0,
-                                    fontStyle: FontStyle.normal)),
-                            subtitle: Text(menus[index].startTime.toString() +
-                                " to " +
-                                menus[index].endTime.toString()),
+                                  ),
+                                )),
                             onTap: () {
                               print(index);
                             }))),
-          )
-        ]),
-        floatingActionButton: RoundedLoadingButton(
-          child: Text('Submit', style: TextStyle(color: Colors.white)),
-          color: Colors.red,
-          successColor: Colors.red,
-          controller: _btnController,
-          onPressed: onSubmitPressed,
-        ));
-  }
-
-/*
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 219, 69, 71),
-          title: Text('CONFESSION'),
-        ),
-        body: Stack(
-            // padding: EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              Stack(
-                children: [
-                  Positioned(
-                      child: Stack(
-                    children: [
-                      Opacity(
-                        opacity: 0.5,
-                        child: ClipPath(
-                            clipper: WaveClipper(),
-                            child: Container(
-                                color: Colors.deepOrangeAccent, height: 200)),
-                      ),
-                      ClipPath(
-                        clipper: WaveClipper(),
-                        child: Container(
-                            padding: EdgeInsets.only(bottom: 50),
-                            color: Colors.red,
-                            height: 180,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Wave clipper",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            )),
-                      )
-                    ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: RoundedLoadingButton(
+              animateOnTap: true,
+              child: Text('Schedule',
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
                   )),
-                  // SizedBox(height: 30),
-                ],
-              ),
-              Container(
-                child: Text("Scheduled List"),
-              ),
-              ListView.builder(
-                  itemCount: menus.length,
-                  itemBuilder: (context, index) => ListTile(
-                      title: Text(menus[index].phonenumber.toString(),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0,
-                              fontStyle: FontStyle.normal)),
-                      subtitle: Text(menus[index].scheduledtime.toString()),
-                      onTap: () {
-                        print(index);
-                      }))
-            ]),
-        floatingActionButton: RoundedLoadingButton(
-          child: Text('Submit', style: TextStyle(color: Colors.white)),
-          color: Colors.red,
-          successColor: Colors.red,
-          controller: _btnController,
-          onPressed: onSubmitPressed,
-        ));
-  }*/
+              color: Colors.red,
+              successColor: Colors.red,
+              controller: _btnController,
+              onPressed: onSubmitPressed,
+            ),
+          )
+        ]),);
+  }
 
   onSubmitPressed() {
     ConfessionService().getAvailableConfessionList().then((data) {
