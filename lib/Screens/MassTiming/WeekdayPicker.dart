@@ -2,12 +2,12 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
 import 'package:date_format/date_format.dart';
-import 'package:day_picker/day_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class WeekdayPicker extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
   double _width;
   List<MassTiming> masstimings;
   bool _fetching;
+
   // PushNotificationService notification;
 
   @override
@@ -62,36 +63,95 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
         ),
       );
     } else {
-      return Container(
-        width: _width,
-        height: _height,
-        child: ListView(
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          children: <Widget>[
-            WeekdayBar(),
-            /* DayTimeWidget(masstime: masstimings[0], notification: notification),
-            SizedBox(height: 10),
-            DayTimeWidget(masstime: masstimings[1], notification: notification),
-            SizedBox(height: 10),
-            DayTimeWidget(masstime: masstimings[2], notification: notification),
-            SizedBox(height: 10),
-            DayTimeWidget(masstime: masstimings[3], notification: notification),
-            SizedBox(height: 10),
-            DayTimeWidget(masstime: masstimings[4], notification: notification),
-            SizedBox(height: 10),
-            DayTimeWidget(masstime: masstimings[5], notification: notification),
-            SizedBox(height: 10),
-            DayTimeWidget(masstime: masstimings[6], notification: notification),*/
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SfCalendar(
+          view: CalendarView.month,
+          allowedViews: <CalendarView>
+          [
+            CalendarView.day,
+            CalendarView.week,
+            CalendarView.month,
           ],
+          viewNavigationMode: ViewNavigationMode.snap,
+          dataSource: MeetingDataSource(_getDataSource()),
+          showCurrentTimeIndicator: true,
+          appointmentTextStyle: TextStyle(fontSize: 16),
+          todayTextStyle: TextStyle(fontSize: 18),
+          showDatePickerButton: true,
+          minDate: DateTime.now(),
+          allowViewNavigation: true,
+          maxDate: DateTime.now().add(Duration(days: 30)),
+          todayHighlightColor: Colors.red,
+          timeSlotViewSettings:
+          TimeSlotViewSettings(timeInterval: Duration(hours: 2)),
+          selectionDecoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(color: Colors.red, width: 2),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            shape: BoxShape.rectangle,
+          ),
+          monthViewSettings: MonthViewSettings(
+              showTrailingAndLeadingDates: true,
+              showAgenda: true,
+              appointmentDisplayMode: MonthAppointmentDisplayMode.indicator),
         ),
-        // ),
       );
     }
   }
 }
 
-//
+List<Meeting> _getDataSource() {
+  final List<Meeting> meetings = <Meeting>[];
+  final DateTime today = DateTime.now();
+  final DateTime startTime =
+      DateTime(today.year, today.month, today.day, 9, 0, 0);
+  final DateTime endTime = startTime.add(const Duration(hours: 2));
+  meetings.add(Meeting(
+      'Conference', startTime, endTime, const Color(0xFF0F8644), false));
+  return meetings;
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments[index].from;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments[index].to;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments[index].eventName;
+  }
+
+  @override
+  Color getColor(int index) {
+    return appointments[index].background;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return appointments[index].isAllDay;
+  }
+}
+
+class Meeting {
+  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+
+  String eventName;
+  DateTime from;
+  DateTime to;
+  Color background;
+  bool isAllDay;
+}
 
 class DayTimeWidget extends StatefulWidget {
   // final MassTiming masstime;
@@ -426,35 +486,4 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
 
     MassTimingService().updateWeelyMassTiming(masstiming);
   }*/
-}
-
-class WeekdayBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SelectWeekDays(
-            boxDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-              gradient: LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.centerRight,
-                colors: [
-                  Colors.red,
-                  Colors.deepOrangeAccent
-                ], // whitish to gray
-                tileMode:
-                    TileMode.repeated, // repeats the gradient over the canvas
-              ),
-            ),
-            onSelect: (values) {
-              print(values);
-            },
-          ),
-        )
-      ],
-    );
-  }
 }
