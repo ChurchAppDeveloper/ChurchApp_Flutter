@@ -28,47 +28,27 @@ class AnnouncementResponse {
 }
 
 class Content {
+  int id;
   String title;
   String description;
-  List<UserAnouncementImageurls> userAnouncementImageurls;
+  String filename;
 
-  Content({this.title, this.description, this.userAnouncementImageurls});
+  Content({this.id,this.title, this.description, this.filename});
 
   Content.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     title = json['title'];
     description = json['description'];
-    if (json['userAnouncementImageurls'] != null) {
-      userAnouncementImageurls = new List<UserAnouncementImageurls>();
-      json['userAnouncementImageurls'].forEach((v) {
-        userAnouncementImageurls.add(new UserAnouncementImageurls.fromJson(v));
-      });
-    }
+    filename = json['filename'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['title'] = this.title;
     data['description'] = this.description;
-    if (this.userAnouncementImageurls != null) {
-      data['userAnouncementImageurls'] =
-          this.userAnouncementImageurls.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
+    data['filename'] = this.filename;
 
-class UserAnouncementImageurls {
-  String userAnouncementImageurl;
-
-  UserAnouncementImageurls({this.userAnouncementImageurl});
-
-  UserAnouncementImageurls.fromJson(Map<String, dynamic> json) {
-    userAnouncementImageurl = json['userAnouncementImageurl'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userAnouncementImageurl'] = this.userAnouncementImageurl;
     return data;
   }
 }

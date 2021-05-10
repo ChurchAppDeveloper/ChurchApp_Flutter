@@ -177,21 +177,8 @@ class _AnnouncementListState extends State<AnnouncementList> {
 
 // "http://triggs.djvu.org/djvu-editions.com/BIBLES/DRV/Download.pdf"
 // https://assets-barnabas.s3.us-east-2.amazonaws.com/Announcement374.pdf.application/pdf
-                        var bulletin = WebViewLoad(
-                            weburl: projectSnap
-                                .data
-                                .content[index]
-                                .userAnouncementImageurls
-                                .first
-                                .userAnouncementImageurl,
-                            isShowAppbar: true,
-                            pageTitle: "Announcement Details");
-                        bulletin.contentDesc =
-                            projectSnap.data.content[index].description;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => bulletin),
-                        );
+
+                       getAnnouncementImageAPI(context,projectSnap.data.content[index].id,projectSnap.data.content[index].filename);
                       },
                     );
                   } else {
