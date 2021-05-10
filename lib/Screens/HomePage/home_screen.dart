@@ -8,7 +8,10 @@ import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
 import 'package:churchapp/Screens/RestService/BannerService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:churchapp/api/announcement_api.dart';
+import 'package:churchapp/api/banner_api.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
+import 'package:churchapp/model_response/banner_response.dart';
+import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/shared_preference.dart';
@@ -52,8 +55,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   var reloadBannerImages = List<NetworkImage>();
   var menuposition = HomeMenu.values[0];
   bool _fetching;
-  AnimationController controller;
-  Animation<double> animation;
   int bannerindex = 0;
   Future apiAnnouncementCount;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -73,46 +74,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _fetching = true;
-    // ProfileService().getProfileDetails();
     firebaseSetup(_firebaseMessaging);
     _firebaseMessaging.getToken().then((String token) {
       print("token $token");
     });
-    controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 5000));
-    animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
-
-    animation.addStatusListener((status) {
-      setState(() {
-        bannerindex = bannerindex + 1;
-        if (bannerindex > bannerImages.length - 1) {
-          bannerindex = 0;
-        }
-        reloadBannerImages.clear();
-        reloadBannerImages.add(bannerImages[bannerindex]);
-      });
-      if (status == AnimationStatus.completed) {
-        print("completed");
-        controller.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        print("forward");
-        controller.forward();
-      }
-    });
 
     loadData();
     apiAnnouncementCount = getAnnouncementCountAPI();
-    BannerService.getBanners().then((banners) {
+    getBanners().then((banners) {
       var localBannerImages = List<NetworkImage>();
-      for (var i = 0; i < banners.length; i++) {
-        localBannerImages.add(NetworkImage(banners[i].imageName));
-        // localBannerImages.add(Image.network(banners[i].imageName));
+      for (var i = 0; i < banners.content.length; i++) {
+        debugPrint("Banner: ${baseUrl+banners.content[i]}");
+        localBannerImages.add(NetworkImage(baseUrl+banners.content[i]));
       }
       setState(() {
         bannerImages = localBannerImages;
-        reloadBannerImages.add(bannerImages[bannerindex]);
+        reloadBannerImages.addAll(localBannerImages);
         _fetching = false;
-        controller.forward();
+        // controller.forward();
       });
     });
   }
@@ -151,22 +130,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 : SizedBox(
                     height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.width,
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: Carousel(
-                        boxFit: BoxFit.cover,
-                        autoplay: true,
-                        animationCurve: Curves.easeInCubic,
-                        animationDuration: Duration(milliseconds: 500),
-                        dotSize: 4.0,
-                        dotIncreasedColor: Colors.green,
-                        dotBgColor: Colors.transparent,
-                        dotPosition: DotPosition.topRight,
-                        dotVerticalPadding: 10.0,
-                        showIndicator: false,
-                        indicatorBgPadding: 7.0,
-                        images: reloadBannerImages,
-                      ),
+                    child: Carousel(
+                      boxFit: BoxFit.cover,
+                      autoplay: true,
+                      animationCurve: Curves.easeInOut,
+                      animationDuration: Duration(milliseconds: 700),
+                      dotSize: 4.0,
+                      dotIncreasedColor: Colors.green,
+                      dotBgColor: Colors.transparent,
+                      dotPosition: DotPosition.topRight,
+                      dotVerticalPadding: 10.0,
+                      showIndicator: false,
+                      indicatorBgPadding: 7.0,
+                      images: reloadBannerImages,
                     ),
                   ),
             clipper: BottomWaveClipper(),
