@@ -5,7 +5,6 @@ import 'package:churchapp/Screens/Confession/Confession.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
-import 'package:churchapp/Screens/RestService/BannerService.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:churchapp/api/announcement_api.dart';
 import 'package:churchapp/api/banner_api.dart';
