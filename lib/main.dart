@@ -45,23 +45,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-// class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  bool _isAmplifyConfigured = false;
-
-  // final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   initState() {
     super.initState();
-    // final pushNotificationService = PushNotificationService(_firebaseMessaging);
-    // pushNotificationService.notificationPluginInitilization(); //Test
-    // MassTimingService().updateWeelyMassTiming1(); //Test
-    // pushNotificationService.initialise();
-    // pushNotificationService.context = context;
-
-    // configureAmplify();
   }
 
   @override

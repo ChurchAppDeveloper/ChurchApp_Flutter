@@ -505,9 +505,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ));
         }
       });
+      // debugPrint("Notification: ${initialMessage?.data.toString()}");
       // if (initialMessage?.data['type'] == 'task') {
-      //   /* Navigator.pushNamed(context, '/chat',
-      //       arguments: ChatArguments(initialMessage));*/
+        /* Navigator.pushNamed(context, '/chat',
+            arguments: ChatArguments(initialMessage));*/
       // }
     } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
       snackBarAlert(error, "Notification Permission is denied",

@@ -9,7 +9,8 @@
 
     <application
         android:name=".Application"
-        android:label="ST.BARNABAS"
+        android:label="ST. BARNABAS"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data

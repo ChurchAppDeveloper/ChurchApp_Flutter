@@ -1,6 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/MasstimingService.dart';
+import 'package:churchapp/api/mass_api.dart';
+import 'package:churchapp/model_response/mass_response.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,8 @@ class WeekdayPicker extends StatefulWidget {
 class _WeekdayPickerState extends State<WeekdayPicker> {
   double _height;
   double _width;
-  List<MassTiming> masstimings;
+  Content content;
+
   bool _fetching;
 
   // PushNotificationService notification;
@@ -26,19 +29,15 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
   void initState() {
     super.initState();
     _fetching = true;
-    /* final FirebaseMessaging fcm = FirebaseMessaging.instance;
-    notification = PushNotificationService(fcm);
-    notification.notificationPluginInitilization();
-    notification.context = context;*/
-    // notification.cancelAllNotifications();
-    MassTimingService.getTimings().then((masstimig) {
+
+    getMass().then((masstimig) {
       setState(() {
         _fetching = false;
-        Comparator<MassTiming> priceComparator =
-            (a, b) => a.massId.compareTo(b.massId);
-        masstimig.sort(priceComparator);
-        masstimings = masstimig;
-        print("masstimings $masstimings");
+        // Comparator<MassResponse> priceComparator =
+        //     (a, b) => a.content.massId.compareTo(b.massId);
+        // masstimig.content.monday.sort(priceComparator);
+         content = masstimig.content;
+        print("masstimings $content");
 
         // masstimings.forEach((MassTiming item) {
         //   print('${item.massId} - ${item.days}');
@@ -51,7 +50,12 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
-
+    const colorizeColors = [
+      Colors.white,
+      Colors.red,
+      Colors.orange,
+      Colors.black,
+    ];
     if (_fetching) {
       return Container(
         child: Center(
@@ -63,41 +67,89 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
         ),
       );
     } else {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SfCalendar(
-          view: CalendarView.month,
-          allowedViews: <CalendarView>
-          [
-            CalendarView.day,
-            CalendarView.week,
-            CalendarView.month,
-          ],
-          viewNavigationMode: ViewNavigationMode.snap,
-          dataSource: MeetingDataSource(_getDataSource()),
-          showCurrentTimeIndicator: true,
-          appointmentTextStyle: TextStyle(fontSize: 16),
-          todayTextStyle: TextStyle(fontSize: 18),
-          showDatePickerButton: true,
-          minDate: DateTime.now(),
-          allowViewNavigation: true,
-          maxDate: DateTime.now().add(Duration(days: 30)),
-          todayHighlightColor: Colors.red,
-          timeSlotViewSettings:
-          TimeSlotViewSettings(timeInterval: Duration(hours: 2)),
-          selectionDecoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: Colors.red, width: 2),
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            shape: BoxShape.rectangle,
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AnimatedTextKit(
+              animatedTexts: [
+                ColorizeAnimatedText(
+                  'MASS TIMING',
+                  textStyle: const TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  colors: colorizeColors,
+                  speed: const Duration(milliseconds: 500),
+                ),
+              ],
+
+              isRepeatingAnimation: true,
+              repeatForever: true,
+              pause: const Duration(milliseconds: 500),
+              displayFullTextOnTap: true,
+              stopPauseOnTap: true,
+            ),
           ),
-          monthViewSettings: MonthViewSettings(
-              showTrailingAndLeadingDates: true,
-              showAgenda: true,
-              appointmentDisplayMode: MonthAppointmentDisplayMode.indicator),
-        ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SfCalendar(
+                view: CalendarView.month,
+                allowedViews: <CalendarView>
+                [
+                  CalendarView.day,
+                  CalendarView.week,
+                  CalendarView.month,
+                ],
+                viewNavigationMode: ViewNavigationMode.snap,
+                dataSource: _getCalendarDataSource(),
+                // dataSource: MeetingDataSource(_getDataSource()),
+                showCurrentTimeIndicator: true,
+                appointmentTextStyle: TextStyle(fontSize: 16),
+                todayTextStyle: TextStyle(fontSize: 18),
+                showDatePickerButton: true,
+                minDate: DateTime.now(),
+                allowViewNavigation: true,
+                maxDate: DateTime.now().add(Duration(days: 30)),
+                todayHighlightColor: Colors.red.shade200,
+                timeSlotViewSettings:
+                TimeSlotViewSettings(timeInterval: Duration(hours: 2)),
+                selectionDecoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.red, width: 2),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  shape: BoxShape.rectangle,
+                ),
+                monthViewSettings: MonthViewSettings(
+                    showTrailingAndLeadingDates: true,
+                    showAgenda: true,
+                    appointmentDisplayMode: MonthAppointmentDisplayMode.indicator),
+              ),
+            ),
+          ),
+        ],
       );
     }
+  }
+  _AppointmentDataSource _getCalendarDataSource() {
+    List<Appointment> appointments = <Appointment>[];
+      appointments.add(Appointment(
+          startTime: DateTime.now(),
+          endTime: DateTime.now().add(Duration(hours: 1)),
+          subject: 'Mass Timing',
+          color: Colors.red,
+          recurrenceRule:
+          'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WED,THU,FRI;'));
+
+
+    return _AppointmentDataSource(appointments);
+  }
+
+}
+class _AppointmentDataSource extends CalendarDataSource {
+  _AppointmentDataSource(List<Appointment> source) {
+    appointments = source;
   }
 }
 
@@ -108,7 +160,7 @@ List<Meeting> _getDataSource() {
       DateTime(today.year, today.month, today.day, 9, 0, 0);
   final DateTime endTime = startTime.add(const Duration(hours: 2));
   meetings.add(Meeting(
-      'Conference', startTime, endTime, const Color(0xFF0F8644), false));
+      '', startTime, endTime, const Color(0xFF0F8644), false));
   return meetings;
 }
 
@@ -416,7 +468,6 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
           onChanged: (value) {
             setState(() {
               isSecondAlaramSwitched = value;
-              // updateSecondNottfication();
               print(isSecondAlaramSwitched);
             });
           },
@@ -426,64 +477,4 @@ class _DayTimeWidgetState extends State<DayTimeWidget> {
       ]),
     ]);
   }
-
-/*updateSecondNottfication() {
-    if (isSecondAlaramSwitched) {
-      //Cancel the existing notification
-      notification.cancelNotification(secondAlaramNotificationid);
-      //Schedule Notification with New Time
-      DateTime notifficationday = DateTime(daysArr.indexOf(masstime.days));
-      // notification.displayNotification1();
-      notification.scheduleWeeklyNotificationForRespectiveDays(
-          selectedSecondTime.hour,
-          selectedSecondTime.minute,
-          notifficationday,
-          secondAlaramNotificationid);
-    } else {
-      //Cancel the existing notification
-      notification.cancelNotification(secondAlaramNotificationid);
-    }
-
-    var masstiming = MassTiming(
-        phoneNumber: masstime.phoneNumber,
-        startTime:
-            constructDateAndHourToTimeStamp(DateTime.now(), selectedTime),
-        massId: masstime.massId,
-        endTime:
-            constructDateAndHourToTimeStamp(DateTime.now(), selectedSecondTime),
-        days: masstime.days,
-        endReminder: isSecondAlaramSwitched,
-        startReminder: isFirstAlaramSwitched);
-
-    MassTimingService().updateWeelyMassTiming(masstiming);
-  }
-
-  updateFirstNotification() {
-    if (isFirstAlaramSwitched) {
-      //Cancel the existing notification
-      notification.cancelNotification(firstAlaramNotificationid);
-      //Schedule Notification with New Time
-      DateTime notifficationday = DateTime(daysArr.indexOf(masstime.days));
-      notification.scheduleWeeklyNotificationForRespectiveDays(
-          selectedTime.hour,
-          selectedTime.minute,
-          notifficationday,
-          firstAlaramNotificationid);
-    } else {
-      //Cancel the existing notification
-      notification.cancelNotification(firstAlaramNotificationid);
-    }
-    var masstiming = MassTiming(
-        phoneNumber: masstime.phoneNumber,
-        startTime:
-            constructDateAndHourToTimeStamp(DateTime.now(), selectedTime),
-        massId: masstime.massId,
-        endTime:
-            constructDateAndHourToTimeStamp(DateTime.now(), selectedSecondTime),
-        days: masstime.days,
-        endReminder: isSecondAlaramSwitched,
-        startReminder: isFirstAlaramSwitched);
-
-    MassTimingService().updateWeelyMassTiming(masstiming);
-  }*/
 }
