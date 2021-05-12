@@ -4,24 +4,6 @@ import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum MenuList {
-  dashboard,
-  parishannouncement,
-  livestream,
-  bulletin,
-  masstiming,
-  prayerrequest,
-  donate,
-  confession,
-  classifields,
-  readings,
-  ministers,
-  school,
-  contactus,
-  aboutus,
-  logout
-}
-
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
 

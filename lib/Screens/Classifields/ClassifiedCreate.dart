@@ -2,9 +2,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:churchapp/Screens/RestService/ClassifieldService.dart';
+import 'package:churchapp/api/classified_api.dart';
+import 'package:churchapp/model_request/business_create_request.dart';
+import 'package:churchapp/model_response/get_business_type_response.dart';
+import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/string_constants.dart';
+import 'package:dio/dio.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,11 +54,6 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                 elevation: 0.0,
                 backgroundColor: const Color(0xffea5d49),
                 title: Text('Create Classified'),
-                shape: ContinuousRectangleBorder(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
-                  ),),
                 leading: IconButton(
                   // iconSize: 50.0,
                   icon: Icon(
@@ -160,7 +160,7 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                                 return null;
                             },
                             onFind: (String filter) =>
-                                ClassifieldService().getBusinessType(filter),
+                                getBusinessType(filter),
                             labelStyle: TextStyle(
                               fontSize: 20.0,
                               color: Colors.black,
@@ -267,8 +267,10 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                   setState(() {
                     codeDialog = valueText;
                     if (_textFieldController.text.toString().isNotEmpty) {
-                      ClassifieldService().createNewBusiness(valueText);
-                      Get.back();
+                      Map<String, dynamic> businessForm = {
+                        "businessName": valueText,
+                      };
+                      createBusinessTypeAPI(businessForm);
                     } else {
                       snackBarAlert(error, invalidBusiness,
                           Icon(Icons.error_outline), errorColor, whiteColor);

@@ -1,10 +1,6 @@
-import 'package:churchapp/Screens/MassTiming/Eucharistic.dart';
-import 'package:churchapp/Screens/MassTiming/Rosary.dart';
 import 'package:churchapp/Screens/MassTiming/WeekdayPicker.dart';
 import 'package:churchapp/util/shared_preference.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -21,8 +17,6 @@ class MassTiming extends StatefulWidget {
 
 class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
   var isShowAppbar;
-  int currentPage = 0;
-  GlobalKey bottomNavigationKey = GlobalKey();
   String role;
   Future getRole;
   DateTime selectedDate = DateTime.now();
@@ -61,7 +55,7 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
         body: Container(
           decoration: BoxDecoration(color: Colors.white),
           child: Center(
-            child: _getPage(currentPage),
+            child: WeekdayPicker(),
           ),
         ),
         floatingActionButton: FutureBuilder(
@@ -419,17 +413,6 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
       setState(() {
         selectedEndTime = endPicker;
       });
-    }
-  }
-
-  _getPage(int page) {
-    switch (page) {
-      case 0:
-        return WeekdayPicker();
-      case 1:
-        return Eucharistic();
-      case 2:
-        return Rosary();
     }
   }
 
