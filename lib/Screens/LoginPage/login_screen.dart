@@ -7,20 +7,8 @@ import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
-class Singleton {
-  Singleton._privateConstructor();
-
-  static Singleton _instance = Singleton._privateConstructor();
-  bool isAdmin = false;
-
-  factory Singleton() {
-    return _instance;
-  }
-}
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -30,7 +18,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _contactEditingController;
   String _dialCode = "1";
-int toggleSelected = 0;
+  int toggleSelected = 0;
+
   @override
   void initState() {
     _contactEditingController = TextEditingController();
@@ -127,7 +116,7 @@ int toggleSelected = 0;
           height: 10,
         ),
         ToggleSwitch(
-          minWidth: MediaQuery.of(context).size.width/2.7,
+          minWidth: MediaQuery.of(context).size.width / 2.7,
           cornerRadius: 5.0,
           activeBgColor: Colors.red,
           activeFgColor: Colors.white,
@@ -135,7 +124,10 @@ int toggleSelected = 0;
           inactiveFgColor: Colors.white,
           initialLabelIndex: 1,
           labels: ['Admin'.toUpperCase(), 'Contributor'.toUpperCase()],
-          icons: [Icons.admin_panel_settings_outlined, Icons.people_alt_outlined],
+          icons: [
+            Icons.admin_panel_settings_outlined,
+            Icons.people_alt_outlined
+          ],
           onToggle: (index) {
             print('switched to: $index');
             toggleSelected = index;
@@ -232,9 +224,9 @@ int toggleSelected = 0;
             if (_contactEditingController.text.isNotEmpty) {
               debugPrint(
                   "Dial Code $_dialCode${_contactEditingController.text}");
-                loginAPI(LoginRequest(
-                    contactNumber:
-                    "$_dialCode${_contactEditingController.text.toString()}"));
+              loginAPI(LoginRequest(
+                  contactNumber:
+                      "$_dialCode${_contactEditingController.text.toString()}"));
             } else {
               snackBarAlert(error, invalidNumber, Icon(Icons.error_outline),
                   errorColor, whiteColor);

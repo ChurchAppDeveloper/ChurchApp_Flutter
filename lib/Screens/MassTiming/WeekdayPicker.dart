@@ -1,11 +1,7 @@
-import 'package:churchapp/Screens/LoginPage/login_screen.dart';
-import 'package:churchapp/Screens/RestService/MasstimingService.dart';
 import 'package:churchapp/api/mass_api.dart';
 import 'package:churchapp/model_response/mass_response.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -22,8 +18,6 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
 
   bool _fetching;
 
-  // PushNotificationService notification;
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +29,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
         // Comparator<MassResponse> priceComparator =
         //     (a, b) => a.content.massId.compareTo(b.massId);
         // masstimig.content.monday.sort(priceComparator);
-         content = masstimig.content;
+        content = masstimig.content;
         print("masstimings $content");
 
         // masstimings.forEach((MassTiming item) {
@@ -73,8 +67,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
               padding: const EdgeInsets.all(16.0),
               child: SfCalendar(
                 view: CalendarView.month,
-                allowedViews: <CalendarView>
-                [
+                allowedViews: <CalendarView>[
                   CalendarView.day,
                   CalendarView.week,
                   CalendarView.month,
@@ -91,7 +84,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
                 maxDate: DateTime.now().add(Duration(days: 30)),
                 todayHighlightColor: Colors.red.shade200,
                 timeSlotViewSettings:
-                TimeSlotViewSettings(timeInterval: Duration(hours: 2)),
+                    TimeSlotViewSettings(timeInterval: Duration(hours: 2)),
                 selectionDecoration: BoxDecoration(
                   color: Colors.transparent,
                   border: Border.all(color: Colors.red, width: 2),
@@ -101,7 +94,8 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
                 monthViewSettings: MonthViewSettings(
                     showTrailingAndLeadingDates: true,
                     showAgenda: true,
-                    appointmentDisplayMode: MonthAppointmentDisplayMode.indicator),
+                    appointmentDisplayMode:
+                        MonthAppointmentDisplayMode.indicator),
               ),
             ),
           ),
@@ -109,21 +103,21 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
       );
     }
   }
+
   _AppointmentDataSource _getCalendarDataSource() {
     List<Appointment> appointments = <Appointment>[];
 
-      appointments.add(Appointment(
-          startTime: DateTime.now(),
-          endTime: DateTime.now().add(Duration(hours: 2)),
-          subject: 'Mass Timing',
-          color: Colors.red,
-          recurrenceRule:
-          'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR,SA,SU;'));
+    appointments.add(Appointment(
+        startTime: DateTime.now(),
+        endTime: DateTime.now().add(Duration(hours: 2)),
+        subject: 'Mass Timing',
+        color: Colors.red,
+        recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR,SA,SU;'));
 
     return _AppointmentDataSource(appointments);
   }
-
 }
+
 class _AppointmentDataSource extends CalendarDataSource {
   _AppointmentDataSource(List<Appointment> source) {
     appointments = source;
@@ -136,8 +130,7 @@ List<Meeting> _getDataSource() {
   final DateTime startTime =
       DateTime(today.year, today.month, today.day, 9, 0, 0);
   final DateTime endTime = startTime.add(const Duration(hours: 2));
-  meetings.add(Meeting(
-      '', startTime, endTime, const Color(0xFF0F8644), false));
+  meetings.add(Meeting('', startTime, endTime, const Color(0xFF0F8644), false));
   return meetings;
 }
 

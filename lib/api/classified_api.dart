@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:churchapp/Screens/RestService/ClassifieldService.dart';
+import 'package:churchapp/Model/ClassifiedModel.dart';
 import 'package:churchapp/model_request/business_create_request.dart';
 import 'package:churchapp/model_request/classified_create_request.dart';
 import 'package:churchapp/model_response/business_type_create_response.dart';
@@ -47,9 +47,9 @@ Future createBusinessTypeAPI(Map<String, dynamic> businessTypeForm) async {
   }
 }
 
-Future<List<BusinessModel>> getBusinessType(filter) async {
+Future<List<ClassifiedModel>> getBusinessType(filter) async {
   String token = await SharedPref().getStringPref(SharedPref().token);
-  List<BusinessModel> model = List<BusinessModel>();
+  List<ClassifiedModel> model = List<ClassifiedModel>();
   String url = "$baseUrl/businessTypeList?search=$filter";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
@@ -66,7 +66,7 @@ Future<List<BusinessModel>> getBusinessType(filter) async {
     List<Content> content = businessTypeResponse.content;
 
     for (int i = 0; i < content.length; i++) {
-      model.add(BusinessModel(
+      model.add(ClassifiedModel(
           name: content[i].businessName, id: content[i].businessId));
     }
 

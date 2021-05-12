@@ -1,16 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:churchapp/Screens/RestService/ClassifieldService.dart';
+import 'package:churchapp/Model/ClassifiedModel.dart';
 import 'package:churchapp/api/classified_api.dart';
-import 'package:churchapp/model_request/business_create_request.dart';
 import 'package:churchapp/model_request/classified_create_request.dart';
-import 'package:churchapp/model_response/get_business_type_response.dart';
-import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/string_constants.dart';
-import 'package:dio/dio.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +14,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:math' as math;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class ClassifiedCreate extends StatefulWidget {
@@ -53,7 +48,7 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
           child: Scaffold(
             appBar: AppBar(
                 elevation: 0.0,
-                backgroundColor: const Color(0xffea5d49),
+                backgroundColor: Color.fromARGB(255, 219, 69, 71),
                 title: Text('Create Classified'),
                 leading: IconButton(
                   // iconSize: 50.0,
@@ -149,19 +144,18 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                               borderRadius: BorderRadius.circular(10)),
 
                           // dropdown below..
-                          child: FindDropdown<BusinessModel>(
+                          child: FindDropdown<ClassifiedModel>(
                             label: "Business Type",
                             showSearchBox: true,
                             labelVisible: true,
-                            selectedItem: BusinessModel(name: ""),
-                            validate: (BusinessModel item) {
+                            selectedItem: ClassifiedModel(name: ""),
+                            validate: (ClassifiedModel item) {
                               if (item.name == "")
                                 return "Required field";
                               else
                                 return null;
                             },
-                            onFind: (String filter) =>
-                                getBusinessType(filter),
+                            onFind: (String filter) => getBusinessType(filter),
                             labelStyle: TextStyle(
                               fontSize: 20.0,
                               color: Colors.black,
@@ -171,7 +165,7 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                               labelText: "Search",
                               border: OutlineInputBorder(),
                             ),
-                            onChanged: (BusinessModel data) {
+                            onChanged: (ClassifiedModel data) {
                               businesstype = data.id;
                             },
                           )),
@@ -351,32 +345,33 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
       maskType: EasyLoadingMaskType.custom,
     );
 
-    if(name.isNotEmpty && phonenumer.isNotEmpty){
+    if (name.isNotEmpty && phonenumer.isNotEmpty) {
       EasyLoading.show(
         status: 'loading...',
         maskType: EasyLoadingMaskType.custom,
       );
       createClassifiedAPI(
-          ClassifiedCreateRequest(
-              businessName: name, phoneNumber: phonenumer,businessTypeId:businesstype),
-          file: selectedFile)
+              ClassifiedCreateRequest(
+                  businessName: name,
+                  phoneNumber: phonenumer,
+                  businessTypeId: businesstype),
+              file: selectedFile)
           .then((value) {
-        // _btnController.success();
-        // EasyLoading.dismiss();
+        _btnController.success();
+        EasyLoading.dismiss();
         // Get.offNamed('/announcementCreate');
-
       }).catchError((error) {
         debugPrint("Error : $error");
         _btnController.stop();
         EasyLoading.dismiss();
       });
-    }else{
+    } else {
       _btnController.stop();
       snackBarAlert(error, invalidClassified, Icon(Icons.error_outline),
           errorColor, whiteColor);
     }
 
-   /* ClassifieldService service = ClassifieldService();
+    /* ClassifieldService service = ClassifieldService();
     service.businesstype = businesstype;
     service.contactnumber = phonenumer;
     service.name = name;
