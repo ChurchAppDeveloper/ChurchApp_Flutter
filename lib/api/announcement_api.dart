@@ -7,7 +7,10 @@ import 'package:churchapp/model_request/annoucement_create_request.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/model_response/get_announcement_response.dart';
 import 'package:churchapp/util/api_constants.dart';
+import 'package:churchapp/util/color_constants.dart';
+import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/shared_preference.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -86,22 +89,23 @@ Future createAnnouncementAPI(AnnouncementCreateRequest announcementForm,
   debugPrint("File ${file.path}");
 
   http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-      'file', file.path, filename: file.path.split("/").last
-  ); //returns a Future<MultipartFile>
+      'file', file.path,
+      filename: file.path.split("/").last); //returns a Future<MultipartFile>
 
   request.files.add(multipartFile);
   debugPrint("Fields ${request.fields.toString()}");
   try {
-    final response =
-    await request.send().timeout(const Duration(seconds: 60));
+    final response = await request.send().timeout(const Duration(seconds: 60));
     var res = await http.Response.fromStream(response);
     debugPrint("Res ${res.body}");
     Get.back();
-
   } on SocketException {
+    snackBarAlert(error, "You are not connected to internet",
+        Icon(Icons.error_outline), errorColor, whiteColor);
     throw Exception("You are not connected to internet");
   } on TimeoutException catch (e) {
-    print('Time out');
+    snackBarAlert(
+        error, 'Time out', Icon(Icons.error_outline), errorColor, whiteColor);
     throw TimeoutException('Time out');
   }
 }

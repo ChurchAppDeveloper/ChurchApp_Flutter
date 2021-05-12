@@ -2,9 +2,14 @@ import 'package:churchapp/Screens/Classifields/ClassifiedCreate.dart';
 import 'package:churchapp/Screens/Classifields/ImageZoomView.dart';
 import 'package:churchapp/Screens/LoginPage/login_screen.dart';
 import 'package:churchapp/Screens/RestService/ClassifieldService.dart';
+import 'package:churchapp/api/classified_api.dart';
+import 'package:churchapp/model_response/get_classified_response.dart';
+import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/shared_preference.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
@@ -37,24 +42,22 @@ class _ClassifiedListState extends State<ClassifiedList> {
   var isShowAppbar;
   List<Classifield> classifields = [];
   StackedList stackedlist;
-  bool _fetching;
   String role;
   Future apiClassified, getRole;
 
   @override
   void initState() {
-    _fetching = true;
     isShowAppbar = Get.arguments;
-    ClassifieldService().getClassifieldList().then((classifields) {
-      setState(() {
-        classifields = classifields;
-        stackedlist = StackedList(
-          classifields: classifields,
-        );
-        _fetching = false;
-      });
-    });
-    // apiClassified = getClassifiedAPI();
+    // getClassifiedAPI().then((classifieds) {
+    //   setState(() {
+    //     classifieds = classifieds;
+    //     stackedlist = StackedList(
+    //       classifields: classifieds.content,
+    //     );
+    //     _fetching = false;
+    //   });
+    // });
+    apiClassified = getClassifiedAPI();
     getRole = initData();
     super.initState();
   }
@@ -83,17 +86,173 @@ class _ClassifiedListState extends State<ClassifiedList> {
                   },
                 ))
             : Container(),
-        body: (_fetching)
-            ? Container(
-                child: Center(
-                  child: Loading(
-                    indicator: BallPulseIndicator(),
-                    size: 100.0,
-                    color: Colors.red,
-                  ),
-                ),
-              )
-            : stackedlist,
+        body: FutureBuilder<ClassifiedResponse>(
+          future: apiClassified,
+          builder: (context, projectSnap) {
+            if (projectSnap.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (projectSnap.connectionState == ConnectionState.done) {
+              return ListView.builder(
+                itemCount: projectSnap.data.content.length,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  if (projectSnap.data.content.isNotEmpty) {
+
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                      child: Container(
+                        color: Colors.white,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                Color.fromARGB(255, 219, 69, 71).withOpacity(0.1),
+                                spreadRadius: 15,
+                                blurRadius: 10,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft, end: Alignment.bottomRight,
+                              // colors: [
+                              //   _colors[random.nextInt(15)],
+                              //   _colors[random.nextInt(15)]
+                              // ],
+                              colors: [HexColor("#FB8085"), HexColor("#F9C1B1")],
+                              // colors: [HexColor("##FF928B"), HexColor("#FFAC81")]),
+                              // colors: [HexColor("#864BA2"), HexColor("#BF3A30")],
+                            ),
+                          ),
+                          child: Stack(
+                            children: [
+                              ListTile(
+                                title: Text(projectSnap.data.content[index].businessName.toString(),
+                                    textAlign: TextAlign.start,
+                                    style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                subtitle:
+                                Text(projectSnap.data.content[index].businessTypeName.toString(),
+                                    textAlign: TextAlign.start,
+                                    style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                trailing: RichText(
+                                  text: TextSpan(
+                                    text: projectSnap.data.content[index].phoneNumber.toString(),
+                                    style: new TextStyle(
+                                        color: Colors.black, fontSize: 18, fontWeight: FontWeight.w400),
+                                    recognizer: new TapGestureRecognizer()
+                                      ..onTap = () {
+                                        launch(
+                                            'tel:${projectSnap.data.content[index].phoneNumber.toString()}');
+                                      },
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                  left: 100,
+                                  bottom: 80,
+                                  // alignment: Alignment.centerLeft,
+                                  // padding: EdgeInsets.all(48.0),
+                                  height: 150.0,
+                                  width: 200.0,
+                                  child: Image(
+                                    image: NetworkImage(baseUrl+projectSnap.data.content[index].imagename),
+                                    // image: AssetImage('image/bg1.jpg'),
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    filterQuality: FilterQuality.high,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                    /*return GestureDetector(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 15, right: 15, top: 10),
+                        decoration: new BoxDecoration(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 219, 69, 71)
+                                  .withOpacity(0.1),
+                              spreadRadius: 15,
+                              blurRadius: 10,
+                              offset:
+                              Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                          // gradient: LinearGradient(
+                          //     begin: Alignment.centerLeft,
+                          //     end: Alignment.centerRight,
+                          //     colors: [Colors.white, Colors.white]),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left:8.0,right:8.0, top:8.0),
+                              child: Text(
+                                  projectSnap.data.content[index].businessName
+                                      .toString(),
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  projectSnap.data.content[index].businessTypeName
+                                      .toString(),
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+
+                      },
+                    );*/
+                  } else {
+                    return Center(
+                        child: SvgPicture.asset("image/nodata.svg",
+                            semanticsLabel: appName));
+                  }
+                },
+              );
+            } else {
+              return Text("Error ${projectSnap.error}");
+            }
+          },
+        ),
         floatingActionButton: FutureBuilder(
             future: getRole,
             builder: (context, projectSnap) {

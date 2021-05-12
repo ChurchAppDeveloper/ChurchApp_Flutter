@@ -249,7 +249,7 @@ class ClassifieldService {
 }
 
 class BusinessModel {
-  final String id;
+  final int id;
   final String name;
 
   BusinessModel({

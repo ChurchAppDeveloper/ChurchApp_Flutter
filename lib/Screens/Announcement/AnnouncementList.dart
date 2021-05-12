@@ -22,18 +22,11 @@ class AnnouncementList extends StatefulWidget {
 
 class _AnnouncementListState extends State<AnnouncementList> {
   bool isShowAppbar = true;
-
-  // bool _fetching;
-
-  // List<AnnouncementResponse> menus;
-  // var random = new math.Random();
-  // final List<Color> _colors = Colors.primaries;
   String role;
   Future apiAnnouncement, getRole;
 
   @override
   void initState() {
-    // _fetching = true;
     isShowAppbar = Get.arguments;
     apiAnnouncement = getAnnouncementAPI();
     getRole = initData();

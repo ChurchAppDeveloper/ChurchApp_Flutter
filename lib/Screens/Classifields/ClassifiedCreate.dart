@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:churchapp/Screens/RestService/ClassifieldService.dart';
 import 'package:churchapp/api/classified_api.dart';
 import 'package:churchapp/model_request/business_create_request.dart';
+import 'package:churchapp/model_request/classified_create_request.dart';
 import 'package:churchapp/model_response/get_business_type_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
@@ -37,7 +38,7 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
   PickedFile imageFile;
   String name = "";
   String phonenumer = "";
-  String businesstype = "";
+  int businesstype = 0;
   TextEditingController _textFieldController = TextEditingController();
   File selectedFile;
   final RoundedLoadingButtonController _btnController =
@@ -171,7 +172,7 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (BusinessModel data) {
-                              businesstype = data.name;
+                              businesstype = data.id;
                             },
                           )),
                       selectedFile != null
@@ -349,7 +350,33 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
       status: 'loading...',
       maskType: EasyLoadingMaskType.custom,
     );
-    ClassifieldService service = ClassifieldService();
+
+    if(name.isNotEmpty && phonenumer.isNotEmpty){
+      EasyLoading.show(
+        status: 'loading...',
+        maskType: EasyLoadingMaskType.custom,
+      );
+      createClassifiedAPI(
+          ClassifiedCreateRequest(
+              businessName: name, phoneNumber: phonenumer,businessTypeId:businesstype),
+          file: selectedFile)
+          .then((value) {
+        // _btnController.success();
+        // EasyLoading.dismiss();
+        // Get.offNamed('/announcementCreate');
+
+      }).catchError((error) {
+        debugPrint("Error : $error");
+        _btnController.stop();
+        EasyLoading.dismiss();
+      });
+    }else{
+      _btnController.stop();
+      snackBarAlert(error, invalidClassified, Icon(Icons.error_outline),
+          errorColor, whiteColor);
+    }
+
+   /* ClassifieldService service = ClassifieldService();
     service.businesstype = businesstype;
     service.contactnumber = phonenumer;
     service.name = name;
@@ -364,7 +391,7 @@ class _ClassifiedCreateState extends State<ClassifiedCreate> {
       _btnController.success();
       EasyLoading.dismiss();
       Navigator.of(context).pop();
-    });
+    });*/
   }
 
 // Future<List<BusinessModel>> getData(filter) async {
