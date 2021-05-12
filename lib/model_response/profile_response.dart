@@ -52,6 +52,7 @@ class Content {
 class ChurchProfile {
   int id;
   String contactUs;
+  String confessionContact;
   String aboutUs;
   String onlineReading;
   String facebook;
@@ -67,6 +68,7 @@ class ChurchProfile {
   ChurchProfile(
       {this.id,
       this.contactUs,
+      this.confessionContact,
       this.aboutUs,
       this.onlineReading,
       this.facebook,
@@ -82,6 +84,7 @@ class ChurchProfile {
   ChurchProfile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     contactUs = json['contactUs'];
+    confessionContact = json['confessionContact'];
     aboutUs = json['aboutUs'];
     onlineReading = json['onlineReading'];
     facebook = json['facebook'];
@@ -99,6 +102,7 @@ class ChurchProfile {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['contactUs'] = this.contactUs;
+    data['confessionContact'] = this.confessionContact;
     data['aboutUs'] = this.aboutUs;
     data['onlineReading'] = this.onlineReading;
     data['facebook'] = this.facebook;

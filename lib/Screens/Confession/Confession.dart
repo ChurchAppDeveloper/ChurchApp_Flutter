@@ -12,6 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Confession extends StatefulWidget {
   final bool isShowAppbar;
@@ -26,62 +28,14 @@ var isBarHide = false;
 
 class _ConfessionState extends State<Confession> {
   var isShowAppbar;
-  String confessionData = "";
-  var confessionNameArr = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M'
-  ];
-  bool _fetching;
-  List<ConfessionItem> menus;
   final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
-
+  new RoundedLoadingButtonController();
   @override
   void initState() {
-    super.initState();
-    _fetching = true;
     isShowAppbar = Get.arguments;
     isBarHide = isShowAppbar;
+    super.initState();
 
-    SystemChrome.setEnabledSystemUIOverlays([]);
-
-    ConfessionService().getConfessionData().then((data) {
-      setState(() {
-        ConfessionData dataval = data.first;
-        // int starttime = dataval.startTime;
-        // if (starttime > 12) {
-        //   starttime = starttime - 12;
-        // }
-        confessionData = "The Confession has scheduled on " +
-            dataval.confessionDate +
-            " at " +
-            dataval.startTime.toString() +
-            " to " +
-            dataval.endTime.toString() +
-            " and duration is " +
-            dataval.slotDuration.toString() +
-            " Minutes";
-        // The Confession has scheduled on 01/05/2021 at 3:30 tp 4:30 PM
-      });
-    });
-
-    ConfessionService().getBookedConfessionList().then((data) {
-      setState(() {
-        menus = data;
-        _fetching = false;
-      });
-    });
   }
 
   @override
@@ -100,117 +54,56 @@ class _ConfessionState extends State<Confession> {
               )
             : null,
         body: Column(children: [
-          Container(
-              child: Stack(
+          Stack(
             children: [
-              Opacity(
-                opacity: 0.5,
-                child: ClipPath(
-                    clipper: WaveClipper(),
-                    child: Container(
-                        color: Colors.deepOrangeAccent,
-                        height: MediaQuery.of(context).size.height / 3)),
-              ),
-              ClipPath(
+          Opacity(
+            opacity: 0.5,
+            child: ClipPath(
                 clipper: WaveClipper(),
-                child: Column(children: [
-                  Container(
-                      padding: EdgeInsets.only(bottom: 60),
-                      color: Colors.red,
-                      // height: 180,
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 16.0, top: 24),
-                        child: CircleAvatar(
-                          radius: 55,
-                          backgroundColor: Color(0xffFDCF09),
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('image/bg1.jpg'),
-                          ),
-                        ),
-                      )),
-
-                  // Positioned(top: 0, child: Text("asdada"))
-                ]),
-              ),
+                child: Container(
+                    color: Colors.deepOrangeAccent,
+                    height: MediaQuery.of(context).size.height / 1.7)),
+          ),
+          ClipPath(
+            clipper: WaveClipper(),
+            child: Column(children: [
               Container(
-                margin: EdgeInsets.only(left: 120),
-                // padding: EdgeInsets.only(right: 0),
-                color: Colors.transparent,
-                width: 250,
-                height: 100,
-                padding: EdgeInsets.all(8.0),
-                alignment: Alignment.centerRight,
-                child: Text(confessionData,
-                    textAlign: TextAlign.end,
-                    style: GoogleFonts.lato(
-                      textStyle: TextStyle(
-                        fontSize: 18,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                  padding: EdgeInsets.only(bottom: 130),
+                  color: Colors.red,
+                  // height: 180,
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only( top: 60),
+                    child: CircleAvatar(
+                      radius: 75,
+                      backgroundColor: Color(0xffFDCF09),
+                      child: CircleAvatar(
+                        radius: 70,
+                        backgroundImage: AssetImage('image/bg1.jpg'),
                       ),
-                    )),
-              )
+                    ),
+                  )),
+            ]),
+          ),
             ],
-          )),
-          Container(
-              child: Text("Scheduled List",
-                  style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ))),
-          Expanded(
-            child: (_fetching)
-                ? Container(
-                    child: Center(
-                      child: Loading(
-                        indicator: BallPulseIndicator(),
-                        size: 100.0,
-                        color: Colors.red,
-                      ),
-                    ),
-                  )
-                : SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: menus.length,
-                        itemBuilder: (context, index) => ListTile(
-                            trailing: Icon(FontAwesomeIcons.church),
-                            title:
-                                Text("Parishioner " + confessionNameArr[index],
-                                    style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                    )),
-                            subtitle: Text(
-                                menus[index].startTime.toString() +
-                                    " to " +
-                                    menus[index].endTime.toString(),
-                                style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
-                                  ),
-                                )),
-                            onTap: () {
-                              print(index);
-                            }))),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('To book a Confession, contact us',
+                textAlign: TextAlign.start,
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                )),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: RoundedLoadingButton(
               animateOnTap: true,
-              child: Text('Schedule',
+              child: Text('Call',
                   textAlign: TextAlign.start,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
@@ -228,16 +121,11 @@ class _ConfessionState extends State<Confession> {
         ]),);
   }
 
-  onSubmitPressed() {
-    ConfessionService().getAvailableConfessionList().then((data) {
-      if (data.length == 0) {
-      } else {
-        ConfessionService().createNewSlots(data.first);
-      }
-    });
-    Timer(Duration(seconds: 3), () {
-      _btnController.success();
-    });
+  onSubmitPressed() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    launch(
+        'tel:${prefs.getString("confessionNumber").toString()}');
+    _btnController.stop();
   }
 }
 

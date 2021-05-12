@@ -30,11 +30,17 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
   TimeOfDay selectedEndTime = TimeOfDay.now();
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
+  List<String> _choices;
+  int _choiceIndex;
+  bool _isSelected;
 
   @override
   void initState() {
     isShowAppbar = Get.arguments;
     getRole = initData();
+    _isSelected = false;
+    _choiceIndex = 0;
+    _choices = ["Mass Timing", "Eucharistic", "Rosary"];
     super.initState();
   }
 
@@ -58,44 +64,6 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
             child: _getPage(currentPage),
           ),
         ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              key: bottomNavigationKey,
-              onTap: (index) {
-                setState(() {
-                  currentPage = index;
-                });
-              },
-              items: [
-                BottomNavigationBarItem(
-                    label: "Mass", icon: Icon(FontAwesomeIcons.bible)),
-                BottomNavigationBarItem(
-                    label: "Eucharistic", icon: Icon(FontAwesomeIcons.cross)),
-                BottomNavigationBarItem(
-                    label: "Rosary", icon: Icon(FontAwesomeIcons.ankh)),
-              ],
-              backgroundColor: Colors.white,
-              showUnselectedLabels: true,
-              selectedItemColor: Colors.red,
-              currentIndex: currentPage,
-              elevation: 8.0,
-              showSelectedLabels: true,
-            ),
-          ),
-        ),
         floatingActionButton: FutureBuilder(
             future: getRole,
             builder: (context, projectSnap) {
@@ -109,18 +77,6 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                String title = "Mass Timing";
-                                switch (currentPage) {
-                                  case 0:
-                                    title = "Mass Timing";
-                                    break;
-                                  case 1:
-                                    title = "Eucharistic Timing";
-                                    break;
-                                  case 2:
-                                    title = "Rosary Timing";
-                                    break;
-                                }
                                 return StatefulBuilder(
                                     builder: (context, setState) {
                                   return AlertDialog(
@@ -130,7 +86,7 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
                                               2,
                                       child: Column(
                                         children: [
-                                          Text(title,
+                                          Text("Create Schedule",
                                               textAlign: TextAlign.start,
                                               style: GoogleFonts.lato(
                                                 textStyle: TextStyle(
@@ -139,6 +95,56 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
                                                   color: Colors.red,
                                                 ),
                                               )),
+                                          Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                10,
+                                            child: ListView.builder(
+                                              itemCount: _choices.length,
+                                              physics: BouncingScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0,
+                                                          top: 8.0,
+                                                          bottom: 8.0),
+                                                  child: ChoiceChip(
+                                                    label:
+                                                    Text(_choices[index],
+                                                        textAlign: TextAlign.start,
+                                                        style: GoogleFonts.lato(
+                                                          textStyle: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: Colors.white,
+                                                          ),
+                                                        )),
+                                                    selected:
+                                                        _choiceIndex == index,
+                                                    selectedColor: Colors.red,
+                                                    onSelected:
+                                                        (bool selected) {
+                                                      setState(() {
+                                                        _choiceIndex = selected
+                                                            ? index
+                                                            : 0;
+                                                      });
+                                                    },
+                                                    elevation: 4.0,
+                                                    backgroundColor:
+                                                        Colors.grey,
+                                                    labelStyle: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 8.0,

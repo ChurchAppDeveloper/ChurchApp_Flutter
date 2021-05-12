@@ -124,6 +124,7 @@ void profileDashAPI() async {
     if (dataval.success) {
       debugPrint("content:${dataval.content}");
       await SharedPref().setStringPref('phoneNumber', dataval.content.churchProfile.contactUs);
+      await SharedPref().setStringPref('confessionNumber', dataval.content.churchProfile.contactUs);
       await SharedPref().setStringPref('aboutUs', dataval.content.churchProfile.aboutUs);
       await SharedPref().setStringPref('ministersUrl', dataval.content.churchProfile.ministers);
       await SharedPref().setStringPref('donateUrl', dataval.content.churchProfile.donate);

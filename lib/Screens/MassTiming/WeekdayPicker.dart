@@ -69,28 +69,6 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
     } else {
       return Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: AnimatedTextKit(
-              animatedTexts: [
-                ColorizeAnimatedText(
-                  'MASS TIMING',
-                  textStyle: const TextStyle(
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  colors: colorizeColors,
-                  speed: const Duration(milliseconds: 500),
-                ),
-              ],
-
-              isRepeatingAnimation: true,
-              repeatForever: true,
-              pause: const Duration(milliseconds: 500),
-              displayFullTextOnTap: true,
-              stopPauseOnTap: true,
-            ),
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -134,14 +112,14 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
   }
   _AppointmentDataSource _getCalendarDataSource() {
     List<Appointment> appointments = <Appointment>[];
+
       appointments.add(Appointment(
           startTime: DateTime.now(),
-          endTime: DateTime.now().add(Duration(hours: 1)),
+          endTime: DateTime.now().add(Duration(hours: 2)),
           subject: 'Mass Timing',
           color: Colors.red,
           recurrenceRule:
-          'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WED,THU,FRI;'));
-
+          'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR,SA,SU;'));
 
     return _AppointmentDataSource(appointments);
   }
