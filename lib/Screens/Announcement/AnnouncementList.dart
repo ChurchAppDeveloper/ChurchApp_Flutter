@@ -128,44 +128,6 @@ class _AnnouncementListState extends State<AnnouncementList> {
                         ),
                       ),
                       onTap: () async {
-                        // var fileeaderFormats = [
-                        //   "docx",
-                        //   "doc",
-                        //   "xlsx",
-                        //   "xls",
-                        //   'pptx',
-                        //   "ppt",
-                        //   "pdf",
-                        //   "txt"
-                        // ];
-                        // https://assets-barnabas.s3.us-east-2.amazonaws.com/ifkfkfkxk.pdf
-                        // var fileurl =
-                        //     "https://assets-barnabas.s3.us-east-2.amazonaws.com/Announcement374.pdf.application/pdf";
-                        // var extension = fileurl.split('/').last;
-                        // Dio dio = Dio();
-                        // var dir = await getApplicationDocumentsDirectory();
-                        // var localPath = "${dir.path}/" + extension;
-                        // try {
-                        //   await dio.download(fileurl, localPath,
-                        //       onReceiveProgress: (rec, total) {
-                        //     print(rec);
-                        //     print(total);
-                        //     if (total == rec) {
-                        //       Navigator.of(context)
-                        //           .push(MaterialPageRoute(builder: (ctx) {
-                        //         return FileReaderPage(
-                        //           filePath: localPath,
-                        //         );
-                        //       }));
-                        //     }
-                        //   });
-                        // } catch (e) {
-                        //   print(e);
-                        // }
-
-// "http://triggs.djvu.org/djvu-editions.com/BIBLES/DRV/Download.pdf"
-// https://assets-barnabas.s3.us-east-2.amazonaws.com/Announcement374.pdf.application/pdf
-
                        getAnnouncementImageAPI(context,projectSnap.data.content[index].id,projectSnap.data.content[index].filename);
                       },
                     );

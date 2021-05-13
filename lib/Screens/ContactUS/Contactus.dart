@@ -21,15 +21,15 @@ class ContactUSState extends State<ContactUS> {
   Completer<GoogleMapController> _controller = Completer();
   var isShowAppbar = true;
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(33.83104, -118.17676),
-    zoom: 30.4746,
+    target: LatLng(33.8309373, -118.1769412),
+    zoom: 19.0,
   );
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
-      target: LatLng(33.83104, -118.17676),
+      target: LatLng(33.8309373, -118.1769412),
       tilt: 59.440717697143555,
-      zoom: 51.151926040649414);
+      zoom: 19.0);
 
   @override
   initState() {

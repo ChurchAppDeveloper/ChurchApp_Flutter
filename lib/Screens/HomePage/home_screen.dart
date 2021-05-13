@@ -52,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int bannerindex = 0;
   Future apiAnnouncementCount;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
+  AnimationController controller;
+  Animation<double> animation;
   String greeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -72,7 +73,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _firebaseMessaging.getToken().then((String token) {
       print("token $token");
     });
-
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this);
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.forward();
+      }
+    });
     loadData();
     apiAnnouncementCount = getAnnouncementCountAPI();
     getBanners().then((banners) {
@@ -85,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         bannerImages = localBannerImages;
         reloadBannerImages.addAll(localBannerImages);
         _fetching = false;
-        // controller.forward();
+        controller.forward();
       });
     });
   }
@@ -99,9 +109,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       body: Stack(
         children: [
           Container(
-            color: Color.fromARGB(255, 219, 69, 71),
+            color: Colors.grey.shade100,
           ),
-          Container(
+          /*Container(
             child: Transform.scale(
               scale: 1.5,
               child: Image.asset(
@@ -109,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 fit: BoxFit.fill,
               ),
             ),
-          ),
+          ),*/
           ClipPath(
             child: (_fetching)
                 ? Container(
@@ -124,19 +134,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 : SizedBox(
                     height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.width,
-                    child: Carousel(
-                      boxFit: BoxFit.cover,
-                      autoplay: true,
-                      animationCurve: Curves.easeInOut,
-                      animationDuration: Duration(milliseconds: 700),
-                      dotSize: 4.0,
-                      dotIncreasedColor: Colors.green,
-                      dotBgColor: Colors.transparent,
-                      dotPosition: DotPosition.topRight,
-                      dotVerticalPadding: 10.0,
-                      showIndicator: false,
-                      indicatorBgPadding: 7.0,
-                      images: reloadBannerImages,
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: Carousel(
+                        boxFit: BoxFit.cover,
+                        autoplay: true,
+                        animationCurve: Curves.decelerate,
+                        animationDuration: Duration(milliseconds: 500),
+                        dotSize: 4.0,
+                        dotIncreasedColor: Colors.green,
+                        dotBgColor: Colors.transparent,
+                        dotPosition: DotPosition.topRight,
+                        dotVerticalPadding: 10.0,
+                        showIndicator: false,
+                        indicatorBgPadding: 7.0,
+                        images: reloadBannerImages,
+                      ),
                     ),
                   ),
             clipper: BottomWaveClipper(),
