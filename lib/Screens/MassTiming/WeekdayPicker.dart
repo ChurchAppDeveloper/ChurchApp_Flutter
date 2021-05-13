@@ -29,7 +29,7 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
         // Comparator<MassResponse> priceComparator =
         //     (a, b) => a.content.massId.compareTo(b.massId);
         // masstimig.content.monday.sort(priceComparator);
-        content = masstimig.content;
+        // content = masstimig.content;
         print("masstimings $content");
 
         // masstimings.forEach((MassTiming item) {

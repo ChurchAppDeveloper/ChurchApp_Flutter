@@ -1,5 +1,9 @@
 import 'package:churchapp/Screens/MassTiming/WeekdayPicker.dart';
+import 'package:churchapp/api/mass_api.dart';
+import 'package:churchapp/util/color_constants.dart';
+import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/shared_preference.dart';
+import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,13 +30,11 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
       new RoundedLoadingButtonController();
   List<String> _choices;
   int _choiceIndex;
-  bool _isSelected;
 
   @override
   void initState() {
     isShowAppbar = Get.arguments;
     getRole = initData();
-    _isSelected = false;
     _choiceIndex = 0;
     _choices = ["Mass Timing", "Eucharistic", "Rosary"];
     super.initState();
@@ -108,13 +110,14 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
                                                           top: 8.0,
                                                           bottom: 8.0),
                                                   child: ChoiceChip(
-                                                    label:
-                                                    Text(_choices[index],
-                                                        textAlign: TextAlign.start,
+                                                    label: Text(_choices[index],
+                                                        textAlign:
+                                                            TextAlign.start,
                                                         style: GoogleFonts.lato(
                                                           textStyle: TextStyle(
                                                             fontSize: 16,
-                                                            fontWeight: FontWeight.w400,
+                                                            fontWeight:
+                                                                FontWeight.w400,
                                                             color: Colors.white,
                                                           ),
                                                         )),
@@ -351,31 +354,30 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
       ..textColor = Colors.white
       ..maskColor = Colors.white.withOpacity(0.5)
       ..userInteractions = false;
+*/
+    // EasyLoading.show(
+    //   status: 'loading...',
+    //   maskType: EasyLoadingMaskType.custom,
+    // );
 
-    if(announceTitle.isNotEmpty && announcedesc.isNotEmpty){
-      EasyLoading.show(
-        status: 'loading...',
-        maskType: EasyLoadingMaskType.custom,
-      );
-      createAnnouncementAPI(
-          AnnouncementCreateRequest(
-              title: announceTitle, description: announcedesc),
-          file: selectedFile)
-          .then((value) {
-        // _btnController.success();
-        // EasyLoading.dismiss();
-        // Get.offNamed('/announcementCreate');
+    Map<String, dynamic> timingForm = {
+      "schedule_type": _choices[_choiceIndex],
+      "date": "${selectedDate.toString()}",
+      "start_time":
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedStartTime.hour, selectedStartTime.minute).toString()}",
+      "end_time":
+          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedEndTime.hour, selectedEndTime.minute).toString()}",
+    };
 
-      }).catchError((error) {
-        debugPrint("Error : $error");
-        _btnController.stop();
-        EasyLoading.dismiss();
-      });
-    }else{
-      _btnController.stop();
-      snackBarAlert(error, invalidAnnouncement, Icon(Icons.error_outline),
-          errorColor, whiteColor);
-    }*/
+    debugPrint(timingForm.toString());
+    debugPrint(DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+            selectedStartTime.hour,
+            selectedStartTime.minute)
+        .toString());
+    createTimingAPI(timingForm);
   }
 
   _selectDate(context, setState) async {
