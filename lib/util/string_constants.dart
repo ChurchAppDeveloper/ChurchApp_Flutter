@@ -3,7 +3,9 @@ const String error = "Error";
 const String success = "Success";
 const String appName = "St. Barnabas";
 const String churchAddress =
-    "3955 Orange Avenue \n Long Beach, CA 90807 \n 562-424-8595";
+    "3955 Orange Avenue\nLong Beach, CA 90807";
+const String contactInfo = "Parish Office: 562-424-8595\nE-Mail: church@stbarnabaslb.org";
+const String pastorInfo = "Pastor: Rev. Antony Gaspar\nAssoc. Pastor: Rev. Bernard Santiago";
 const String verify = "Verify";
 const String login = "Login";
 const String logout = "Logout";

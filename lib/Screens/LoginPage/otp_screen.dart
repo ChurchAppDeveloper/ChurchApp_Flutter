@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class OtpScreen extends StatefulWidget {
   @override
@@ -22,7 +23,8 @@ class _OtpScreenState extends State<OtpScreen> {
   String verificationId;
   String errorMessage = '';
   TextEditingController textEditingController;
-
+  final RoundedLoadingButtonController _btnController =
+      new RoundedLoadingButtonController();
   StreamController<ErrorAnimationType> errorController;
 
   @override
@@ -55,12 +57,12 @@ class _OtpScreenState extends State<OtpScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Align(
-                alignment: Alignment.topCenter,
+                  alignment: Alignment.topCenter,
                   child: SvgPicture.asset(
-                'image/church_colored.svg',
-                width: MediaQuery.of(context).size.width/2,
-                height: MediaQuery.of(context).size.height/2.5,
-              )),
+                    'image/church_colored.svg',
+                    width: MediaQuery.of(context).size.width / 2,
+                    height: MediaQuery.of(context).size.height / 2.8,
+                  )),
             ),
             SingleChildScrollView(
               reverse: true,
@@ -123,8 +125,9 @@ class _OtpScreenState extends State<OtpScreen> {
                           children: [
                             Container(
                                 margin: EdgeInsets.only(
-                                    left: screenWidth * 0.025,
-                                    right: screenWidth * 0.025),
+                                  top: screenHeight * 0.020,
+                                    left: screenWidth * 0.020,
+                                    right: screenWidth * 0.020),
                                 child: PinCodeTextField(
                                   length: 5,
                                   obscureText: false,
@@ -166,36 +169,23 @@ class _OtpScreenState extends State<OtpScreen> {
                                   },
                                   appContext: context,
                                 )),
-                            SizedBox(
-                              height: screenHeight * 0.01,
-                            ),
-                            InkWell(
-                              splashColor: Colors.white,
-                              onTap: () {
-                                Map<String, dynamic> otpForm = {
-                                  "grant_type": "password",
-                                  "username": Get.arguments,
-                                  "password": smsOTP,
-                                  "client_id": "barnabas"
-                                };
-                                verifyOTPAPI(otpForm);
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.all(8),
-                                height: 45,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 219, 69, 71),
-                                  borderRadius: BorderRadius.circular(36),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  verify,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w400),
-                                ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: RoundedLoadingButton(
+                                animateOnTap: true,
+                                child: Text(verify,
+                                    textAlign: TextAlign.start,
+                                    style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                color: Colors.red,
+                                successColor: Colors.red,
+                                controller: _btnController,
+                                onPressed: onSubmitPressed,
                               ),
                             ),
                             TextButton(
@@ -242,5 +232,16 @@ class _OtpScreenState extends State<OtpScreen> {
             ),
           ])),
     );
+  }
+
+  onSubmitPressed() async {
+    Map<String, dynamic> otpForm = {
+      "grant_type": "password",
+      "username": Get.arguments,
+      "password": smsOTP,
+      "client_id": "barnabas"
+    };
+    _btnController.stop();
+    verifyOTPAPI(otpForm);
   }
 }

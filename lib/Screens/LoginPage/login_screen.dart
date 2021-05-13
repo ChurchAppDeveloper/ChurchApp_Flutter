@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/model_request/login_request.dart';
 import 'package:churchapp/util/color_constants.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,18 +21,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _contactEditingController;
   String _dialCode = "1";
-  int toggleSelected = 0;
+  int toggleSelected = 1;
+  final RoundedLoadingButtonController _btnController =
+      new RoundedLoadingButtonController();
 
   @override
   void initState() {
     _contactEditingController = TextEditingController();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _contactEditingController.dispose();
-    super.dispose();
   }
 
   //build method for UI Representation
@@ -56,11 +55,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Container(
                       margin:
-                          EdgeInsets.only(left: 20.0, bottom: 20.0, top: 30.0),
-                      height: MediaQuery.of(context).size.height / 2.5,
+                          EdgeInsets.only(left: 20.0, bottom: 20.0, top: 30.0,right: 20.0),
+                      height: MediaQuery.of(context).size.height / 3.5,
                       alignment: Alignment.topCenter,
                       child: Image.asset("image/churchLogo.png"),
                     ),
+                    Text(appName.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        )),
                     Container(
                       alignment: Alignment.center,
                       // width: 350.0,
@@ -68,8 +76,35 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.center,
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(
-                              fontSize: 24,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                               color: Colors.white,
+                            ),
+                          )),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      // width: 350.0,
+                      child: Text(contactInfo,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          )),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      // width: 350.0,
+                      child: Text(pastorInfo,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey.shade200,
                             ),
                           )),
                     ),
@@ -83,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Column(
                       children: [
-                        SizedBox(height: screenHeight * 0.6),
+                        SizedBox(height: screenHeight * 0.58),
                         Container(
                           margin: EdgeInsets.symmetric(
                               horizontal:
@@ -122,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
           activeFgColor: Colors.white,
           inactiveBgColor: Colors.grey,
           inactiveFgColor: Colors.white,
-          initialLabelIndex: 1,
+          initialLabelIndex: toggleSelected,
           labels: ['Admin'.toUpperCase(), 'Contributor'.toUpperCase()],
           icons: [
             Icons.admin_panel_settings_outlined,
@@ -162,13 +197,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           package: 'country_list_pick',
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(countryCode.code),
+                          padding: const EdgeInsets.only(left:8.0,right:8.0,top:4.0, bottom:2.0),
+                          child: Text(countryCode.code,
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.red,
+                                ),
+                              )),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 8.0, right: 8.0, bottom: 8.0),
-                          child: Text(countryCode.dialCode),
+                              top: 2.0, right: 8.0, bottom: 2.0),
+                          child:Text(countryCode.dialCode,
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.red,
+                                ),
+                              )),
                         ),
                       ],
                     );
@@ -201,9 +252,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Expanded(
                 child: TextField(
                   decoration: const InputDecoration(
-                    hintText: 'Contact Number',
                     border: InputBorder.none,
-                    alignLabelWithHint: true,
+                    hintText: 'Contact Number',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey
+                    ),
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
                   ),
@@ -215,42 +270,40 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        InkWell(
-          splashColor: Colors.white,
-          onTap: () {
-            if (_contactEditingController.text.isNotEmpty) {
-              debugPrint(
-                  "Dial Code $_dialCode${_contactEditingController.text}");
-              loginAPI(LoginRequest(
-                  contactNumber:
-                      "$_dialCode${_contactEditingController.text.toString()}"));
-            } else {
-              snackBarAlert(error, invalidNumber, Icon(Icons.error_outline),
-                  errorColor, whiteColor);
-            }
-          },
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            height: 45,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 219, 69, 71),
-              borderRadius: BorderRadius.circular(36),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              login,
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400),
-            ),
+        Padding(
+          padding: const EdgeInsets.only(left:16.0,right:16.0,top:16.0,bottom: 8.0),
+          child: RoundedLoadingButton(
+            animateOnTap: true,
+            child: Text(login,
+                textAlign: TextAlign.start,
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                )),
+            color: Colors.red,
+            successColor: Colors.red,
+            controller: _btnController,
+            onPressed: onSubmitPressed,
           ),
         ),
       ],
     );
+  }
+
+  onSubmitPressed() async {
+    if (_contactEditingController.text.isNotEmpty) {
+      debugPrint("Dial Code $_dialCode${_contactEditingController.text}");
+      _btnController.stop();
+      loginAPI(LoginRequest(
+          contactNumber:
+              "$_dialCode${_contactEditingController.text.toString()}"));
+    } else {
+      _btnController.stop();
+      snackBarAlert(error, invalidNumber, Icon(Icons.error_outline), errorColor,
+          whiteColor);
+    }
   }
 }

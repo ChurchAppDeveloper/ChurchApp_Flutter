@@ -13,7 +13,6 @@ import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 void loginAPI(LoginRequest loginRequest) async {
   String url =
@@ -28,9 +27,9 @@ void loginAPI(LoginRequest loginRequest) async {
     debugPrint("login_response: ${response.body}");
     if (data.success) {
       debugPrint("content:${data.content}");
-      if(data.content=="Admin"){
+      if (data.content == "Admin") {
         Get.toNamed("/otp", arguments: loginRequest.contactNumber);
-      }else{
+      } else {
         Map<String, dynamic> otpForm = {
           "grant_type": "password",
           "username": loginRequest.contactNumber,
@@ -83,9 +82,9 @@ void verifyOTPAPI(Map<String, dynamic> otpForm) async {
 
 void profileAPI() async {
   // await SharedPref().setStringPref(SharedPref().token, "ab7e95c9-20a5-4922-8482-9a310230539c");
-  await SharedPref().setStringPref(SharedPref().token, "784e37cb-78f6-4a1d-bf07-aee955781157");
+  // await SharedPref().setStringPref(SharedPref().token, "784e37cb-78f6-4a1d-bf07-aee955781157");
   String token = await SharedPref().getStringPref(SharedPref().token);
-debugPrint("Token: $token");
+  debugPrint("Token: $token");
   String url = "$baseUrl/myprofile";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
@@ -123,28 +122,41 @@ void profileDashAPI() async {
     debugPrint("profile_response: ${response.body}");
     if (dataval.success) {
       debugPrint("content:${dataval.content}");
-      await SharedPref().setStringPref('phoneNumber', dataval.content.churchProfile.contactUs);
-      await SharedPref().setStringPref('confessionNumber', dataval.content.churchProfile.contactUs);
-      await SharedPref().setStringPref('aboutUs', dataval.content.churchProfile.aboutUs);
-      await SharedPref().setStringPref('ministersUrl', dataval.content.churchProfile.ministers);
-      await SharedPref().setStringPref('donateUrl', dataval.content.churchProfile.donate);
-      await SharedPref().setStringPref('websiteUrl', dataval.content.churchProfile.website);
-      await SharedPref().setStringPref('youtubeUrl', dataval.content.churchProfile.youtube);
-      await SharedPref().setStringPref('facebookUrl', dataval.content.churchProfile.facebook);
-      await SharedPref().setStringPref('schoolUrl', dataval.content.churchProfile.school);
-      await SharedPref().setStringPref('bulletinUrl', dataval.content.churchProfile.bulletIn);
-      await SharedPref().setStringPref('onlieReadingUrl', dataval.content.churchProfile.onlineReading);
-      await SharedPref().setStringPref('prayerRequestUtl', dataval.content.churchProfile.prayerRequest);
-      await SharedPref().setStringPref('masstimingintention', dataval.content.churchProfile.massTimeIntention);
-      await SharedPref().setStringPref(SharedPref().role, dataval.content.roleName);
+      await SharedPref().setStringPref(
+          'phoneNumber', dataval.content.churchProfile.contactUs);
+      await SharedPref().setStringPref(
+          'confessionNumber', dataval.content.churchProfile.contactUs);
+      await SharedPref()
+          .setStringPref('aboutUs', dataval.content.churchProfile.aboutUs);
+      await SharedPref().setStringPref(
+          'ministersUrl', dataval.content.churchProfile.ministers);
+      await SharedPref()
+          .setStringPref('donateUrl', dataval.content.churchProfile.donate);
+      await SharedPref()
+          .setStringPref('websiteUrl', dataval.content.churchProfile.website);
+      await SharedPref()
+          .setStringPref('youtubeUrl', dataval.content.churchProfile.youtube);
+      await SharedPref()
+          .setStringPref('facebookUrl', dataval.content.churchProfile.facebook);
+      await SharedPref()
+          .setStringPref('schoolUrl', dataval.content.churchProfile.school);
+      await SharedPref()
+          .setStringPref('bulletinUrl', dataval.content.churchProfile.bulletIn);
+      await SharedPref().setStringPref(
+          'onlieReadingUrl', dataval.content.churchProfile.onlineReading);
+      await SharedPref().setStringPref(
+          'prayerRequestUtl', dataval.content.churchProfile.prayerRequest);
+      await SharedPref().setStringPref('masstimingintention',
+          dataval.content.churchProfile.massTimeIntention);
+      await SharedPref()
+          .setStringPref(SharedPref().role, dataval.content.roleName);
       await SharedPref().setStringPref('userNumber', dataval.content.contactNo);
-
     } else {
       snackBarAlert(warning, dataval.message.toString(),
           Icon(Icons.warning_amber_outlined), warningColor, blackColor);
     }
   } else {
-    snackBarAlert(
-        error, dataval.message, Icon(Icons.error_outline), errorColor, whiteColor);
+    snackBarAlert(error, dataval.message, Icon(Icons.error_outline), errorColor,
+        whiteColor);
   }
 }
