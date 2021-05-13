@@ -343,40 +343,17 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
   }
 
   onSubmitPressed() async {
-    /* EasyLoading.instance
-      ..displayDuration = const Duration(milliseconds: 2000)
-      ..indicatorType = EasyLoadingIndicatorType.wanderingCubes
-      ..loadingStyle = EasyLoadingStyle.custom
-      ..indicatorSize = 45.0
-      ..radius = 10.0
-      ..backgroundColor = Colors.red
-      ..indicatorColor = Colors.white
-      ..textColor = Colors.white
-      ..maskColor = Colors.white.withOpacity(0.5)
-      ..userInteractions = false;
-*/
-    // EasyLoading.show(
-    //   status: 'loading...',
-    //   maskType: EasyLoadingMaskType.custom,
-    // );
 
     Map<String, dynamic> timingForm = {
       "schedule_type": _choices[_choiceIndex],
-      "date": "${selectedDate.toString()}",
+      "date": "${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(selectedDate)}",
       "start_time":
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedStartTime.hour, selectedStartTime.minute).toString()}",
+          "${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedStartTime.hour, selectedStartTime.minute))}",
       "end_time":
-          "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedEndTime.hour, selectedEndTime.minute).toString()}",
+          "${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedEndTime.hour, selectedEndTime.minute))}",
     };
 
     debugPrint(timingForm.toString());
-    debugPrint(DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            selectedStartTime.hour,
-            selectedStartTime.minute)
-        .toString());
     createTimingAPI(timingForm);
   }
 

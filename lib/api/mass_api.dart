@@ -48,7 +48,6 @@ Future createTimingAPI(Map<String, dynamic> timingForm) async {
   debugPrint("Timing_response: ${response.request.headers.toString()}");
   debugPrint("Timing_response: ${response.body}");
   if (response.statusCode == 200) {
-    debugPrint("Timing_response: ${response.body}");
     if (data.success) {
       debugPrint("content:${data.content}");
       Get.back();
