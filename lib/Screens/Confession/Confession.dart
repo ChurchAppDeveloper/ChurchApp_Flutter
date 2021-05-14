@@ -21,14 +21,11 @@ var isBarHide = false;
 
 class _ConfessionState extends State<Confession> {
   var isShowAppbar;
-  String prefs;
-  Future getConfession;
 
   @override
   void initState() {
     isShowAppbar = Get.arguments;
     isBarHide = isShowAppbar;
-    getConfession = initData();
     super.initState();
   }
 
@@ -56,38 +53,115 @@ class _ConfessionState extends State<Confession> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: FutureBuilder(
-              future: getConfession,
-              builder: (context, projectSnap) {
-                if (projectSnap.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (projectSnap.connectionState == ConnectionState.done) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(projectSnap.data,
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
+          child: Column(
+            verticalDirection: VerticalDirection.up,
+            children: [
+              FutureBuilder(
+                  future: initEmailData(),
+                  builder: (context, projectSnap) {
+                    if (projectSnap.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (projectSnap.connectionState == ConnectionState.done) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left:16.0,right:16.0,bottom: 16.0),
+                        child: Text("or E-mail: ${projectSnap.data} to book your time slot. Walk-ins are now okay, but keep in mind that those who made appointments, take precedence.",
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.lato(
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            )),
+                      );
+                    } else {
+                      return Text("Error ${projectSnap.error}");
+                    }
+                  }),
+              FutureBuilder(
+                  future: initPhoneData(),
+                  builder: (context, projectSnap) {
+                    if (projectSnap.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (projectSnap.connectionState == ConnectionState.done) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left:16.0,right:16.0),
+                        child: Text("Please call the Parish Office at: ${projectSnap.data},",
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.lato(
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            )),
+                      );
+                    } else {
+                      return Text("Error ${projectSnap.error}");
+                    }
+                  }),
+              FutureBuilder(
+                  future: initData(),
+                  builder: (context, projectSnap) {
+                    if (projectSnap.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (projectSnap.connectionState == ConnectionState.done) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text("By Appointment Only",
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                )),
                           ),
-                        )),
-                  );
-                } else {
-                  return Text("Error ${projectSnap.error}");
-                }
-              }),
+                          Padding(
+                            padding: const EdgeInsets.only(left:16.0,right:16.0,bottom: 16.0),
+                            child: Text(projectSnap.data,
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                )),
+                          ),
+
+                        ],
+                      );
+                    } else {
+                      return Text("Error ${projectSnap.error}");
+                    }
+                  }),
+
+            ],
+          ),
         ),
       ]),
     );
   }
 
   Future initData() async {
-    return prefs =
-        await SharedPref().getStringPref("confessionNumber").then((value) {
+    return SharedPref().getStringPref("confessionDetails").then((value) {
+      debugPrint("confessionDetails: $value");
+      return value;
+    });
+  }
+  Future initPhoneData() async {
+    return await SharedPref().getStringPref("confessionNumber").then((value) {
       debugPrint("confessionNumber: $value");
-
+      return value;
+    });
+  }
+  Future initEmailData() async {
+    return await SharedPref().getStringPref("confessionEmail").then((value) {
+      debugPrint("confessionEmail: $value");
       return value;
     });
   }

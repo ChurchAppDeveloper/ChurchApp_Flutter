@@ -52,7 +52,6 @@ class Content {
 class ChurchProfile {
   int id;
   String contactUs;
-  String confessionContact;
   String aboutUs;
   String onlineReading;
   String facebook;
@@ -64,11 +63,13 @@ class ChurchProfile {
   String prayerRequest;
   String youtube;
   String massTimeIntention;
+  String confessionContact;
+  String confessionEmail;
+  String confessionDetails;
 
   ChurchProfile(
       {this.id,
       this.contactUs,
-      this.confessionContact,
       this.aboutUs,
       this.onlineReading,
       this.facebook,
@@ -79,12 +80,14 @@ class ChurchProfile {
       this.ministers,
       this.prayerRequest,
       this.youtube,
+      this.confessionContact,
+      this.confessionEmail,
+      this.confessionDetails,
       this.massTimeIntention});
 
   ChurchProfile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     contactUs = json['contactUs'];
-    confessionContact = json['confessionContact'];
     aboutUs = json['aboutUs'];
     onlineReading = json['onlineReading'];
     facebook = json['facebook'];
@@ -96,13 +99,15 @@ class ChurchProfile {
     prayerRequest = json['prayerRequest'];
     youtube = json['youtube'];
     massTimeIntention = json['massTimeIntention'];
+    confessionContact = json['confessionContact'];
+    confessionEmail = json['confessionEmail'];
+    confessionDetails = json['confessionDetails'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['contactUs'] = this.contactUs;
-    data['confessionContact'] = this.confessionContact;
     data['aboutUs'] = this.aboutUs;
     data['onlineReading'] = this.onlineReading;
     data['facebook'] = this.facebook;
@@ -114,6 +119,9 @@ class ChurchProfile {
     data['prayerRequest'] = this.prayerRequest;
     data['youtube'] = this.youtube;
     data['massTimeIntention'] = this.massTimeIntention;
+    data['confessionContact'] = this.confessionContact;
+    data['confessionEmail'] = this.confessionEmail;
+    data['confessionDetails'] = this.confessionDetails;
     return data;
   }
 }
