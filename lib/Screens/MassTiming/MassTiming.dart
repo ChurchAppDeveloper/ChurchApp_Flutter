@@ -1,9 +1,6 @@
 import 'package:churchapp/Screens/MassTiming/WeekdayPicker.dart';
 import 'package:churchapp/api/mass_api.dart';
-import 'package:churchapp/util/color_constants.dart';
-import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/shared_preference.dart';
-import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -343,14 +340,13 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
   }
 
   onSubmitPressed() async {
-
     Map<String, dynamic> timingForm = {
       "schedule_type": _choices[_choiceIndex],
-      "date": "${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(selectedDate)}",
+      "date": "${DateFormat("yyyy-MM-dd HH:mm:ss").format(selectedDate)}",
       "start_time":
-          "${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedStartTime.hour, selectedStartTime.minute))}",
+          "${DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedStartTime.hour, selectedStartTime.minute))}",
       "end_time":
-          "${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedEndTime.hour, selectedEndTime.minute))}",
+          "${DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedEndTime.hour, selectedEndTime.minute))}",
     };
 
     debugPrint(timingForm.toString());

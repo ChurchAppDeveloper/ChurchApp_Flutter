@@ -17,89 +17,49 @@ class MassResponse {
 
   bool success;
   String message;
-  Content content;
+  List<Content> content;
 
   factory MassResponse.fromJson(Map<String, dynamic> json) => MassResponse(
     success: json["success"],
     message: json["message"],
-    content: Content.fromJson(json["content"]),
+    content: List<Content>.from(json["content"].map((x) => Content.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
-    "content": content.toJson(),
+    "content": List<dynamic>.from(content.map((x) => x.toJson())),
   };
 }
 
 class Content {
   Content({
-    this.monday,
-    this.tuesday,
-    this.wednesday,
-    this.thursday,
-    this.friday,
-    this.saturday,
-    this.sunday,
-  });
-
-  List<Monday> monday;
-  List<dynamic> tuesday;
-  List<dynamic> wednesday;
-  List<dynamic> thursday;
-  List<dynamic> friday;
-  List<dynamic> saturday;
-  List<dynamic> sunday;
-
-  factory Content.fromJson(Map<String, dynamic> json) => Content(
-    monday: List<Monday>.from(json["monday"].map((x) => Monday.fromJson(x))),
-    tuesday: List<dynamic>.from(json["tuesday"].map((x) => x)),
-    wednesday: List<dynamic>.from(json["wednesday"].map((x) => x)),
-    thursday: List<dynamic>.from(json["thursday"].map((x) => x)),
-    friday: List<dynamic>.from(json["friday"].map((x) => x)),
-    saturday: List<dynamic>.from(json["saturday"].map((x) => x)),
-    sunday: List<dynamic>.from(json["sunday"].map((x) => x)),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "monday": List<dynamic>.from(monday.map((x) => x.toJson())),
-    "tuesday": List<dynamic>.from(tuesday.map((x) => x)),
-    "wednesday": List<dynamic>.from(wednesday.map((x) => x)),
-    "thursday": List<dynamic>.from(thursday.map((x) => x)),
-    "friday": List<dynamic>.from(friday.map((x) => x)),
-    "saturday": List<dynamic>.from(saturday.map((x) => x)),
-    "sunday": List<dynamic>.from(sunday.map((x) => x)),
-  };
-}
-
-class Monday {
-  Monday({
     this.id,
+    this.date,
     this.startTime,
     this.endTime,
-    this.notification,
-    this.day,
+    this.scheduleType,
   });
 
   int id;
+  String date;
   String startTime;
   String endTime;
-  bool notification;
-  String day;
+  String scheduleType;
 
-  factory Monday.fromJson(Map<String, dynamic> json) => Monday(
+  factory Content.fromJson(Map<String, dynamic> json) => Content(
     id: json["id"],
+    date: json["date"],
     startTime: json["start_time"],
     endTime: json["end_time"],
-    notification: json["notification"],
-    day: json["day"],
+    scheduleType: json["schedule_type"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "date": date,
     "start_time": startTime,
     "end_time": endTime,
-    "notification": notification,
-    "day": day,
+    "schedule_type": scheduleType,
   };
 }
