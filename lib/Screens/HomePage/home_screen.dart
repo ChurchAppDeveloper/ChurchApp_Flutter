@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
@@ -74,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       print("token $token");
     });
     controller = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+        duration: const Duration(milliseconds: 1000), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -120,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             ),
           ),*/
+
           ClipPath(
             child: (_fetching)
                 ? Container(
@@ -153,6 +156,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
             clipper: BottomWaveClipper(),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 1.5,
+              sigmaY: 1.5,
+            ),
+            child: Container(
+              color: Colors.transparent,
+            ),
           ),
           Align(
             alignment: Alignment.topLeft,
