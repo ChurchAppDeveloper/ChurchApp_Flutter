@@ -5,9 +5,11 @@ import 'package:churchapp/model_request/annoucement_create_request.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/string_constants.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -85,22 +87,38 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
                                 MediaQuery.of(context).size.height / 3.2)),
                     GestureDetector(
                       onTap: () {
-                        _settingModalBottomSheet(context);
+                        fileUpload();
+                        // _settingModalBottomSheet(context);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width / 2.0,
                         height: MediaQuery.of(context).size.width / 2.0,
                         margin: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
+                        child: Stack(
+                          children: [imageFile == null
+                              ? SvgPicture.asset("image/folder.svg", semanticsLabel: appName,)
+                              : SvgPicture.asset("image/file_storage.svg", semanticsLabel: appName,),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text("Add Attachment",
+                                  textAlign: TextAlign.end,
+                                  style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.red.shade300,
+                                    ),
+                                  )),
+                            ),
+                      ]  ),
+                        /*decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           color: Colors.transparent,
                           image: DecorationImage(
-                            image: imageFile == null
-                                ? AssetImage('image/imageplaceholder.png')
-                                : FileImage(File(imageFile.path)),
+                            image:
                             fit: BoxFit.cover,
                           ),
-                        ),
+                        ),*/
                       ),
                     )
                   ],
@@ -255,6 +273,20 @@ class _AnnouncementCreationState extends State<AnnouncementCreation> {
       _btnController.stop();
       snackBarAlert(error, invalidAnnouncement, Icon(Icons.error_outline),
           errorColor, whiteColor);
+    }
+  }
+
+  void fileUpload() async {
+    FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: false,allowCompression: true,type: FileType.any);
+
+    if(result != null) {
+      File file = File(result.files.single.path);
+      setState(() {
+        debugPrint("File:${file.path}");
+        selectedFile = file;
+      });
+    } else {
+      // User canceled the picker
     }
   }
 }
