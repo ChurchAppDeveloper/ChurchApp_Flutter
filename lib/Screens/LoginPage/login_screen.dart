@@ -294,6 +294,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   onSubmitPressed() async {
+    debugPrint("Role:Admin");
+    debugPrint("Role1:Contributor");
     if (_contactEditingController.text.isNotEmpty) {
       debugPrint("Dial Code $_dialCode${_contactEditingController.text}");
       _btnController.stop();

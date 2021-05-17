@@ -23,12 +23,15 @@ class _OtpScreenState extends State<OtpScreen> {
   String verificationId;
   String errorMessage = '';
   TextEditingController textEditingController;
+  TextEditingController _passwordController;
+
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
   StreamController<ErrorAnimationType> errorController;
 
   @override
   void initState() {
+    _passwordController=TextEditingController();
     errorController = StreamController<ErrorAnimationType>();
     textEditingController = TextEditingController();
     super.initState();
@@ -92,7 +95,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                            'Enter the 5 digit numbers that was sent to ${Get.arguments}',
+                            'Enter Your Admin Password',
                             textAlign: TextAlign.start,
                             maxLines: 2,
                             style: GoogleFonts.lato(
@@ -124,6 +127,36 @@ class _OtpScreenState extends State<OtpScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
+                              margin: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              height: 45,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 219, 69, 71),
+                                ),
+                                borderRadius: BorderRadius.circular(36),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left:8.0,bottom: 2),
+                                child: TextField(
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Password',
+                                    hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey
+                                    ),
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                  ),
+                                  controller: _passwordController,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  inputFormatters: [LengthLimitingTextInputFormatter(16)],
+                                ),
+                              ),
+                            ),
+                            /*Container(
                                 margin: EdgeInsets.only(
                                   top: screenHeight * 0.020,
                                     left: screenWidth * 0.020,
@@ -168,12 +201,12 @@ class _OtpScreenState extends State<OtpScreen> {
                                     return true;
                                   },
                                   appContext: context,
-                                )),
+                                )),*/
                             Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: RoundedLoadingButton(
                                 animateOnTap: true,
-                                child: Text(verify,
+                                child: Text(next,
                                     textAlign: TextAlign.start,
                                     style: GoogleFonts.lato(
                                       textStyle: TextStyle(
@@ -188,7 +221,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 onPressed: onSubmitPressed,
                               ),
                             ),
-                            TextButton(
+                           /* TextButton(
                               onPressed: () {
                                 setState(() {
                                   loginAPI(LoginRequest(
@@ -202,7 +235,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     color: Colors.red,
                                     fontWeight: FontWeight.w400),
                               ),
-                            )
+                            )*/
                           ],
                         ),
                       )
@@ -235,10 +268,11 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   onSubmitPressed() async {
+    debugPrint("Password:${_passwordController.text.toString()}");
     Map<String, dynamic> otpForm = {
       "grant_type": "password",
       "username": Get.arguments,
-      "password": smsOTP,
+      "password": _passwordController.text,
       "client_id": "barnabas"
     };
     _btnController.stop();

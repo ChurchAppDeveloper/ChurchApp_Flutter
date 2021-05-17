@@ -28,6 +28,7 @@ void loginAPI(LoginRequest loginRequest) async {
     if (data.success) {
       debugPrint("content:${data.content}");
       if (data.content == "Admin") {
+        debugPrint("Role Content:${data.content}");
         Get.toNamed("/otp", arguments: loginRequest.contactNumber);
       } else {
         Map<String, dynamic> otpForm = {
