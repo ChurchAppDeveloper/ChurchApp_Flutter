@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(
           height: 10,
         ),
-        ToggleSwitch(
+/*        ToggleSwitch(
           minWidth: MediaQuery.of(context).size.width / 2.7,
           cornerRadius: 5.0,
           activeBgColor: Colors.red,
@@ -167,7 +167,26 @@ class _LoginScreenState extends State<LoginScreen> {
             print('switched to: $index');
             toggleSelected = index;
           },
-        ),
+        )*/
+
+    Center(
+      child: Row(
+        children: [
+          Icon(  Icons.admin_panel_settings_outlined,
+            color: Colors.red,
+          ),
+          Text("Contributor".toUpperCase(),
+              textAlign: TextAlign.start,
+              style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.red,
+                  )
+          ),)
+        ],
+      ),
+    ),
         SizedBox(
           height: 10,
         ),

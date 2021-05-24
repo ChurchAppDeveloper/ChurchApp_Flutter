@@ -32,9 +32,12 @@ class WebViewLoadUI extends State<WebViewLoad> {
     isShowAppbar = widget.isShowAppbar;
     pageTitle = widget.pageTitle;
     contentDesc = widget.contentDesc;
+    debugPrint("WebView:${widget.weburl}");
+
     loadwebview = WebView(
       initialUrl: "${widget.weburl}",
       javascriptMode: JavascriptMode.unrestricted,
+
       onPageFinished: (finish) {
         setState(() {
           isLoading = false;

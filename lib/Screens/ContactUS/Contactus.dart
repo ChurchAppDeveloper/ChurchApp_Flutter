@@ -82,14 +82,15 @@ class ContactUSState extends State<ContactUS> {
           child: FittedBox(
             fit: BoxFit.contain,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                   'For more details about the app please contact \n Maryam Tech LLC',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red,
                     ),
                   )),
             ),

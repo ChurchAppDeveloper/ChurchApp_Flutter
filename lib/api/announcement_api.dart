@@ -41,9 +41,12 @@ Future getAnnouncementImageAPI(
   if (fileName != null) {
     String url =
         "$baseUrl/getannouncementImage?announcementid=$id&fileName=$fileName";
+    debugPrint("AnnouncementImage:$url");
     var bulletin = WebViewLoad(
         weburl: url, isShowAppbar: true, pageTitle: "Announcement Details");
     bulletin.contentDesc = url;
+    debugPrint("bulletin:$bulletin");
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => bulletin),
