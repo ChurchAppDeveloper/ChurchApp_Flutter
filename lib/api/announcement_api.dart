@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:churchapp/Screens/WebViewLoad.dart';
+import 'package:churchapp/Screens/WebViewPdfLoad.dart';
 import 'package:churchapp/model_request/annoucement_create_request.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/model_response/get_announcement_response.dart';
@@ -42,7 +43,7 @@ Future getAnnouncementImageAPI(
     String url =
         "$baseUrl/getannouncementImage?announcementid=$id&fileName=$fileName";
     debugPrint("AnnouncementImage:$url");
-    var bulletin = WebViewLoad(
+    var bulletin = WebViewPdfLoad(
         weburl: url, isShowAppbar: true, pageTitle: "Announcement Details");
     bulletin.contentDesc = url;
     debugPrint("bulletin:$bulletin");

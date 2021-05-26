@@ -29,7 +29,10 @@ void loginAPI(LoginRequest loginRequest) async {
       debugPrint("content:${data.content}");
       if (data.content == "Admin") {
         debugPrint("Role Content:${data.content}");
-        Get.toNamed("/otp", arguments: loginRequest.contactNumber);
+        snackBarAlert(warning, "Your Number Already Exits in Admin Role",
+            Icon(Icons.warning_amber_outlined), warningColor, blackColor);
+
+        // Get.toNamed("/otp", arguments: loginRequest.contactNumber);
       } else {
         Map<String, dynamic> otpForm = {
           "grant_type": "password",

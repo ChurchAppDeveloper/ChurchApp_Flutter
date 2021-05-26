@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         )*/
 
-    Center(
+/*    Center(
       child: Row(
         children: [
           Icon(  Icons.admin_panel_settings_outlined,
@@ -186,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),)
         ],
       ),
-    ),
+    )*/
         SizedBox(
           height: 10,
         ),
