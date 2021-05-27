@@ -6,14 +6,14 @@ import 'package:google_fonts/google_fonts.dart';
 class EmptyCard extends StatelessWidget {
   final double width;
   final double height;
-  final String title;
+  // final String title;
   final String imagename;
 
   const EmptyCard({
     Key key,
     this.width,
     this.height,
-    this.title,
+    // this.title,
     this.imagename,
   }) : super(key: key);
 
@@ -28,9 +28,9 @@ class EmptyCard extends StatelessWidget {
           Container(
             alignment: Alignment.topCenter,
             margin: const EdgeInsets.only(top: 20.0),
-            child: SvgPicture.asset(imagename, semanticsLabel: appName,width: 90,height: 90,color: Colors.red,)
+            child: Image.asset(imagename, width: 150,height: 150,)
           ),
-          Container(
+/*          Container(
               alignment: Alignment.bottomCenter,
               margin: const EdgeInsets.only(bottom: 20.0),
               child: Text(title.toUpperCase(),
@@ -42,7 +42,7 @@ class EmptyCard extends StatelessWidget {
                     color: Colors.black,
                   ),
                 )),
-          ),
+          )*/
         ],
       ),
       decoration: BoxDecoration(

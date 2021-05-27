@@ -137,22 +137,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 : SizedBox(
                     height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.width,
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: Carousel(
-                        boxFit: BoxFit.cover,
-                        autoplay: true,
-                        animationCurve: Curves.decelerate,
-                        animationDuration: Duration(milliseconds: 500),
-                        dotSize: 4.0,
-                        dotIncreasedColor: Colors.green,
-                        dotBgColor: Colors.transparent,
-                        dotPosition: DotPosition.topRight,
-                        dotVerticalPadding: 10.0,
-                        showIndicator: false,
-                        indicatorBgPadding: 7.0,
-                        images: reloadBannerImages,
-                      ),
+                    child: Carousel(
+                      boxFit: BoxFit.cover,
+                      autoplay: true,
+                      animationCurve: Curves.decelerate,
+                      animationDuration: Duration(milliseconds: 1000),
+                      dotSize: 4.0,
+                      dotIncreasedColor: Colors.green,
+                      dotBgColor: Colors.transparent,
+                      dotPosition: DotPosition.topRight,
+                      dotVerticalPadding: 10.0,
+                      showIndicator: false,
+                      indicatorBgPadding: 7.0,
+                      images: reloadBannerImages,
                     ),
                   ),
             clipper: BottomWaveClipper(),
@@ -207,53 +204,53 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   duration: const Duration(milliseconds: 400),
                   child: ScaleAnimation(
                     scale: 0.5,
-                    child: FadeInAnimation(
-                      child: GestureDetector(
-                          onTap: () async {
-                            menuposition = HomeMenu.values[index];
-                            pushToCubicNavigationCotroller(
-                                context, menuposition);
-                          },
-                          child: (index == 0)
-                              ? FutureBuilder<AnnouncementCountResponse>(
-                                  future: apiAnnouncementCount,
-                                  builder: (context, projectSnap) {
-                                    if (projectSnap.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                          child: CircularProgressIndicator());
-                                    } else if (projectSnap.connectionState ==
-                                        ConnectionState.done) {
-                                      return (projectSnap.data.content != 0)
-                                          ? Badge(
-                                              padding: EdgeInsets.all(15.0),
-                                              position: BadgePosition.topStart(
-                                                  top: 15, start: 15),
-                                              badgeContent: Text(
-                                                  projectSnap.data.content
-                                                      .toString(),
-                                                  textAlign: TextAlign.start,
-                                                  style: GoogleFonts.lato(
-                                                    textStyle: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white,
-                                                    ),
-                                                  )),
-                                              child: EmptyCard(
-                                                  imagename:
-                                                      homelistitem.imageName,
-                                                  title: homelistitem.title))
-                                          : Container();
-                                    } else {
-                                      return Container();
-                                    }
-                                  })
-                              : EmptyCard(
-                                  imagename: homelistitem.imageName,
-                                  title: homelistitem.title)),
-                    ),
+                    child: GestureDetector(
+                        onTap: () async {
+                          menuposition = HomeMenu.values[index];
+                          pushToCubicNavigationCotroller(
+                              context, menuposition);
+                        },
+                        child: (index == 0)
+                            ? FutureBuilder<AnnouncementCountResponse>(
+                                future: apiAnnouncementCount,
+                                builder: (context, projectSnap) {
+                                  if (projectSnap.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (projectSnap.connectionState ==
+                                      ConnectionState.done) {
+                                    return (projectSnap.data.content != 0)
+                                        ? Badge(
+                                            padding: EdgeInsets.all(15.0),
+                                            position: BadgePosition.topStart(
+                                                top: 15, start: 15),
+                                            badgeContent: Text(
+                                                projectSnap.data.content
+                                                    .toString(),
+                                                textAlign: TextAlign.start,
+                                                style: GoogleFonts.lato(
+                                                  textStyle: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                )),
+                                            child: EmptyCard(
+                                                imagename:
+                                                    homelistitem.imageName,
+                                                // title: homelistitem.title
+                                            ))
+                                        : Container();
+                                  } else {
+                                    return Container();
+                                  }
+                                })
+                            : EmptyCard(
+                                imagename: homelistitem.imageName,
+                                // title: homelistitem.title
+                        )),
                   ),
                 );
               },
@@ -424,20 +421,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   loadData() {
-    homelist.add(HomeItem("Announcement", "image/megaphone.svg"));
-    homelist.add(HomeItem("Livestream", "image/live.svg"));
-    homelist.add(HomeItem("Bulletins", "image/news.svg"));
-    homelist.add(HomeItem("Timings", "image/candle_light.svg"));
-    homelist.add(HomeItem("Prayer Request", "image/christianity.svg"));
-    homelist.add(HomeItem("Donate", "image/donation.svg"));
-    homelist.add(HomeItem("Confession", "image/jesus.svg"));
-    homelist.add(HomeItem("Classified", "image/handshake.svg"));
-    homelist.add(HomeItem("Readings", "image/bible.svg"));
-    homelist.add(HomeItem("Ministers", "image/priest.svg"));
-    homelist.add(HomeItem("School", "image/church.svg"));
-    homelist.add(HomeItem("Contact Us", "image/email.svg"));
-    homelist.add(HomeItem("About Us", "image/group.svg"));
-    homelist.add(HomeItem("Logout", "image/logout.svg"));
+    homelist.add(HomeItem( "image/img_announcement.png"));
+    homelist.add(HomeItem( "image/img_livestreaming.png"));
+    homelist.add(HomeItem("image/img_bulletin.png"));
+    homelist.add(HomeItem( "image/img_masstime.png"));
+    homelist.add(HomeItem( "image/img_prayerreq.png"));
+    homelist.add(HomeItem("image/img_donate.png"));
+    homelist.add(HomeItem("image/img_confession.png"));
+    homelist.add(HomeItem( "image/img_paris.png"));
+    homelist.add(HomeItem( "image/img_readings.png"));
+    homelist.add(HomeItem( "image/img_ministries.png"));
+    homelist.add(HomeItem( "image/img_school.png"));
+    homelist.add(HomeItem( "image/img_contact.png"));
+    homelist.add(HomeItem( "image/img_aboutus.jpeg"));
+    homelist.add(HomeItem("image/img_logout.jpeg"));
   }
 
   Future onSelectNotification(String payload) async {
@@ -538,10 +535,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 }
 
 class HomeItem {
-  final String title;
+  // final String title;
   final String imageName;
 
-  HomeItem(this.title, this.imageName);
+  HomeItem(this.imageName);
 }
 
 class BottomWaveClipper extends CustomClipper<Path> {
