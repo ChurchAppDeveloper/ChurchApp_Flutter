@@ -53,7 +53,7 @@ class _ClassifiedListState extends State<ClassifiedList> {
     return Scaffold(
         appBar: isShowAppbar
             ? AppBar(
-                title: Text("Classifieds"),
+                title: Text("Patrons"),
                 backgroundColor: Color.fromARGB(255, 219, 69, 71),
                 shape: ContinuousRectangleBorder(
                   borderRadius: const BorderRadius.only(

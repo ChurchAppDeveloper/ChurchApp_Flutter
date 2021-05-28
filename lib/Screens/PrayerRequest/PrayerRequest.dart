@@ -88,7 +88,7 @@ class CustomBody extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Prayer List",
+                  child: Text("Prayer Request",
                       textAlign: TextAlign.start,
                       style: GoogleFonts.lato(
                         textStyle: TextStyle(
@@ -108,7 +108,7 @@ class CustomBody extends StatelessWidget {
               var wepage = WebViewLoad(
                   weburl: prefs.getString('masstimingintention'),
                   isShowAppbar: true,
-                  pageTitle: "Mass Intention");
+                  pageTitle: "Mass Intentions");
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => wepage),
@@ -124,7 +124,7 @@ class CustomBody extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Mass Intention",
+                  child: Text("Mass Intentions",
                       textAlign: TextAlign.start,
                       style: GoogleFonts.lato(
                         textStyle: TextStyle(
