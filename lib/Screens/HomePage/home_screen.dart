@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem( "image/img_announcement.png"));
     homelist.add(HomeItem( "image/img_livestreaming.png"));
     homelist.add(HomeItem("image/img_bulletin.png"));
-    homelist.add(HomeItem( "image/img_masstime.png"));
+    homelist.add(HomeItem( "image/img_massTime.jpeg"));
     homelist.add(HomeItem( "image/img_prayerreq.png"));
     homelist.add(HomeItem("image/img_donate.png"));
     homelist.add(HomeItem("image/img_confession.png"));

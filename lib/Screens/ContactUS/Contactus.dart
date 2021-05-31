@@ -121,6 +121,7 @@ class ContactUSState extends State<ContactUS> {
               icon: SvgPicture.asset('image/phone_call.svg',width: 50,height: 50,),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
+                debugPrint("MobileNumber:${prefs.getString("phoneNumber").toString()}");
                 launch(
                     'tel:${prefs.getString("phoneNumber").toString()}');
               }),
