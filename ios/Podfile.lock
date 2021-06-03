@@ -164,6 +164,8 @@ PODS:
   - shared_preferences (0.0.1):
     - Flutter
   - SwiftyGif (5.4.0)
+  - syncfusion_flutter_pdfviewer (0.0.1):
+    - Flutter
   - url_launcher (0.0.1):
     - Flutter
   - webview_flutter (0.0.1):
@@ -183,6 +185,7 @@ DEPENDENCIES:
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - syncfusion_flutter_pdfviewer (from `.symlinks/plugins/syncfusion_flutter_pdfviewer/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
@@ -227,6 +230,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  syncfusion_flutter_pdfviewer:
+    :path: ".symlinks/plugins/syncfusion_flutter_pdfviewer/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
   webview_flutter:
@@ -260,6 +265,7 @@ SPEC CHECKSUMS:
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
+  syncfusion_flutter_pdfviewer: bb9998884b864cfedf72628df3503bdf57e397c0
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   webview_flutter: 9f491a9b5a66f2573946a389b2677987b0ff8c0b
 
