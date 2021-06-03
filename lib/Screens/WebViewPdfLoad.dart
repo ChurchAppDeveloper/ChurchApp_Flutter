@@ -70,11 +70,11 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
             widget.weburl != null
                 ? loadwebview
                 : SvgPicture.asset("image/404.svg", semanticsLabel: appName),
-            isLoading
+            /*isLoading
                 ? Center(
               child: CircularProgressIndicator(),
             )
-                : Container(),
+                : Container(),*/
           ],
         ));
   }

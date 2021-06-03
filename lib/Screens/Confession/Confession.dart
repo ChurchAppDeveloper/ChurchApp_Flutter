@@ -1,6 +1,7 @@
 import 'package:churchapp/Screens/Announcement/AnnouncementCreation.dart';
 import 'package:churchapp/util/shared_preference.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -86,15 +87,37 @@ class _ConfessionState extends State<Confession> {
                     } else if (projectSnap.connectionState == ConnectionState.done) {
                       return Padding(
                         padding: const EdgeInsets.only(left:16.0,right:16.0),
-                        child: Text("Please call the Parish Office at: ${projectSnap.data},",
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
+                        child:               RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text:"Please call the Parish Office at:",
+                                  style:GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                              TextSpan(
+                                  text: " ${projectSnap.data}",
+                                  style:GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      launch(
+                                          'tel:${projectSnap.data}');
+                                      print('Terms of Service"');
+                                    }
                               ),
-                            )),
+                            ],
+                          ),
+                        ),
                       );
                     } else {
                       return Text("Error ${projectSnap.error}");
