@@ -4,9 +4,11 @@ import 'package:churchapp/model_response/get_announcement_response.dart';
 import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementList extends StatefulWidget {
   const AnnouncementList({Key key}) : super(key: key);
@@ -66,11 +68,15 @@ class _AnnouncementListState extends State<AnnouncementList> {
             if (projectSnap.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             } else if (projectSnap.connectionState == ConnectionState.done) {
+
               return ListView.builder(
                 itemCount: projectSnap.data.content.length,
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   if (projectSnap.data.content.isNotEmpty) {
+                    var uri =
+                    Uri.parse(projectSnap.data.content[index].description);
+                    debugPrint("URL :$uri");
                     return GestureDetector(
                       child: Container(
                         margin: EdgeInsets.only(left: 15, right: 15, top: 10),
@@ -112,7 +118,31 @@ class _AnnouncementListState extends State<AnnouncementList> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(
+                              child: Linkify(
+                                onOpen: (link) async {
+                                  if (await canLaunch(link.url)) {
+                                    await launch(link.url);
+                                  } else {
+                                    throw 'Could not launch $link';
+                                  }
+                                },
+                                text: uri.toString(),
+                                style:GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                linkStyle: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                             /* Text(
                                   projectSnap.data.content[index].description
                                       .toString(),
                                   textAlign: TextAlign.start,
@@ -122,7 +152,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black,
                                     ),
-                                  )),
+                                  )),*/
                             ),
                           ],
                         ),
