@@ -1,12 +1,10 @@
-import 'package:churchapp/util/color_constants.dart';
-import 'package:churchapp/util/common_fun.dart';
+
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
 
 class WebViewPdfLoad extends StatefulWidget {
   final String weburl;
@@ -37,7 +35,7 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
     loadwebview= SfPdfViewer.network(
         '${widget.weburl}',
         initialScrollOffset: Offset(0, 500),
-        initialZoomLevel: 1.5);
+        initialZoomLevel: 0);
 /*    loadwebview = WebView(
       initialUrl: "${widget.weburl}",
       javascriptMode: JavascriptMode.unrestricted,

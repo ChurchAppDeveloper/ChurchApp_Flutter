@@ -49,122 +49,124 @@ class _ConfessionState extends State<Confession> {
         Container(
           decoration: BoxDecoration(
               image: DecorationImage(
+                  image: AssetImage("image/background.png"),
+                  fit: BoxFit.fill)),
+        )
+/*        Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
                   image: AssetImage("image/confession_bg.jpg"),
                   fit: BoxFit.fill)),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Column(
-            verticalDirection: VerticalDirection.up,
-            children: [
-              FutureBuilder(
-                  future: initEmailData(),
-                  builder: (context, projectSnap) {
-                    if (projectSnap.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (projectSnap.connectionState == ConnectionState.done) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left:16.0,right:16.0,bottom: 16.0),
-                        child: Text("or E-mail: ${projectSnap.data} to book your time slot. Walk-ins are now okay, but keep in mind that those who made appointments, take precedence.",
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                              ),
-                            )),
-                      );
-                    } else {
-                      return Text("Error ${projectSnap.error}");
-                    }
-                  }),
-              FutureBuilder(
-                  future: initPhoneData(),
-                  builder: (context, projectSnap) {
-                    if (projectSnap.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (projectSnap.connectionState == ConnectionState.done) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left:16.0,right:16.0),
-                        child:               RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text:"Please call the Parish Office at:",
-                                  style:GoogleFonts.lato(
-                                    textStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                    ),
-                                  )),
-                              TextSpan(
-                                  text: " ${projectSnap.data}",
-                                  style:GoogleFonts.lato(
-                                    textStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      launch(
-                                          'tel:${projectSnap.data}');
-                                      print('Terms of Service"');
-                                    }
-                              ),
-                            ],
-                          ),
+        )*/,
+        Column(
+          children: [
+            FutureBuilder(
+                future: initData(),
+                builder: (context, projectSnap) {
+                  if (projectSnap.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (projectSnap.connectionState == ConnectionState.done) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text("By Appointment Only",
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              )),
                         ),
-                      );
-                    } else {
-                      return Text("Error ${projectSnap.error}");
-                    }
-                  }),
-              FutureBuilder(
-                  future: initData(),
-                  builder: (context, projectSnap) {
-                    if (projectSnap.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (projectSnap.connectionState == ConnectionState.done) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text("By Appointment Only",
-                                textAlign: TextAlign.start,
-                                style: GoogleFonts.lato(
+                        Padding(
+                          padding: const EdgeInsets.only(left:16.0,right:16.0,bottom: 16.0),
+                          child: Text(projectSnap.data,
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              )),
+                        ),
+
+                      ],
+                    );
+                  } else {
+                    return Text("Error ${projectSnap.error}");
+                  }
+                }),
+            FutureBuilder(
+                future: initPhoneData(),
+                builder: (context, projectSnap) {
+                  if (projectSnap.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (projectSnap.connectionState == ConnectionState.done) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left:16.0,right:16.0),
+                      child:               RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text:"Please call the Parish Office at:",
+                                style:GoogleFonts.lato(
                                   textStyle: TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                )),
+                            TextSpan(
+                                text: " ${projectSnap.data}",
+                                style:GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                                    color: Colors.blue,
                                   ),
-                                )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:16.0,right:16.0,bottom: 16.0),
-                            child: Text(projectSnap.data,
-                                textAlign: TextAlign.start,
-                                style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                )),
-                          ),
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    launch(
+                                        'tel:${projectSnap.data}');
+                                    print('Terms of Service"');
+                                  }
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Text("Error ${projectSnap.error}");
+                  }
+                }),
+            FutureBuilder(
+                future: initEmailData(),
+                builder: (context, projectSnap) {
+                  if (projectSnap.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (projectSnap.connectionState == ConnectionState.done) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left:16.0,right:16.0,bottom: 16.0),
+                      child: Text("or E-mail: ${projectSnap.data} to book your time slot. Walk-ins are now okay, but keep in mind that those who made appointments, take precedence.",
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          )),
+                    );
+                  } else {
+                    return Text("Error ${projectSnap.error}");
+                  }
+                }),
 
-                        ],
-                      );
-                    } else {
-                      return Text("Error ${projectSnap.error}");
-                    }
-                  }),
-
-            ],
-          ),
+          ],
         ),
       ]),
     );

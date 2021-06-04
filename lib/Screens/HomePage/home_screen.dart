@@ -433,8 +433,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem( "image/img_ministries.png"));
     homelist.add(HomeItem( "image/img_school.png"));
     homelist.add(HomeItem( "image/img_contact.png"));
-    homelist.add(HomeItem( "image/img_aboutus.jpeg"));
-    homelist.add(HomeItem("image/img_logout.jpeg"));
+    homelist.add(HomeItem( "image/img_aboutUs.jpg"));
+    homelist.add(HomeItem("image/img_logOut.jpg"));
   }
 
   Future onSelectNotification(String payload) async {

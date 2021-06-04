@@ -63,6 +63,7 @@ dependencies:
   loading: ^1.0.2
   syncfusion_flutter_pdfviewer: ^19.1.66-beta
   flutter_linkify: ^5.0.2
+  carousel_slider: ^3.0.0
 
 
 dev_dependencies:
