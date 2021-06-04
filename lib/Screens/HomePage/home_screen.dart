@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
@@ -56,6 +57,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   AnimationController controller;
   Animation<double> animation;
+  int _currentIndex = 0;
+  List<IconData> _icons = [
+    Icons.brightness_1,
+    Icons.brightness_2,
+    Icons.brightness_3
+  ];
+  Timer _timer;
+
   String greeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -75,6 +84,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _firebaseMessaging.getToken().then((String token) {
       print("token $token");
     });
+    _timer = Timer.periodic(Duration(seconds: 2), (timer) async {
+      if (mounted) {
+        setState(() {
+          if (_currentIndex + 1 == reloadBannerImages.length) {
+            _currentIndex = 0;
+          } else {
+            _currentIndex = _currentIndex + 1;
+          }
+        });
+      }
+    });
+
     controller = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
@@ -137,7 +158,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 : SizedBox(
                     height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.width,
-                    child: Carousel(
+                    child:AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return FadeTransition(child: child, opacity: animation);
+                      },
+                      child: Image.network(reloadBannerImages[_currentIndex].url, key: ValueKey<int>(_currentIndex),fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2 , ),
+                    )
+/*                    Carousel(
                       boxFit: BoxFit.cover,
                       autoplay: true,
                       animationCurve: Curves.decelerate,
@@ -150,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       showIndicator: false,
                       indicatorBgPadding: 7.0,
                       images: reloadBannerImages,
-                    ),
+                    )*/,
                   ),
             clipper: BottomWaveClipper(),
           ),
