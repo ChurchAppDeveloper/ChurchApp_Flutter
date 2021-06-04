@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,6 +20,8 @@ class ContactUS extends StatefulWidget {
 
 class ContactUSState extends State<ContactUS> {
   Completer<GoogleMapController> _controller = Completer();
+  TapGestureRecognizer _myTapGestureRecognizer;
+
   var isShowAppbar = true;
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(33.8309373, -118.1769412),
@@ -32,8 +35,12 @@ class ContactUSState extends State<ContactUS> {
       zoom: 19.0);
 
   @override
-  initState() {
+  void initState() {
     super.initState();
+    _myTapGestureRecognizer = TapGestureRecognizer()
+      ..onTap = () {
+        openMailAppContact(context);
+      };
   }
 
   @override
@@ -78,21 +85,37 @@ class ContactUSState extends State<ContactUS> {
         ),
         Positioned(
           left: 0.0,
-          bottom: MediaQuery.of(context).size.height / 8,
+          bottom: MediaQuery.of(context).size.height / 6.3,
           child: FittedBox(
             fit: BoxFit.contain,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  'For more details about the app please contact \n Maryam Tech LLC',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red,
-                    ),
-                  )),
+            child:Padding(
+              padding: const EdgeInsets.only(top:8.0,left: 16,right: 8),
+              child: RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text:"For more details about the app please contact \n Maryam Tech LLC",
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.red,
+                          ),
+                        )),
+                    TextSpan(
+                        text: "  info@maryamtech.com",
+                        recognizer: _myTapGestureRecognizer,
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blue,
+                          ),
+                        )),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -195,6 +218,21 @@ class ContactUSState extends State<ContactUS> {
     );
 
     launch(_emailLaunchUri.toString());
+
+  }
+
+  Future<void>  openMailAppContact(BuildContext context) async{
+    final Uri _emailLaunchUri = Uri(
+        scheme: 'mailto',
+        path: 'info@maryamtech.com',
+        queryParameters: {
+          'subject': 'ST.Barnabas'
+        }
+
+    );
+
+    launch(_emailLaunchUri.toString());
+
 
   }
 }
