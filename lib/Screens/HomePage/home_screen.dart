@@ -249,8 +249,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         child: CircularProgressIndicator());
                                   } else if (projectSnap.connectionState ==
                                       ConnectionState.done) {
-                                    return (projectSnap.data.content != 0)
-                                        ? Badge(
+                                    return  Badge(
                                             padding: EdgeInsets.all(15.0),
                                             position: BadgePosition.topStart(
                                                 top: 15, start: 15),
@@ -270,8 +269,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 imagename:
                                                     homelistitem.imageName,
                                                 // title: homelistitem.title
-                                            ))
-                                        : Container();
+                                            ));
+                                        // : Container();
                                   } else {
                                     return Container();
                                   }
