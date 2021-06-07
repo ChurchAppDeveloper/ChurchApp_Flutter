@@ -116,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
       setState(() {
         bannerImages = localBannerImages;
+        debugPrint("localBannerImages$localBannerImages");
         reloadBannerImages.addAll(localBannerImages);
         _fetching = false;
         controller.forward();
@@ -183,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
             clipper: BottomWaveClipper(),
           ),
-          BackdropFilter(
+/*          BackdropFilter(
             filter: ImageFilter.blur(
               sigmaX: 1.5,
               sigmaY: 1.5,
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: Container(
               color: Colors.transparent,
             ),
-          ),
+          )*/
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
