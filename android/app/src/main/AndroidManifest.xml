@@ -24,7 +24,7 @@
 
     <application
         android:name=".Application"
-        android:label="ST. BARNABAS"
+        android:label="St.Barnabas"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">
