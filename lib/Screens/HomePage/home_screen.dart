@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
@@ -111,8 +112,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     getBanners().then((banners) {
       var localBannerImages = List<NetworkImage>();
       for (var i = 0; i < banners.content.length; i++) {
-        debugPrint("Banner: ${baseUrl+banners.content[i]}");
-        localBannerImages.add(NetworkImage(baseUrl+banners.content[i]));
+        debugPrint("Banner: ${baseUrl + banners.content[i]}");
+        localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
       }
       setState(() {
         bannerImages = localBannerImages;
@@ -159,13 +160,59 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 : SizedBox(
                     height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.width,
-                    child:AnimatedSwitcher(
-                      duration: Duration(milliseconds: 1000),
-                      transitionBuilder: (Widget child, Animation<double> animation) {
-                        return FadeTransition(child: child, opacity: animation);
+                    child: AnimatedSwitcher(
+                      duration: const Duration(seconds: 5),
+                      reverseDuration: const Duration(seconds: 5),
+                      switchInCurve: Curves.easeInToLinear,
+                      switchOutCurve: Curves.linearToEaseOut,
+
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return FadeTransition(
+                            child: child,
+                            opacity: animation);
+                            // opacity:
+                            //     Tween<double>(begin: 0.0, end: 5.0).animate(
+                            //   CurvedAnimation(
+                            //     parent: animation,
+                            //     curve: Interval(0.0, 0.1),
+                            //   ),
+                            // ));
                       },
-                      child: Image.network(reloadBannerImages[_currentIndex].url, key: ValueKey<int>(_currentIndex),fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2 , ),
+                      child: CachedNetworkImage(
+                        imageUrl: reloadBannerImages[_currentIndex].url,
+                        key: ValueKey<int>(_currentIndex),
+                        // fadeInDuration : const Duration(seconds: 1),
+                        // fadeOutDuration: const Duration(seconds: 1),
+                        fit: BoxFit.cover,
+                        // fadeInCurve: Curves.easeInToLinear,
+                        // fadeOutCurve: Curves.linearToEaseOut,
+                        // progressIndicatorBuilder: (context, url, downloadProgress) =>
+                        //     Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 2,
+                        // placeholder: (context, url) =>
+                        //     Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+
+                      // Image.network(
+                      //     reloadBannerImages[_currentIndex].url,
+                      //     key: ValueKey<int>(_currentIndex),
+                      //     fit: BoxFit.cover,
+                      //     width: MediaQuery.of(context).size.width,
+                      //     height: MediaQuery.of(context).size.height / 2,
+                      //     loadingBuilder: (context, child, loadingProgress) {
+                      //   if (loadingProgress == null) return child;
+                      //   return Center(
+                      //     child: CircularProgressIndicator(
+                      //       value: loadingProgress.expectedTotalBytes != null
+                      //           ? loadingProgress.cumulativeBytesLoaded /
+                      //               loadingProgress.expectedTotalBytes
+                      //           : null,
+                      //     ),
+                      //   );
+                      // }),
                     )
 /*                    Carousel(
                       boxFit: BoxFit.cover,
@@ -180,7 +227,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       showIndicator: false,
                       indicatorBgPadding: 7.0,
                       images: reloadBannerImages,
-                    )*/,
+                    )*/
+                    ,
                   ),
             clipper: BottomWaveClipper(),
           ),
@@ -237,8 +285,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: GestureDetector(
                         onTap: () async {
                           menuposition = HomeMenu.values[index];
-                          pushToCubicNavigationCotroller(
-                              context, menuposition);
+                          pushToCubicNavigationCotroller(context, menuposition);
                         },
                         child: (index == 0)
                             ? FutureBuilder<AnnouncementCountResponse>(
@@ -250,28 +297,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         child: CircularProgressIndicator());
                                   } else if (projectSnap.connectionState ==
                                       ConnectionState.done) {
-                                    return  Badge(
-                                            padding: EdgeInsets.all(15.0),
-                                            position: BadgePosition.topStart(
-                                                top: 15, start: 15),
-                                            badgeContent: Text(
-                                                projectSnap.data.content
-                                                    .toString(),
-                                                textAlign: TextAlign.start,
-                                                style: GoogleFonts.lato(
-                                                  textStyle: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                )),
-                                            child: EmptyCard(
-                                                imagename:
-                                                    homelistitem.imageName,
-                                                // title: homelistitem.title
-                                            ));
-                                        // : Container();
+                                    return Badge(
+                                        padding: EdgeInsets.all(15.0),
+                                        position: BadgePosition.topStart(
+                                            top: 15, start: 15),
+                                        badgeContent: Text(
+                                            projectSnap.data.content.toString(),
+                                            textAlign: TextAlign.start,
+                                            style: GoogleFonts.lato(
+                                              textStyle: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            )),
+                                        child: EmptyCard(
+                                          imagename: homelistitem.imageName,
+                                          // title: homelistitem.title
+                                        ));
+                                    // : Container();
                                   } else {
                                     return Container();
                                   }
@@ -279,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             : EmptyCard(
                                 imagename: homelistitem.imageName,
                                 // title: homelistitem.title
-                        )),
+                              )),
                   ),
                 );
               },
@@ -450,19 +494,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   loadData() {
-    homelist.add(HomeItem( "image/img_announcement.png"));
-    homelist.add(HomeItem( "image/img_livestreaming.png"));
+    homelist.add(HomeItem("image/img_announcement.png"));
+    homelist.add(HomeItem("image/img_livestreaming.png"));
     homelist.add(HomeItem("image/img_bulletin.png"));
-    homelist.add(HomeItem( "image/img_massTime.jpeg"));
-    homelist.add(HomeItem( "image/img_prayerreq.png"));
+    homelist.add(HomeItem("image/img_massTime.jpeg"));
+    homelist.add(HomeItem("image/img_prayerreq.png"));
     homelist.add(HomeItem("image/img_donate.png"));
     homelist.add(HomeItem("image/img_confession.png"));
-    homelist.add(HomeItem( "image/img_paris.png"));
-    homelist.add(HomeItem( "image/img_readings.png"));
-    homelist.add(HomeItem( "image/img_ministries.png"));
-    homelist.add(HomeItem( "image/img_school.png"));
-    homelist.add(HomeItem( "image/img_contact.png"));
-    homelist.add(HomeItem( "image/img_aboutUs.jpg"));
+    homelist.add(HomeItem("image/img_paris.png"));
+    homelist.add(HomeItem("image/img_readings.png"));
+    homelist.add(HomeItem("image/img_ministries.png"));
+    homelist.add(HomeItem("image/img_school.png"));
+    homelist.add(HomeItem("image/img_contact.png"));
+    homelist.add(HomeItem("image/img_aboutUs.jpg"));
     homelist.add(HomeItem("image/img_logOut.jpg"));
   }
 
@@ -553,7 +597,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
       // debugPrint("Notification: ${initialMessage?.data.toString()}");
       // if (initialMessage?.data['type'] == 'task') {
-        /* Navigator.pushNamed(context, '/chat',
+      /* Navigator.pushNamed(context, '/chat',
             arguments: ChatArguments(initialMessage));*/
       // }
     } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
