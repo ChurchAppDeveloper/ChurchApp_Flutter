@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.width,
                     child:AnimatedSwitcher(
-                      duration: Duration(milliseconds: 500),
+                      duration: Duration(milliseconds: 1000),
                       transitionBuilder: (Widget child, Animation<double> animation) {
                         return FadeTransition(child: child, opacity: animation);
                       },

@@ -118,31 +118,31 @@ class _AnnouncementListState extends State<AnnouncementList> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Linkify(
-                                onOpen: (link) async {
-                                  if (await canLaunch(link.url)) {
-                                    await launch(link.url);
-                                  } else {
-                                    throw 'Could not launch $link';
-                                  }
-                                },
-                                text: uri.toString(),
-                                style:GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
+                                child: Linkify(
+                                  /*onOpen: (link) async {
+                                    if (await canLaunch(link.url)) {
+                                      await launch(link.url);
+                                    } else {
+                                      throw 'Could not launch $link';
+                                    }
+                                  },*/
+                                  text: uri.toString(),
+                                  style:GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                linkStyle: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.blue,
+                                  linkStyle: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.blue,
+                                    ),
                                   ),
-                                ),
-                              ),
-                             /* Text(
+                                )
+/*                              child:Text(
                                   projectSnap.data.content[index].description
                                       .toString(),
                                   textAlign: TextAlign.start,
@@ -152,13 +152,13 @@ class _AnnouncementListState extends State<AnnouncementList> {
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black,
                                     ),
-                                  )),*/
+                                  ))*/
                             ),
                           ],
                         ),
                       ),
                       onTap: () async {
-                       getAnnouncementImageAPI(context,projectSnap.data.content[index].id,projectSnap.data.content[index].filename);
+                       getAnnouncementImageAPI(context,projectSnap.data.content[index].id,projectSnap.data.content[index].filename,uri);
                       },
                     );
                   } else {

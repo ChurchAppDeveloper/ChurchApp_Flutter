@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class WebViewPdfLoad extends StatefulWidget {
@@ -11,8 +12,9 @@ class WebViewPdfLoad extends StatefulWidget {
   final bool isShowAppbar;
   final String pageTitle;
   var contentDesc = "";
+  final Uri url;
 
-  WebViewPdfLoad({Key key, this.weburl, this.isShowAppbar, this.pageTitle})
+  WebViewPdfLoad({Key key, this.weburl, this.isShowAppbar, this.pageTitle, this.url})
       : super(key: key);
 
   WebViewLoadUI createState() => WebViewLoadUI();
@@ -56,6 +58,18 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
             ? AppBar(
           backgroundColor: Color.fromARGB(255, 219, 69, 71),
           title: Text(pageTitle),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.info_outline,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  launch(widget.url.toString());
+
+                },
+              )
+            ],
           shape: ContinuousRectangleBorder(
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(20.0),
