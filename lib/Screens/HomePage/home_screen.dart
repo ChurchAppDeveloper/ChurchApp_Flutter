@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
 
     controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
+        duration: const Duration(milliseconds: 2000), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeOutCubic);
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -156,64 +156,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         color: Colors.red,
                       ),
                     ),
-                  )
-                : SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width,
-                    child: AnimatedSwitcher(
-                      duration: const Duration(seconds: 5),
-                      reverseDuration: const Duration(seconds: 5),
-                      switchInCurve: Curves.easeInToLinear,
-                      switchOutCurve: Curves.linearToEaseOut,
+                  ) : SizedBox(
+              height: MediaQuery.of(context).size.height / 2,
+              width: MediaQuery.of(context).size.width,
+              child:AnimatedSwitcher(
+                duration: Duration(milliseconds: 1200),
+                reverseDuration: const Duration(seconds: 5),
 
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) {
-                        return FadeTransition(
-                            child: child,
-                            opacity: animation);
-                            // opacity:
-                            //     Tween<double>(begin: 0.0, end: 5.0).animate(
-                            //   CurvedAnimation(
-                            //     parent: animation,
-                            //     curve: Interval(0.0, 0.1),
-                            //   ),
-                            // ));
-                      },
-                      child: CachedNetworkImage(
-                        imageUrl: reloadBannerImages[_currentIndex].url,
-                        key: ValueKey<int>(_currentIndex),
-                        // fadeInDuration : const Duration(seconds: 1),
-                        // fadeOutDuration: const Duration(seconds: 1),
-                        fit: BoxFit.cover,
-                        // fadeInCurve: Curves.easeInToLinear,
-                        // fadeOutCurve: Curves.linearToEaseOut,
-                        // progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        //     Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 2,
-                        // placeholder: (context, url) =>
-                        //     Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-
-                      // Image.network(
-                      //     reloadBannerImages[_currentIndex].url,
-                      //     key: ValueKey<int>(_currentIndex),
-                      //     fit: BoxFit.cover,
-                      //     width: MediaQuery.of(context).size.width,
-                      //     height: MediaQuery.of(context).size.height / 2,
-                      //     loadingBuilder: (context, child, loadingProgress) {
-                      //   if (loadingProgress == null) return child;
-                      //   return Center(
-                      //     child: CircularProgressIndicator(
-                      //       value: loadingProgress.expectedTotalBytes != null
-                      //           ? loadingProgress.cumulativeBytesLoaded /
-                      //               loadingProgress.expectedTotalBytes
-                      //           : null,
-                      //     ),
-                      //   );
-                      // }),
-                    )
+                switchOutCurve: Curves.easeInOutCubic,
+                switchInCurve: Curves.fastLinearToSlowEaseIn,
+                transitionBuilder: (Widget child, Animation<double> animations) {
+                  return ScaleTransition(child: child, scale:
+                  animation);
+                },
+                child: Image.network(reloadBannerImages[_currentIndex].url, key: ValueKey<int>(_currentIndex),fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2 , ),
+              )
 /*                    Carousel(
                       boxFit: BoxFit.cover,
                       autoplay: true,
@@ -227,9 +185,80 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       showIndicator: false,
                       indicatorBgPadding: 7.0,
                       images: reloadBannerImages,
-                    )*/
-                    ,
-                  ),
+                    )*/,
+            ),
+//                 : SizedBox(
+//                     height: MediaQuery.of(context).size.height / 2,
+//                     width: MediaQuery.of(context).size.width,
+//                     child: AnimatedSwitcher(
+//                       duration: const Duration(milliseconds: 5),
+//                       // reverseDuration: const Duration(seconds: 5),
+//                       switchInCurve: Curves.easeInToLinear,
+//                       switchOutCurve: Curves.linearToEaseOut,
+//                       transitionBuilder:
+//                           (Widget child, Animation<double> animation) {
+//                         return FadeTransition(
+//                             child: child,
+//                             opacity: animation);
+//                             // opacity:
+//                             //     Tween<double>(begin: 0.0, end: 5.0).animate(
+//                             //   CurvedAnimation(
+//                             //     parent: animation,
+//                             //     curve: Interval(0.0, 0.1),
+//                             //   ),
+//                             // ));
+//                       },
+// /*                      child: CachedNetworkImage(
+//                         imageUrl: reloadBannerImages[_currentIndex].url,
+//                         key: ValueKey<int>(_currentIndex),
+//                         // fadeInDuration : const Duration(seconds: 1),
+//                         // fadeOutDuration: const Duration(seconds: 1),
+//                         fit: BoxFit.cover,
+//                         // fadeInCurve: Curves.easeInToLinear,
+//                         // fadeOutCurve: Curves.linearToEaseOut,
+//                         // progressIndicatorBuilder: (context, url, downloadProgress) =>
+//                         //     Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+//                         width: MediaQuery.of(context).size.width,
+//                         height: MediaQuery.of(context).size.height / 2,
+//                         // placeholder: (context, url) =>
+//                         //     Center(child: CircularProgressIndicator()),
+//                         errorWidget: (context, url, error) => Icon(Icons.error),
+//                       )*/
+//
+//                      child: Image.network(
+//                           reloadBannerImages[_currentIndex].url,
+//                           key: ValueKey<int>(_currentIndex),
+//                           fit: BoxFit.cover,
+//                           width: MediaQuery.of(context).size.width,
+//                           height: MediaQuery.of(context).size.height / 2,
+// /*                          loadingBuilder: (context, child, loadingProgress) {
+//                         if (loadingProgress == null) return child;
+//                         return Center(
+//                           child: CircularProgressIndicator(
+//                             value: loadingProgress.expectedTotalBytes != null
+//                                 ? loadingProgress.cumulativeBytesLoaded /
+//                                     loadingProgress.expectedTotalBytes
+//                                 : null,
+//                           ),
+//                         );
+//                       }*/),
+//                     )
+// /*                    Carousel(
+//                       boxFit: BoxFit.cover,
+//                       autoplay: true,
+//                       animationCurve: Curves.decelerate,
+//                       animationDuration: Duration(milliseconds: 1000),
+//                       dotSize: 4.0,
+//                       dotIncreasedColor: Colors.green,
+//                       dotBgColor: Colors.transparent,
+//                       dotPosition: DotPosition.topRight,
+//                       dotVerticalPadding: 10.0,
+//                       showIndicator: false,
+//                       indicatorBgPadding: 7.0,
+//                       images: reloadBannerImages,
+//                     )*/
+//                     ,
+//                   ),
             clipper: BottomWaveClipper(),
           ),
 /*          BackdropFilter(
