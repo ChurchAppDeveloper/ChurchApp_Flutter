@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _firebaseMessaging.getToken().then((String token) {
       print("token $token");
     });
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) async {
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
       if (mounted) {
         setState(() {
           if (_currentIndex + 1 == reloadBannerImages.length) {
@@ -160,14 +160,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width,
               child:AnimatedSwitcher(
-                duration: Duration(milliseconds: 1200),
-                reverseDuration: const Duration(seconds: 5),
-
-                switchOutCurve: Curves.easeInOutCubic,
-                switchInCurve: Curves.fastLinearToSlowEaseIn,
+                duration: Duration(milliseconds: 700),
+               /* switchOutCurve: Curves.fastLinearToSlowEaseIn,
+                switchInCurve: Curves.fastLinearToSlowEaseIn,*/
                 transitionBuilder: (Widget child, Animation<double> animations) {
-                  return ScaleTransition(child: child, scale:
-                  animation);
+                  return FadeTransition(child: child, opacity:
+                  animations);
                 },
                 child: Image.network(reloadBannerImages[_currentIndex].url, key: ValueKey<int>(_currentIndex),fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2 , ),
@@ -530,7 +528,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem("image/img_prayerreq.png"));
     homelist.add(HomeItem("image/img_donate.png"));
     homelist.add(HomeItem("image/img_confession.png"));
-    homelist.add(HomeItem("image/img_paris.png"));
+    homelist.add(HomeItem("image/img_paris.jpeg"));
     homelist.add(HomeItem("image/img_readings.png"));
     homelist.add(HomeItem("image/img_ministries.png"));
     homelist.add(HomeItem("image/img_school.png"));
