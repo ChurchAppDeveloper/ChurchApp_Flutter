@@ -13,8 +13,9 @@ class WebViewPdfLoad extends StatefulWidget {
   final String pageTitle;
   var contentDesc = "";
   final Uri url;
+  var fileName;
 
-  WebViewPdfLoad({Key key, this.weburl, this.isShowAppbar, this.pageTitle, this.url})
+  WebViewPdfLoad({Key key, this.weburl, this.isShowAppbar, this.pageTitle, this.url,this.fileName})
       : super(key: key);
 
   WebViewLoadUI createState() => WebViewLoadUI();
@@ -52,7 +53,7 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("  ${widget.weburl}   ");
+    debugPrint(" pdf: ${widget.weburl}   ");
     return Scaffold(
         appBar: isShowAppbar
             ? AppBar(
@@ -87,6 +88,8 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
               child: CircularProgressIndicator(),
             )
                 : Container(),*/
+
+            widget.fileName==null?SvgPicture.asset("image/404.svg", semanticsLabel: appName):Container()
           ],
         ));
   }

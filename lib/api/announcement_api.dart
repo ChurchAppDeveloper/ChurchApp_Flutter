@@ -39,12 +39,13 @@ Future<AnnouncementResponse> getAnnouncementAPI() async {
 
 Future getAnnouncementImageAPI(
     BuildContext context, int id, String fileName, Uri uri) async {
-  if (fileName != null) {
+  debugPrint("$fileName");
+
     String url =
         "$baseUrl/getannouncementImage?announcementid=$id&fileName=$fileName";
     debugPrint("AnnouncementImage:$url");
     var bulletin = WebViewPdfLoad(
-        weburl: url, isShowAppbar: true, pageTitle: "Announcement Details",url: uri,);
+        weburl: url, isShowAppbar: true, pageTitle: "Announcement Details",url: uri,fileName: fileName,);
     bulletin.contentDesc = url;
     debugPrint("bulletin:$bulletin");
 
@@ -52,7 +53,7 @@ Future getAnnouncementImageAPI(
       context,
       MaterialPageRoute(builder: (context) => bulletin),
     );
-  }
+
 }
 
 Future<AnnouncementCountResponse> getAnnouncementCountAPI() async {

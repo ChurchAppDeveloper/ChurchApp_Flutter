@@ -158,6 +158,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                         ),
                       ),
                       onTap: () async {
+                        debugPrint("No pdf");
                        getAnnouncementImageAPI(context,projectSnap.data.content[index].id,projectSnap.data.content[index].filename,uri);
                       },
                     );
