@@ -62,7 +62,7 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
             actions: <Widget>[
               IconButton(
                 icon: Icon(
-                  Icons.info_outline,
+                  Icons.phone_in_talk,
                   color: Colors.white,
                 ),
                 onPressed: () {
@@ -89,7 +89,9 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
             )
                 : Container(),*/
 
+/*
             widget.fileName==null?SvgPicture.asset("image/404.svg", semanticsLabel: appName):Container()
+*/
           ],
         ));
   }
