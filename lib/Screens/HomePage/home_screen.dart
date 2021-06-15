@@ -418,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         var bulletin = WebViewLoad(
             weburl: prefs.getString('ministersUrl'),
             isShowAppbar: true,
-            pageTitle: "MINISTERS");
+            pageTitle: "MINISTRIES");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
