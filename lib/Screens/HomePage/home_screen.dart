@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
@@ -23,6 +24,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum HomeMenu {
   parishannouncement,
@@ -388,10 +390,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Get.toNamed("/prayerRequest", arguments: true);
         break;
       case HomeMenu.donate:
-        var bulletin = WebViewLoad(
+        var bulletin = Platform.isAndroid?WebViewLoad(
             weburl: prefs.getString('donateUrl'),
             isShowAppbar: true,
-            pageTitle: "DONATE");
+            pageTitle: "DONATE"): launch(
+          prefs.getString('donateUrl'),
+          forceWebView: true,
+          forceSafariVC: false  ,
+          universalLinksOnly: true,
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
