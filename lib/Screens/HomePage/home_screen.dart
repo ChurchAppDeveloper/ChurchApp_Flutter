@@ -390,15 +390,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Get.toNamed("/prayerRequest", arguments: true);
         break;
       case HomeMenu.donate:
-        var bulletin = Platform.isAndroid?WebViewLoad(
+        var bulletin;
+         Platform.isIOS? launch(
+          prefs.getString('donateUrl'),
+          forceSafariVC: true,
+          universalLinksOnly: true,
+        ):bulletin = WebViewLoad(
             weburl: prefs.getString('donateUrl'),
             isShowAppbar: true,
-            pageTitle: "DONATE"): launch(
-          prefs.getString('donateUrl'),
-          forceWebView: true,
-          forceSafariVC: false  ,
-          universalLinksOnly: true,
-        );
+            pageTitle: "DONATE");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
