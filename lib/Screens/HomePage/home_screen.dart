@@ -399,9 +399,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             weburl: prefs.getString('donateUrl'),
             isShowAppbar: true,
             pageTitle: "DONATE");
-        Navigator.push(
+        bulletin!=null?Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => bulletin),
+          MaterialPageRoute(builder: (context) {
+           return bulletin;
+          }),
+        ):Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return HomeScreen();
+          }),
         );
         break;
       case HomeMenu.confession:
