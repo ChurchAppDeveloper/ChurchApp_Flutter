@@ -119,10 +119,10 @@ Future createClassifiedAPI(ClassifiedCreateRequest classifiedForm,
 Future<getClassified.ClassifiedResponse> getClassifiedAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl/classifiedList";
+  String url = "$baseUrl/classifiedListMobile";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: 'Bearer $token',
+    // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
     final response = await http.get(Uri.parse(url), headers: requestHeaders);

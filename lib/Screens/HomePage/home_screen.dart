@@ -40,7 +40,9 @@ enum HomeMenu {
   school,
   contactus,
   aboutus,
+/*
   logout
+*/
 }
 
 class HomeScreen extends StatefulWidget {
@@ -463,6 +465,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           MaterialPageRoute(builder: (context) => bulletin),
         );
         break;
+/*
       case HomeMenu.logout:
         Get.dialog(
           AlertDialog(
@@ -530,6 +533,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               )),
         );
         break;
+*/
       default:
     }
   }
@@ -548,7 +552,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem("image/img_school.png"));
     homelist.add(HomeItem("image/img_contact.png"));
     homelist.add(HomeItem("image/img_aboutUs.jpg"));
+/*
     homelist.add(HomeItem("image/img_logOut.jpg"));
+*/
   }
 
   Future onSelectNotification(String payload) async {

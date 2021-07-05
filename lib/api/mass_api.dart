@@ -27,12 +27,13 @@ Future<List<Appointment>> getMass() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: 'Bearer $token',
+    // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
-    final response = await http.get(Uri.parse('$baseUrl/massTimingList'),
+    final response = await http.get(Uri.parse('$baseUrl/massTimingListMobile'),
         headers: requestHeaders);
     var data = json.decode(response.body);
+    debugPrint("massTimingListMobiles: $data");
 
     MassResponse list = MassResponse.fromJson(data);
     List<Content> contentTiming = list.content;

@@ -114,16 +114,16 @@ void profileAPI() async {
 void profileDashAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl/myprofile";
+  String url = "$baseUrl/myprofileMobile";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: 'Bearer $token',
+    // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   final response = await http.get(Uri.parse(url), headers: requestHeaders);
   var dataval = ProfileResponse.fromJson(json.decode(response.body));
-  debugPrint("profile_response: ${response.request}");
+  debugPrint("profile_request: ${response.request}");
   if (response.statusCode == 200) {
-    debugPrint("profile_response: ${response.body}");
+    debugPrint("profile_response1: ${response.body}");
     if (dataval.success) {
       debugPrint("content:${dataval.content}");
       await SharedPref().setStringPref(
