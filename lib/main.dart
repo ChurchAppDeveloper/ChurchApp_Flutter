@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 219, 69, 71),
       ),
-      home: Landing(),
+      home: Dashboard(),
       getPages: [
         GetPage(name: '/', page: () => Landing()),
         GetPage(name: '/login', page: () => LoginScreen()),

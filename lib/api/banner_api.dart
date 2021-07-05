@@ -11,10 +11,10 @@ Future<BannerResponse> getBanners() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: 'Bearer $token',
+    // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
-    final response = await http.get(Uri.parse('$baseUrl/bannerImageList'),headers: requestHeaders);
+    final response = await http.get(Uri.parse('$baseUrl/bannerImageListMobile'),headers: requestHeaders);
     var data = json.decode(response.body);
 
     BannerResponse list =
