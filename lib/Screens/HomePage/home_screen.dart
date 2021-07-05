@@ -390,18 +390,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Get.toNamed("/prayerRequest", arguments: true);
         break;
       case HomeMenu.donate:
-        var bulletin = Platform.isAndroid?WebViewLoad(
+        var bulletin;
+         Platform.isIOS? launch(
+          prefs.getString('donateUrl'),
+          forceSafariVC: true,
+          universalLinksOnly: true,
+        ):bulletin = WebViewLoad(
             weburl: prefs.getString('donateUrl'),
             isShowAppbar: true,
-            pageTitle: "DONATE"): launch(
-          prefs.getString('donateUrl'),
-          forceWebView: true,
-          forceSafariVC: false  ,
-          universalLinksOnly: true,
-        );
-        Navigator.push(
+            pageTitle: "DONATE");
+        bulletin!=null?Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => bulletin),
+          MaterialPageRoute(builder: (context) {
+           return bulletin;
+          }),
+        ):Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return HomeScreen();
+          }),
         );
         break;
       case HomeMenu.confession:
@@ -425,7 +432,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         var bulletin = WebViewLoad(
             weburl: prefs.getString('ministersUrl'),
             isShowAppbar: true,
-            pageTitle: "MINISTRIES");
+            pageTitle: "MINISTERS");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
