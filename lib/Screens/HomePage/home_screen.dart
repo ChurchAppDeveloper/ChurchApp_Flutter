@@ -456,14 +456,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Get.toNamed("/contact");
         break;
       case HomeMenu.aboutus:
-        var bulletin = WebViewLoad(
+        Get.toNamed("/about");
+
+        /*var bulletin = WebViewLoad(
             weburl: prefs.getString('aboutUs'),
             isShowAppbar: true,
             pageTitle: "About us");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
-        );
+        );*/
         break;
 /*
       case HomeMenu.logout:

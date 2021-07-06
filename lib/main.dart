@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:churchapp/Screens/AboutUs/AboutUs.dart';
 import 'package:churchapp/Screens/Announcement/AnnouncementCreation.dart';
 import 'package:churchapp/Screens/Announcement/AnnouncementList.dart';
 import 'package:churchapp/Screens/Classifields/ClassifiedCreate.dart';
@@ -72,6 +73,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/announcementList', page: () => AnnouncementList()),
         GetPage(name: '/announcementCreate', page: () => AnnouncementCreation()),
         GetPage(name: '/contact', page: () => ContactUS()),
+        GetPage(name: '/about', page: () => AboutUs()),
         GetPage(name: '/liveStream', page: () => LiveStream()),
         GetPage(name: '/prayerRequest', page: () => PrayerRequest()),
         GetPage(name: '/classifiedList', page: () => ClassifiedList()),
