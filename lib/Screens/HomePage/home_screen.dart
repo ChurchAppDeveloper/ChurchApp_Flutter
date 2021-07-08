@@ -39,10 +39,8 @@ enum HomeMenu {
   ministers,
   school,
   contactus,
-  aboutus,
-/*
-  logout
-*/
+/*  aboutus,
+  logout*/
 }
 
 class HomeScreen extends StatefulWidget {
@@ -455,18 +453,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case HomeMenu.contactus:
         Get.toNamed("/contact");
         break;
+/*
       case HomeMenu.aboutus:
         Get.toNamed("/about");
 
-        /*var bulletin = WebViewLoad(
+        */
+/*var bulletin = WebViewLoad(
             weburl: prefs.getString('aboutUs'),
             isShowAppbar: true,
             pageTitle: "About us");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
-        );*/
+        );*//*
+
         break;
+*/
 /*
       case HomeMenu.logout:
         Get.dialog(
@@ -553,10 +555,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem("image/img_ministries.png"));
     homelist.add(HomeItem("image/img_school.png"));
     homelist.add(HomeItem("image/img_contact.png"));
-    homelist.add(HomeItem("image/img_aboutUs.jpg"));
-/*
-    homelist.add(HomeItem("image/img_logOut.jpg"));
-*/
+   /* homelist.add(HomeItem("image/img_aboutUs.jpg"));
+    homelist.add(HomeItem("image/img_logOut.jpg"));*/
   }
 
   Future onSelectNotification(String payload) async {
