@@ -3,8 +3,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:churchapp/api/announcement_api.dart';
@@ -13,7 +11,6 @@ import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
-import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +20,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -51,8 +49,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int columnCount = 2;
   var homelist = [];
-  var bannerImages = List<NetworkImage>();
-  var reloadBannerImages = List<NetworkImage>();
+  var bannerImages = [];
+  var reloadBannerImages = [];
   var menuposition = HomeMenu.values[0];
   bool _fetching;
   int bannerindex = 0;
@@ -67,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Icons.brightness_3
   ];
   Timer _timer;
+  String version;
 
   String greeting() {
     var hour = DateTime.now().hour;
@@ -87,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _firebaseMessaging.getToken().then((String token) {
       print("token $token");
     });
+    getVersion();
     _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
       if (mounted) {
         setState(() {
@@ -158,20 +158,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         color: Colors.red,
                       ),
                     ),
-                  ) : SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width,
-              child:AnimatedSwitcher(
-                duration: Duration(milliseconds: 600),
-               /* switchOutCurve: Curves.fastLinearToSlowEaseIn,
+                  )
+                : SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width,
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 600),
+                      /* switchOutCurve: Curves.fastLinearToSlowEaseIn,
                 switchInCurve: Curves.fastLinearToSlowEaseIn,*/
-                transitionBuilder: (Widget child, Animation<double> animations) {
-                  return FadeTransition(child: child, opacity:
-                  animations);
-                },
-                child: Image.network(reloadBannerImages[_currentIndex].url, key: ValueKey<int>(_currentIndex),fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2 , ),
-              )
+                      transitionBuilder:
+                          (Widget child, Animation<double> animations) {
+                        return FadeTransition(
+                            child: child, opacity: animations);
+                      },
+                      child: Image.network(
+                        reloadBannerImages[_currentIndex].url,
+                        key: ValueKey<int>(_currentIndex),
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 2,
+                      ),
+                    )
 /*                    Carousel(
                       boxFit: BoxFit.cover,
                       autoplay: true,
@@ -185,8 +192,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       showIndicator: false,
                       indicatorBgPadding: 7.0,
                       images: reloadBannerImages,
-                    )*/,
-            ),
+                    )*/
+                    ,
+                  ),
 //                 : SizedBox(
 //                     height: MediaQuery.of(context).size.height / 2,
 //                     width: MediaQuery.of(context).size.width,
@@ -296,9 +304,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   fit: BoxFit.contain,
                 )),
           ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 40, bottom: 4),
+              child: Text("v $version",
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey,
+                    ),
+                  )),
+            ),
+          ),
           GridView.count(
             childAspectRatio: 1.0,
-            padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 0),
+            padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 20),
             crossAxisCount: columnCount,
             physics: BouncingScrollPhysics(),
             children: List.generate(
@@ -314,7 +337,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: GestureDetector(
                         onTap: () async {
                           menuposition = HomeMenu.values[index];
-                          pushToCubicNavigationCotroller(context, menuposition);
+                          pushToCubicNavigationController(
+                              context, menuposition);
                         },
                         child: (index == 0)
                             ? FutureBuilder<AnnouncementCountResponse>(
@@ -363,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  pushToCubicNavigationCotroller(
+  pushToCubicNavigationController(
       BuildContext context, HomeMenu homemenu) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     switch (homemenu) {
@@ -391,25 +415,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         break;
       case HomeMenu.donate:
         var bulletin;
-         Platform.isIOS? launch(
-          prefs.getString('donateUrl'),
-          forceSafariVC: true,
-          universalLinksOnly: true,
-        ):bulletin = WebViewLoad(
-            weburl: prefs.getString('donateUrl'),
-            isShowAppbar: true,
-            pageTitle: "DONATE");
-        bulletin!=null?Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-           return bulletin;
-          }),
-        ):Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return HomeScreen();
-          }),
-        );
+        Platform.isIOS
+            ? launch(
+                prefs.getString('donateUrl'),
+                forceSafariVC: true,
+                universalLinksOnly: true,
+              )
+            : bulletin = WebViewLoad(
+                weburl: prefs.getString('donateUrl'),
+                isShowAppbar: true,
+                pageTitle: "DONATE");
+        bulletin != null
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return bulletin;
+                }),
+              )
+            : Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return HomeScreen();
+                }),
+              );
         break;
       case HomeMenu.confession:
         Get.toNamed("/confession", arguments: true);
@@ -465,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
-        );*//*
+        );*/ /*
 
         break;
 */
@@ -555,7 +583,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem("image/img_ministries.png"));
     homelist.add(HomeItem("image/img_school.png"));
     homelist.add(HomeItem("image/img_contact.png"));
-   /* homelist.add(HomeItem("image/img_aboutUs.jpg"));
+    /* homelist.add(HomeItem("image/img_aboutUs.jpg"));
     homelist.add(HomeItem("image/img_logOut.jpg"));*/
   }
 
@@ -653,6 +681,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       snackBarAlert(error, "Notification Permission is denied",
           Icon(Icons.error_outline), errorColor, whiteColor);
     }
+  }
+
+  void getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo.version;
   }
 }
 
