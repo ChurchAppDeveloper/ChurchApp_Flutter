@@ -99,62 +99,61 @@ class _AnnouncementListState extends State<AnnouncementList> {
                           //     end: Alignment.centerRight,
                           //     colors: [Colors.white, Colors.white]),
                         ),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left:8.0,right:8.0, top:8.0),
-                              child: Text(
-                                  projectSnap.data.content[index].title
-                                      .toString(),
-                                  textAlign: TextAlign.start,
-                                  style: GoogleFonts.lato(
-                                    textStyle: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    ),
-                                  )),
-                            ),
-                            Padding(
+                        child: ListTile(
+                          leading: Icon(Icons.mail),
+                          title: Padding(
+                            padding: const EdgeInsets.only(left:8.0,right:8.0, top:8.0),
+                            child: Text(
+                                projectSnap.data.content[index].title
+                                    .toString(),
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                )),
+                          ),
+                          subtitle: Padding(
                               padding: const EdgeInsets.all(8.0),
-                                child: Linkify(
-                                  /*onOpen: (link) async {
-                                    if (await canLaunch(link.url)) {
-                                      await launch(link.url);
-                                    } else {
-                                      throw 'Could not launch $link';
-                                    }
-                                  },*/
-                                  text: uri.toString(),
-                                  style:GoogleFonts.lato(
-                                    textStyle: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black,
-                                    ),
+                              child: Linkify(
+                                /*onOpen: (link) async {
+                                      if (await canLaunch(link.url)) {
+                                        await launch(link.url);
+                                      } else {
+                                        throw 'Could not launch $link';
+                                      }
+                                    },*/
+                                text: uri.toString(),
+                                style:GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
                                   ),
-                                  linkStyle: GoogleFonts.lato(
-                                    textStyle: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.blue,
-                                    ),
+                                ),
+                                linkStyle: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.blue,
                                   ),
-                                )
+                                ),
+                              )
 /*                              child:Text(
-                                  projectSnap.data.content[index].description
-                                      .toString(),
-                                  textAlign: TextAlign.start,
-                                  style: GoogleFonts.lato(
-                                    textStyle: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black,
-                                    ),
-                                  ))*/
-                            ),
-                          ],
+                                    projectSnap.data.content[index].description
+                                        .toString(),
+                                    textAlign: TextAlign.start,
+                                    style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ))*/
+                          ),
+
                         ),
                       ),
                       onTap: () async {
