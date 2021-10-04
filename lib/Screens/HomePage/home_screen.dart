@@ -11,6 +11,7 @@ import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _fetching = true;
     firebaseSetup(_firebaseMessaging);
     _firebaseMessaging.getToken().then((String token) {
+       SharedPref().setStringPref(SharedPref().deviceId, token);
       print("token $token");
     });
     getVersion();

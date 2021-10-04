@@ -17,9 +17,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 Future<AnnouncementResponse> getAnnouncementAPI() async {
-  String token = await SharedPref().getStringPref(SharedPref().token);
+  String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
+  debugPrint("deviceId: $deviceId");
 
-  String url = "$baseUrl/getAnnouncementListMobile";
+  String url = "$baseUrl/getAnnouncementListMobile?deviceId=$deviceId";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     // HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -56,10 +57,10 @@ Future getAnnouncementImageAPI(
 
 }
 
-Future<AnnouncementCountResponse> getAnnouncementCountAPI() async {
-  String token = await SharedPref().getStringPref(SharedPref().token);
-
-  String url = "$baseUrl/getAnnouncementCountMobile";
+Future<AnnouncementCountResponse>  getAnnouncementCountAPI() async {
+  String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
+  debugPrint("deviceId: $deviceId");
+  String url = "$baseUrl/UnReadNotificationCount?deviceId=$deviceId";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     // HttpHeaders.authorizationHeader: 'Bearer $token',
