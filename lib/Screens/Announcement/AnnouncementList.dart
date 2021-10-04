@@ -29,7 +29,11 @@ class _AnnouncementListState extends State<AnnouncementList> {
     getRole = initData();
     super.initState();
   }
-
+@override
+  void didChangeDependencies() {
+  apiAnnouncement = getAnnouncementAPI();
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +104,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                           //     colors: [Colors.white, Colors.white]),
                         ),
                         child: ListTile(
-                          leading: Icon(Icons.mail),
+                          leading: projectSnap.data.content[index].readStatus==true?Icon(Icons.mark_email_read):Icon(Icons.mark_email_unread),
                           title: Padding(
                             padding: const EdgeInsets.only(left:8.0,right:8.0, top:8.0),
                             child: Text(

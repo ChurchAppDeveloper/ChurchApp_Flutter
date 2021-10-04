@@ -32,14 +32,24 @@ class Content {
   String title;
   String description;
   String filename;
+  bool status;
+  bool readStatus;
 
-  Content({this.id,this.title, this.description, this.filename});
+  Content(
+      {this.id,
+        this.title,
+        this.description,
+        this.filename,
+        this.status,
+        this.readStatus});
 
   Content.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     description = json['description'];
     filename = json['filename'];
+    status = json['status'];
+    readStatus = json['readStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,7 +58,8 @@ class Content {
     data['title'] = this.title;
     data['description'] = this.description;
     data['filename'] = this.filename;
-
+    data['status'] = this.status;
+    data['readStatus'] = this.readStatus;
     return data;
   }
 }
