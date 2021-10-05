@@ -128,7 +128,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
     });
   }
-
+@override
+  void didChangeDependencies() {
+  apiAnnouncementCount = getAnnouncementCountAPI();
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;

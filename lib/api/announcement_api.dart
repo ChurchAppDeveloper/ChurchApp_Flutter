@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:churchapp/Screens/WebViewPdfLoad.dart';
 import 'package:churchapp/model_request/annoucement_create_request.dart';
+import 'package:churchapp/model_request/read_notification_request.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/model_response/get_announcement_response.dart';
+import 'package:churchapp/model_response/read_notification_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
@@ -39,7 +41,6 @@ Future<AnnouncementResponse> getAnnouncementAPI() async {
 Future getAnnouncementImageAPI(
     BuildContext context, int id, String fileName, Uri uri) async {
   debugPrint("$fileName");
-
     String url =
         "$baseUrl/getannouncementImage?announcementid=$id&fileName=$fileName";
     debugPrint("AnnouncementImage:$url");
@@ -53,6 +54,28 @@ Future getAnnouncementImageAPI(
       MaterialPageRoute(builder: (context) => bulletin),
     );
 
+}
+
+Future readNotificationAPI(ReadNotificationRequest readNotificationRequest) async{
+  String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
+
+  String url = "$baseUrl//ReadNotificationsbyDeviceId";
+  Map<String, String> requestHeaders = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    // HttpHeaders.authorizationHeader: 'Bearer $token',
+  };
+  readNotificationRequest.deviceId=deviceId;
+  var body = json.encode(readNotificationRequest);
+  debugPrint("notify_body: $body");
+  final response =
+  await http.post(Uri.parse(url), body: body, headers: requestHeaders);
+  debugPrint("productAddRequest1 ${response.body}");
+
+  var data = ReadNotificationResponse.fromJson(json.decode(response.body));
+
+  if (response.statusCode == 200) {
+    debugPrint("Response ${data.message}");
+  }
 }
 
 Future<AnnouncementCountResponse>  getAnnouncementCountAPI() async {

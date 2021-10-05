@@ -1,5 +1,6 @@
 
 import 'package:churchapp/api/announcement_api.dart';
+import 'package:churchapp/model_request/read_notification_request.dart';
 import 'package:churchapp/model_response/get_announcement_response.dart';
 import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
@@ -21,17 +22,18 @@ class _AnnouncementListState extends State<AnnouncementList> {
   bool isShowAppbar = true;
   String role;
   Future apiAnnouncement, getRole;
+  ReadNotificationRequest readNotificationRequest;
 
   @override
   void initState() {
     isShowAppbar = Get.arguments;
+    readNotificationRequest=ReadNotificationRequest();
     apiAnnouncement = getAnnouncementAPI();
     getRole = initData();
     super.initState();
   }
 @override
   void didChangeDependencies() {
-  apiAnnouncement = getAnnouncementAPI();
     super.didChangeDependencies();
   }
   @override
@@ -72,11 +74,11 @@ class _AnnouncementListState extends State<AnnouncementList> {
             if (projectSnap.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             } else if (projectSnap.connectionState == ConnectionState.done) {
-
               return ListView.builder(
                 itemCount: projectSnap.data.content.length,
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
+
                   if (projectSnap.data.content.isNotEmpty) {
                     var uri =
                     Uri.parse(projectSnap.data.content[index].description);
@@ -162,7 +164,10 @@ class _AnnouncementListState extends State<AnnouncementList> {
                       ),
                       onTap: () async {
                         debugPrint("No pdf");
-                       getAnnouncementImageAPI(context,projectSnap.data.content[index].id,projectSnap.data.content[index].filename,uri);
+                        readNotificationRequest.announcementId=projectSnap.data.content[index].id;
+                        readNotificationRequest.status=true;
+                        readNotificationAPI(readNotificationRequest);
+                        getAnnouncementImageAPI(context,projectSnap.data.content[index].id,projectSnap.data.content[index].filename,uri);
                       },
                     );
                   } else {
