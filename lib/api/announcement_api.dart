@@ -15,6 +15,7 @@ import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pull_to_refresh/src/smart_refresher.dart';
 
 Future<AnnouncementResponse> getAnnouncementAPI() async {
   String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
@@ -56,7 +57,7 @@ Future getAnnouncementImageAPI(
 
 }
 
-Future readNotificationAPI(ReadNotificationRequest readNotificationRequest) async{
+Future readNotificationAPI(ReadNotificationRequest readNotificationRequest, RefreshController refreshController) async{
   String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
 
   String url = "$baseUrl//ReadNotificationsbyDeviceId";
@@ -74,6 +75,8 @@ Future readNotificationAPI(ReadNotificationRequest readNotificationRequest) asyn
   var data = ReadNotificationResponse.fromJson(json.decode(response.body));
 
   if (response.statusCode == 200) {
+    refreshController.requestRefresh();
+
     debugPrint("Response ${data.message}");
   }
 }
