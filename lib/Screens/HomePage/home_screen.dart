@@ -84,10 +84,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _fetching = true;
     firebaseSetup(_firebaseMessaging);
-    _firebaseMessaging.getToken().then((String token) {
-       SharedPref().setStringPref(SharedPref().deviceId, token);
-      print("token $token");
-    });
+
     getVersion();
     _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
       if (mounted) {

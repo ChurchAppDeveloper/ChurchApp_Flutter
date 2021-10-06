@@ -1,11 +1,10 @@
-
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:path/path.dart' as p;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 class WebViewPdfLoad extends StatefulWidget {
   final String weburl;
@@ -15,7 +14,13 @@ class WebViewPdfLoad extends StatefulWidget {
   final Uri url;
   var fileName;
 
-  WebViewPdfLoad({Key key, this.weburl, this.isShowAppbar, this.pageTitle, this.url,this.fileName})
+  WebViewPdfLoad(
+      {Key key,
+      this.weburl,
+      this.isShowAppbar,
+      this.pageTitle,
+      this.url,
+      this.fileName})
       : super(key: key);
 
   WebViewLoadUI createState() => WebViewLoadUI();
@@ -35,10 +40,24 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
     pageTitle = widget.pageTitle;
     contentDesc = widget.contentDesc;
     debugPrint("WebView:${widget.weburl}");
-    loadwebview= SfPdfViewer.network(
-        '${widget.weburl}',
-        initialScrollOffset: Offset(0, 500),
-        initialZoomLevel: 0);
+
+    var extension = p.extension(widget.weburl);
+    switch (extension) {
+      case '.pdf':
+        loadwebview = SfPdfViewer.network('${widget.weburl}',
+            initialScrollOffset: Offset(0, 500), initialZoomLevel: 0);
+        break;
+      case '.png':
+        loadwebview = Image.network(widget.weburl);
+        break;
+      case '.jpg':
+        loadwebview = Image.network(widget.weburl);
+        break;
+      case '.jpeg':
+        loadwebview = Image.network(widget.weburl);
+        break;
+    }
+
 /*    loadwebview = WebView(
       initialUrl: "${widget.weburl}",
       javascriptMode: JavascriptMode.unrestricted,
@@ -57,26 +76,26 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
     return Scaffold(
         appBar: isShowAppbar
             ? AppBar(
-          backgroundColor: Color.fromARGB(255, 219, 69, 71),
-          title: Text(pageTitle),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.phone_in_talk,
-                  color: Colors.white,
+                backgroundColor: Color.fromARGB(255, 219, 69, 71),
+                title: Text(pageTitle),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.phone_in_talk,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      launch(widget.url.toString());
+                    },
+                  )
+                ],
+                shape: ContinuousRectangleBorder(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
+                  ),
                 ),
-                onPressed: () {
-                  launch(widget.url.toString());
-
-                },
               )
-            ],
-          shape: ContinuousRectangleBorder(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-            ),),
-        )
             : null,
         body: Stack(
           children: [

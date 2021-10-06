@@ -1,10 +1,6 @@
 import 'package:churchapp/api/mass_api.dart';
-import 'package:churchapp/model_response/mass_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class WeekdayPicker extends StatefulWidget {
@@ -53,11 +49,11 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
                       return Container(
                         child: SfCalendar(
                           view: CalendarView.month,
-                          // allowedViews: <CalendarView>[
-                          //   CalendarView.day,
-                          //   CalendarView.week,
-                          //   CalendarView.month,
-                          // ],
+                          allowedViews: <CalendarView>[
+                            CalendarView.day,
+                            CalendarView.week,
+                            CalendarView.month,
+                          ],
                           viewNavigationMode: ViewNavigationMode.snap,
                           dataSource: events,
                           // dataSource: MeetingDataSource(_getDataSource()),

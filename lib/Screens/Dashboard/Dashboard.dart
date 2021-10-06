@@ -12,18 +12,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-@override
+  @override
   void initState() {
-  profileDashAPI();
+    profileDashAPI();
     super.initState();
   }
+
   @override
   build(BuildContext context) {
-
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: appName,
-      home: HomeScreen()
-    );
+        debugShowCheckedModeBanner: false, title: appName, home: HomeScreen());
   }
 }

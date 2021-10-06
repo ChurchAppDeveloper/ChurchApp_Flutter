@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:churchapp/Screens/WebViewPdfLoad.dart';
 import 'package:churchapp/model_request/annoucement_create_request.dart';
 import 'package:churchapp/model_request/read_notification_request.dart';
@@ -42,34 +43,39 @@ Future<AnnouncementResponse> getAnnouncementAPI() async {
 Future getAnnouncementImageAPI(
     BuildContext context, int id, String fileName, Uri uri) async {
   debugPrint("$fileName");
-    String url =
-        "$baseUrl/getannouncementImage?announcementid=$id&fileName=$fileName";
-    debugPrint("AnnouncementImage:$url");
-    var bulletin = WebViewPdfLoad(
-        weburl: url, isShowAppbar: true, pageTitle: "Announcement Details",url: uri,fileName: fileName,);
-    bulletin.contentDesc = url;
-    debugPrint("bulletin:$bulletin");
+  String url =
+      "$baseUrl/getannouncementImage?announcementid=$id&fileName=$fileName";
+  debugPrint("AnnouncementImage:$url");
+  var bulletin = WebViewPdfLoad(
+    weburl: url,
+    isShowAppbar: true,
+    pageTitle: "Announcement Details",
+    url: uri,
+    fileName: fileName,
+  );
+  bulletin.contentDesc = url;
+  debugPrint("bulletin:$bulletin");
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => bulletin),
-    );
-
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => bulletin),
+  );
 }
 
-Future readNotificationAPI(ReadNotificationRequest readNotificationRequest, RefreshController refreshController) async{
+Future readNotificationAPI(ReadNotificationRequest readNotificationRequest,
+    RefreshController refreshController) async {
   String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
 
-  String url = "$baseUrl//ReadNotificationsbyDeviceId";
+  String url = "$baseUrl/ReadNotificationsbyDeviceId";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
-  readNotificationRequest.deviceId=deviceId;
+  readNotificationRequest.deviceId = deviceId;
   var body = json.encode(readNotificationRequest);
   debugPrint("notify_body: $body");
   final response =
-  await http.post(Uri.parse(url), body: body, headers: requestHeaders);
+      await http.post(Uri.parse(url), body: body, headers: requestHeaders);
   debugPrint("productAddRequest1 ${response.body}");
 
   var data = ReadNotificationResponse.fromJson(json.decode(response.body));
@@ -81,7 +87,7 @@ Future readNotificationAPI(ReadNotificationRequest readNotificationRequest, Refr
   }
 }
 
-Future<AnnouncementCountResponse>  getAnnouncementCountAPI() async {
+Future<AnnouncementCountResponse> getAnnouncementCountAPI() async {
   String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
   debugPrint("deviceId: $deviceId");
   String url = "$baseUrl/UnReadNotificationCount?deviceId=$deviceId";

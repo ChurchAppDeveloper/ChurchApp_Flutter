@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/model_request/login_request.dart';
 import 'package:churchapp/util/color_constants.dart';
@@ -11,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class AboutUs extends StatefulWidget {
   @override
