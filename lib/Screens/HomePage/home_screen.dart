@@ -11,7 +11,6 @@ import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
-import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _fetching = true;
     firebaseSetup(_firebaseMessaging);
-
     getVersion();
     _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
       if (mounted) {
@@ -125,14 +123,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
     });
   }
-@override
+
+  @override
   void didChangeDependencies() {
-  apiAnnouncementCount = getAnnouncementCountAPI();
+    apiAnnouncementCount = getAnnouncementCountAPI();
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
+    var height = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
       backgroundColor:
           Color.fromARGB(255, 245, 246, 250), //Color.fromARGB(255, 219, 69, 71)

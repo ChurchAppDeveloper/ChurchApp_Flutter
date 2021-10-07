@@ -13,14 +13,16 @@ import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/LoginPage/otp_screen.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
+import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 import 'Screens/LoginPage/login_screen.dart';
 
 void main() async {
@@ -35,10 +37,10 @@ void main() async {
     DeviceOrientation.portraitDown
   ]).then((_) => runApp(MyApp()));
 }
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-
 
   print("Handling a background message: ${message.messageId}");
 }
@@ -49,9 +51,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   initState() {
+    getDeviceToken();
     super.initState();
   }
 
@@ -71,7 +75,8 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/otp', page: () => OtpScreen()),
         GetPage(name: '/home', page: () => Dashboard()),
         GetPage(name: '/announcementList', page: () => AnnouncementList()),
-        GetPage(name: '/announcementCreate', page: () => AnnouncementCreation()),
+        GetPage(
+            name: '/announcementCreate', page: () => AnnouncementCreation()),
         GetPage(name: '/contact', page: () => ContactUS()),
         GetPage(name: '/about', page: () => AboutUs()),
         GetPage(name: '/liveStream', page: () => LiveStream()),
@@ -82,5 +87,11 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/confession', page: () => Confession()),
       ],
     );
+  }
+
+  void getDeviceToken() async {
+    String deviceToken = await _firebaseMessaging.getToken();
+    SharedPref().setStringPref(SharedPref().deviceId, deviceToken);
+    debugPrint("Mainoken:$deviceToken");
   }
 }

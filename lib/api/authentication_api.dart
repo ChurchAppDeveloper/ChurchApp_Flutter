@@ -10,7 +10,6 @@ import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -113,10 +112,6 @@ void profileAPI() async {
 }
 
 void profileDashAPI() async {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
-  SharedPref().setStringPref(
-      SharedPref().deviceId, await _firebaseMessaging.getToken());
   String token = await SharedPref().getStringPref(SharedPref().deviceId);
   debugPrint("Profile_Token: $token");
   String url = "$baseUrl/myprofileMobile";
