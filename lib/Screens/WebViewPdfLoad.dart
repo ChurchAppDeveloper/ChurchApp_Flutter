@@ -1,8 +1,13 @@
 import 'package:churchapp/util/string_constants.dart';
+import 'package:churchapp/widgets/view_photos.dart';
+import 'package:churchapp/widgets/view_videos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:path/path.dart' as p;
+import 'package:photo_view/photo_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,7 +34,7 @@ class WebViewPdfLoad extends StatefulWidget {
 class WebViewLoadUI extends State<WebViewPdfLoad> {
   var isShowAppbar;
   var pageTitle;
-  var loadwebview;
+  var loadView;
   var contentDesc = "";
   bool isLoading = true;
 
@@ -44,45 +49,43 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
     var extension = p.extension(widget.weburl);
     switch (extension) {
       case '.pdf':
-        loadwebview = SfPdfViewer.network('${widget.weburl}',
-            initialScrollOffset: Offset(0, 500), initialZoomLevel: 0);
+        loadView = SfPdfViewer.network('${widget.weburl}',
+            enableDoubleTapZooming: true,
+            enableDocumentLinkAnnotation: true,
+            onDocumentLoadFailed: (details) {
+              return SvgPicture.asset("image/404.svg", semanticsLabel: appName);
+            },
+            initialScrollOffset: Offset(0, 500),
+            initialZoomLevel: 0);
         break;
       case '.png':
-        loadwebview = Image.network(widget.weburl);
+        loadView = ViewPhotos(url: widget.weburl);
         break;
       case '.jpg':
-        loadwebview = Image.network(widget.weburl);
+        loadView = ViewPhotos(url: widget.weburl);
         break;
       case '.jpeg':
-        loadwebview = Image.network(widget.weburl);
+        loadView = ViewPhotos(url: widget.weburl);
+        break;
+      case '.mp4':
+        loadView = ViewVideos(url: widget.weburl);
         break;
     }
-
-/*    loadwebview = WebView(
-      initialUrl: "${widget.weburl}",
-      javascriptMode: JavascriptMode.unrestricted,
-
-      onPageFinished: (finish) {
-        setState(() {
-          isLoading = false;
-        });
-      },
-    );*/
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(" pdf: ${widget.weburl}   ");
+    debugPrint("url: ${widget.weburl}");
     return Scaffold(
         appBar: isShowAppbar
             ? AppBar(
-                backgroundColor: Color.fromARGB(255, 219, 69, 71),
-                title: Text(pageTitle),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.phone_in_talk,
-                      color: Colors.white,
+          backgroundColor: Color.fromARGB(255, 219, 69, 71),
+          title: Text(pageTitle),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.phone_in_talk,
+                color: Colors.white,
                     ),
                     onPressed: () {
                       launch(widget.url.toString());
@@ -100,17 +103,8 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
         body: Stack(
           children: [
             widget.weburl != null
-                ? loadwebview
+                ? loadView
                 : SvgPicture.asset("image/404.svg", semanticsLabel: appName),
-            /*isLoading
-                ? Center(
-              child: CircularProgressIndicator(),
-            )
-                : Container(),*/
-
-/*
-            widget.fileName==null?SvgPicture.asset("image/404.svg", semanticsLabel: appName):Container()
-*/
           ],
         ));
   }
