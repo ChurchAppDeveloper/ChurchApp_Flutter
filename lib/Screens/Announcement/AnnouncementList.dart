@@ -248,12 +248,14 @@ class _AnnouncementListState extends State<AnnouncementList> {
                     ),
                   ),
                   onTap: () async {
-                    readNotificationRequest.announcementId =
-                        announcementList[index].id;
-                    readNotificationRequest.status = true;
-                    // announcementList[index].readStatus = true;
-                    readNotificationAPI(
-                        readNotificationRequest, refreshController);
+                    if(readNotificationRequest.status==false){
+                      readNotificationRequest.announcementId =
+                          announcementList[index].id;
+                      readNotificationRequest.status = true;
+                      // announcementList[index].readStatus = true;
+                      readNotificationAPI(
+                          readNotificationRequest, refreshController);
+                    }
                     getAnnouncementImageAPI(context, announcementList[index].id,
                         announcementList[index].filename, uri);
                   },

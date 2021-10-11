@@ -25,6 +25,7 @@ class _ViewVideosState extends State<ViewVideos> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
+    _controller.play();
   }
 
   @override
@@ -60,6 +61,7 @@ class _ViewVideosState extends State<ViewVideos> {
   @override
   void dispose() {
     super.dispose();
+    _controller.pause();
     _controller.dispose();
   }
 }
