@@ -46,7 +46,7 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
     contentDesc = widget.contentDesc;
     debugPrint("WebView:${widget.weburl}");
 
-    var extension = p.extension(widget.weburl);
+    var extension = p.extension(widget.fileName);
     switch (extension) {
       case '.pdf':
         loadView = SfPdfViewer.network('${widget.weburl}',

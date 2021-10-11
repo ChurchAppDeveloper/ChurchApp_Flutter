@@ -44,7 +44,7 @@ Future getAnnouncementImageAPI(
     BuildContext context, int id, String fileName, Uri uri) async {
   debugPrint("$fileName");
   String url =
-      "$baseUrl/getannouncementImage?announcementid=$id&fileName=$fileName";
+      "$baseUrl/getannouncementImage?id=$id";
   debugPrint("AnnouncementImage:$url");
   var bulletin = WebViewPdfLoad(
     weburl: url,
