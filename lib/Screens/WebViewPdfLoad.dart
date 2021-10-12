@@ -1,4 +1,5 @@
 import 'package:churchapp/util/string_constants.dart';
+import 'package:churchapp/widgets/view_empty.dart';
 import 'package:churchapp/widgets/view_photos.dart';
 import 'package:churchapp/widgets/view_videos.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,32 +46,37 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
     pageTitle = widget.pageTitle;
     contentDesc = widget.contentDesc;
     debugPrint("WebView:${widget.weburl}");
-
-    var extension = p.extension(widget.fileName);
-    switch (extension) {
-      case '.pdf':
-        loadView = SfPdfViewer.network('${widget.weburl}',
-            enableDoubleTapZooming: true,
-            enableDocumentLinkAnnotation: true,
-            onDocumentLoadFailed: (details) {
-              return SvgPicture.asset("image/404.svg", semanticsLabel: appName);
-            },
-            initialScrollOffset: Offset(0, 500),
-            initialZoomLevel: 0);
-        break;
-      case '.png':
-        loadView = ViewPhotos(url: widget.weburl);
-        break;
-      case '.jpg':
-        loadView = ViewPhotos(url: widget.weburl);
-        break;
-      case '.jpeg':
-        loadView = ViewPhotos(url: widget.weburl);
-        break;
-      case '.mp4':
-        loadView = ViewVideos(url: widget.weburl);
-        break;
+    if(widget.fileName!=null){
+      var extension = p.extension(widget.fileName);
+      debugPrint("extension:$extension");
+      switch (extension) {
+        case '.pdf':
+          loadView = SfPdfViewer.network('${widget.weburl}',
+              enableDoubleTapZooming: true,
+              enableDocumentLinkAnnotation: true,
+              onDocumentLoadFailed: (details) {
+                return SvgPicture.asset("image/404.svg", semanticsLabel: appName);
+              },
+              initialScrollOffset: Offset(0, 500),
+              initialZoomLevel: 0);
+          break;
+        case '.png':
+          loadView = ViewPhotos(url: widget.weburl);
+          break;
+        case '.jpg':
+          loadView = ViewPhotos(url: widget.weburl);
+          break;
+        case '.jpeg':
+          loadView = ViewPhotos(url: widget.weburl);
+          break;
+        case '.mp4':
+          loadView = ViewVideos(url: widget.weburl);
+          break;
+      }
+    }else{
+      loadView=ViewEmpty();
     }
+
   }
 
   @override
@@ -102,7 +108,7 @@ class WebViewLoadUI extends State<WebViewPdfLoad> {
             : null,
         body: Stack(
           children: [
-            widget.weburl != null
+            widget.weburl != null && widget.fileName!=null
                 ? loadView
                 : SvgPicture.asset("image/404.svg", semanticsLabel: appName),
           ],
