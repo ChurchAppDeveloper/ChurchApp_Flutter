@@ -248,7 +248,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                     ),
                   ),
                   onTap: () async {
-                    if(readNotificationRequest.status==false){
+                    if(announcementList[index].readStatus==false){
                       readNotificationRequest.announcementId =
                           announcementList[index].id;
                       readNotificationRequest.status = true;
