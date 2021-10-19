@@ -38,11 +38,11 @@ class _MassTimingState extends State<MassTiming> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     return Scaffold(
         appBar: isShowAppbar
             ? AppBar(
-                title: Text("Timings"),
+                title: Text("Calendar"),
                 shape: ContinuousRectangleBorder(
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),

@@ -37,33 +37,28 @@ Future<List<Appointment>> getMass() async {
 
     MassResponse list = MassResponse.fromJson(data);
     List<Content> contentTiming = list.content;
-    Color colorType;
+
     for (int i = 0; i < contentTiming.length; i++) {
-      if (contentTiming[i].scheduleType == "Mass Timing") {
-        colorType = Colors.red;
-      } else if (contentTiming[i].scheduleType == "Rosary") {
-        colorType = Colors.pink;
-      } else {
-        colorType = Colors.orange;
-      }
-      DateTime tempDate =
-          DateFormat("yyyy-MM-dd HH:mm:ss").parse(contentTiming[i].date);
+      // DateTime tempDate =
+      //     DateFormat("yyyy-MM-dd HH:mm:ss").parse(contentTiming[i].startDate);
       DateTime tempStart = new DateFormat("yyyy-MM-dd HH:mm:ss")
           .parse(contentTiming[i].startTime);
       DateTime tempEnd =
           DateFormat("yyyy-MM-dd HH:mm:ss").parse(contentTiming[i].endTime);
-      debugPrint("Date: $tempDate");
-      debugPrint("Date: $tempStart");
-      debugPrint("Date: $tempEnd");
-      String day = DateFormat("EEEE").format(tempDate);
-      debugPrint("DateTime: ${day.substring(0, 3)}");
+      // debugPrint("Date: $tempDate");
+      debugPrint("StartDate: $tempStart");
+      debugPrint("EndDate: $tempEnd");
+      // String day = DateFormat("EEEE").format(tempDate);
+      // debugPrint("DateTime: ${day.substring(0, 3)}");
       appointments.add(Appointment(
           startTime: tempStart,
           endTime: tempEnd,
+          location: "In Church",
           subject: contentTiming[i].scheduleType,
-          color: colorType,
-          recurrenceRule:
-              'FREQ=WEEKLY;INTERVAL=1;BYDAY=${day.substring(0, 3).toUpperCase()};'));
+          color: HexColor(contentTiming[i].primaryColour),
+          // recurrenceRule:
+          //     'FREQ=WEEKLY;INTERVAL=1;BYDAY=${day.substring(0, 3).toUpperCase()};'
+      ));
     }
 
     return appointments;
@@ -72,7 +67,17 @@ Future<List<Appointment>> getMass() async {
     return appointments;
   }
 }
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
 
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
 Future createTimingAPI(Map<String, dynamic> timingForm) async {
   debugPrint("TIMING :${jsonEncode(timingForm)}");
   String token = await SharedPref().getStringPref(SharedPref().token);

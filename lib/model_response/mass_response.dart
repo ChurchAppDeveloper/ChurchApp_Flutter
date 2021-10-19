@@ -35,31 +35,43 @@ class MassResponse {
 class Content {
   Content({
     this.id,
-    this.date,
+    this.startDate,
+    this.endDate,
     this.startTime,
     this.endTime,
+    this.primaryColour,
+    this.secondaryColour,
     this.scheduleType,
   });
 
   int id;
-  String date;
+  String startDate;
+  String endDate;
   String startTime;
   String endTime;
+  String primaryColour;
+  String secondaryColour;
   String scheduleType;
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
     id: json["id"],
-    date: json["date"],
+    startDate: json["startDate"],
+    endDate: json["endDate"],
     startTime: json["start_time"],
     endTime: json["end_time"],
+    primaryColour: json["primaryColour"],
+    secondaryColour:json["secondaryColour"],
     scheduleType: json["schedule_type"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "date": date,
+    "startDate": startDate,
+    "endDate": endDate,
     "start_time": startTime,
     "end_time": endTime,
+    "primaryColour": primaryColour,
+    "secondaryColour": secondaryColour,
     "schedule_type": scheduleType,
   };
 }
