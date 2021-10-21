@@ -41,9 +41,9 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
 
 
                     if (projectSnap.hasData) {
-                      _AppointmentDataSource events =
-                      _AppointmentDataSource(projectSnap.data);
-                     /* Future.delayed(Duration(seconds: 2)).then((value) {
+                      _MeetingDataSource events =
+                          _MeetingDataSource(projectSnap.data);
+                      /* Future.delayed(Duration(seconds: 2)).then((value) {
                         events.notifyListeners(CalendarDataSourceAction.add, projectSnap.data);
                       });*/
                       return Container(
@@ -96,8 +96,8 @@ class _WeekdayPickerState extends State<WeekdayPicker> {
   }
 }
 
-class _AppointmentDataSource extends CalendarDataSource {
-  _AppointmentDataSource(List<Appointment> source) {
+class _MeetingDataSource extends CalendarDataSource {
+  _MeetingDataSource(List<Appointment> source) {
     appointments = source;
   }
 

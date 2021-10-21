@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:churchapp/model_response/mass_response.dart';
 import 'package:churchapp/model_response/timing_create_response.dart';
+import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/shared_preference.dart';
@@ -10,7 +11,6 @@ import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:churchapp/util/api_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -51,12 +51,13 @@ Future<List<Appointment>> getMass() async {
       // String day = DateFormat("EEEE").format(tempDate);
       // debugPrint("DateTime: ${day.substring(0, 3)}");
       appointments.add(Appointment(
-          startTime: tempStart,
-          endTime: tempEnd,
-          location: "In Church",
-          subject: contentTiming[i].scheduleType,
-          color: HexColor(contentTiming[i].primaryColour),
-          // recurrenceRule:
+        startTime: tempStart,
+        endTime: tempEnd,
+        location: "In Church",
+        isAllDay: false,
+        subject: contentTiming[i].scheduleType,
+        color: HexColor(contentTiming[i].primaryColour),
+        // recurrenceRule:
           //     'FREQ=WEEKLY;INTERVAL=1;BYDAY=${day.substring(0, 3).toUpperCase()};'
       ));
     }
