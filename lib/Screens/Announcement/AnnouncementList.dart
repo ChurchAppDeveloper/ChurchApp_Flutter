@@ -256,6 +256,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                       readNotificationAPI(
                           readNotificationRequest, refreshController);
                     }
+                    debugPrint("FileName:${announcementList[index].filename}");
                     getAnnouncementImageAPI(context, announcementList[index].id,
                         announcementList[index].filename, uri);
                   },

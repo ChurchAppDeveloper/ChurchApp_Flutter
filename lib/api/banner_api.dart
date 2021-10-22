@@ -16,6 +16,7 @@ Future<BannerResponse> getBanners() async {
   try {
     final response = await http.get(Uri.parse('$baseUrl/bannerImageListMobile'),headers: requestHeaders);
     var data = json.decode(response.body);
+    debugPrint("BannerData $data");
 
     BannerResponse list =
      BannerResponse.fromJson(data);

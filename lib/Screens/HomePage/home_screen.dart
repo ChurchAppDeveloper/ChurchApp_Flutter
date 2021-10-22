@@ -23,6 +23,7 @@ import 'package:loading/loading.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart' as p;
 
 enum HomeMenu {
   parishannouncement,
@@ -112,7 +113,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       var localBannerImages = List<NetworkImage>();
       for (var i = 0; i < banners.content.length; i++) {
         debugPrint("Banner: ${baseUrl + banners.content[i]}");
-        localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
+        var extension = p.extension(banners.content[i]);
+        debugPrint("Banner: $extension");
+        switch (extension) {
+          case '.png':
+            localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
+            break;
+          case '.jpg':
+            localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
+            break;
+          case '.jpeg':
+            localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
+            break;
+          /*case '.mp4':
+            loadView = ViewVideos(url: widget.weburl);
+            break;*/
+        }
+
       }
       setState(() {
         bannerImages = localBannerImages;
