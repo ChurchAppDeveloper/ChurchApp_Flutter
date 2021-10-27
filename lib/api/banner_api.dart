@@ -14,12 +14,13 @@ Future<BannerResponse> getBanners() async {
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
-    final response = await http.get(Uri.parse('$baseUrl/bannerImageListMobile'),headers: requestHeaders);
+    final response = await http.get(Uri.parse('$baseUrl/bannerImageListMobile'),
+        headers: requestHeaders);
     var data = json.decode(response.body);
     debugPrint("BannerData $data");
 
-    BannerResponse list =
-     BannerResponse.fromJson(data);
+    BannerResponse list = BannerResponse.fromJson(data);
+    debugPrint("BannerList:${list.content}");
     return list;
   } catch (e) {
     debugPrint("Error $e");

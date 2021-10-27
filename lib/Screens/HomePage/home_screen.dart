@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         .height;
     return Scaffold(
       backgroundColor:
-          Color.fromARGB(255, 245, 246, 250), //Color.fromARGB(255, 219, 69, 71)
+      Color.fromARGB(255, 245, 246, 250), //Color.fromARGB(255, 219, 69, 71)
       body: Stack(
         children: [
           Container(
@@ -170,7 +170,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             ),
           ),*/
-
           ClipPath(
             child: (_fetching)
                 ? Container(
