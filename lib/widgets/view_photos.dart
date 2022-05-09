@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:churchapp/Screens/WebViewPdfLoad.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,8 @@ class ViewPhotos extends StatelessWidget {
     @required this.url,
   }) : super(key: key);
 
-  final String url;
+ // final String url;
+  final Uint8List url;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class ViewPhotos extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           return SvgPicture.asset("image/404.svg", semanticsLabel: appName);
         },
-        imageProvider: NetworkImage(url),
+        imageProvider: MemoryImage(url),
       ),
     );
   }

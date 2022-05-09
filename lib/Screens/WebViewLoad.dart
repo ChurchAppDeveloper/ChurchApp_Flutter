@@ -72,6 +72,7 @@ class WebViewLoadUI extends State<WebViewLoad> {
                   )
                 : Container(),
           ],
-        ));
+        )
+    );
   }
 }

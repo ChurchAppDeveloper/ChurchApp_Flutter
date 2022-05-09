@@ -34,6 +34,8 @@ class Content {
   String businessName;
   String phoneNumber;
   String imagename;
+  int businessSubTypeId;
+  String businessSubTypeName;
 
   Content({this.id,this.businessTypeId, this.businessTypeName,this.businessName,this.phoneNumber, this.imagename});
 
@@ -44,6 +46,8 @@ class Content {
     businessName = json['businessName'];
     phoneNumber = json['phoneNumber'];
     imagename = json['imagename'];
+    businessSubTypeId=json['businessSubTypeId'];
+    businessSubTypeName=json['businessSubTypeName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,6 +58,8 @@ class Content {
     data['businessName'] = this.businessName;
     data['phoneNumber'] = this.phoneNumber;
     data['imagename'] = this.imagename;
+    data['businessSubTypeName']=this.businessSubTypeName;
+    data['businessSubTypeId']=this.businessSubTypeId;
 
     return data;
   }

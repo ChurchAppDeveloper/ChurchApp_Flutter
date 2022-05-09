@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:churchapp/Model/HomeGridsModel.dart';
 import 'package:churchapp/model_request/login_request.dart';
 import 'package:churchapp/model_response/login_response.dart';
 import 'package:churchapp/model_response/otp_response.dart';
@@ -16,7 +18,7 @@ import 'package:http/http.dart' as http;
 
 void loginAPI(LoginRequest loginRequest) async {
   String url =
-      "$baseUrl/sendNotification?app=MOBILE&contactNumber=${loginRequest.contactNumber}";
+      "$baseUrl3/sendNotification?app=MOBILE&contactNumber=${loginRequest.contactNumber}";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
   };
@@ -54,7 +56,7 @@ void loginAPI(LoginRequest loginRequest) async {
 }
 
 void verifyOTPAPI(Map<String, dynamic> otpForm) async {
-  String url = "$baseUrl/oauth/token";
+  String url = "$baseUrl3/oauth/token";
   String barnabas = "barnabas";
   String basicAuth =
       'Basic ' + base64Encode(utf8.encode('$barnabas:$barnabas'));
@@ -89,7 +91,7 @@ void profileAPI() async {
   // await SharedPref().setStringPref(SharedPref().token, "784e37cb-78f6-4a1d-bf07-aee955781157");
   String token = await SharedPref().getStringPref(SharedPref().token);
   debugPrint("Token: $token");
-  String url = "$baseUrl/myprofile";
+  String url = "$baseUrl3/myprofile";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -104,27 +106,56 @@ void profileAPI() async {
       debugPrint("content:${data.content}");
       Get.offAndToNamed("/home");
     } else {
-      Get.offAndToNamed("/login");
+     // Get.offAndToNamed("/login");
     }
   } else {
-    Get.offAndToNamed("/login");
+   // Get.offAndToNamed("/login");
   }
+}
+
+Future<HomeGridsModel> getDashboardGrids() async {
+  // await SharedPref().setStringPref(SharedPref().token, "ab7e95c9-20a5-4922-8482-9a310230539c");
+  // await SharedPref().setStringPref(SharedPref().token, "784e37cb-78f6-4a1d-bf07-aee955781157");
+  String token = await SharedPref().getStringPref(SharedPref().token);
+  debugPrint("Token: $token");
+  String url = "$baseUrl3/grids/";
+  Map<String, String> requestHeaders = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  };
+  final response = await http.get(Uri.parse(url), headers: requestHeaders);
+  var data = HomeGridsModel.fromJson(json.decode(response.body));
+  debugPrint("grid api request: ${response.request}");
+  debugPrint("grid api response: ${response.body}");
+return data;
+/*  if (response.statusCode == 200) {
+    if (data.success) {
+      debugPrint("content:${data.content}");
+      //Get.offAndToNamed("/home");
+    } else {
+      // Get.offAndToNamed("/login");
+    }
+  } else {
+    // Get.offAndToNamed("/login");
+  }*/
 }
 
 void profileDashAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().deviceId);
   debugPrint("Profile_Token: $token");
-  String url = "$baseUrl/myprofileMobile";
+  String url = "$baseUrl3/myprofileMobile";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   final response = await http.get(Uri.parse(url), headers: requestHeaders);
+
+  log("links String ${response.body} \n\n\n\n\n");
   var dataval = ProfileResponse.fromJson(json.decode(response.body));
   debugPrint("profile_request: ${response.request}");
   if (response.statusCode == 200) {
-    debugPrint("profile_response1: ${response.body}");
+    log("profile_response1 urls: ${response.body}");
     if (dataval.success) {
+
       debugPrint("content:${dataval.content}");
       await SharedPref().setStringPref(
           'phoneNumber', dataval.content.churchProfile.contactUs);
@@ -137,25 +168,27 @@ void profileDashAPI() async {
       await SharedPref()
           .setStringPref('aboutUs', dataval.content.churchProfile.aboutUs);
       await SharedPref().setStringPref(
-          'ministersUrl', dataval.content.churchProfile.ministers);
+          'ministersUrl', dataval.content.churchProfile.ministers.replaceAll("'", ""));
       await SharedPref()
-          .setStringPref('donateUrl', dataval.content.churchProfile.donate);
+          .setStringPref('donateUrl', dataval.content.churchProfile.donate.replaceAll("'", ""));
       await SharedPref()
-          .setStringPref('websiteUrl', dataval.content.churchProfile.website);
+          .setStringPref('websiteUrl', dataval.content.churchProfile.website.replaceAll("'", ""));
       await SharedPref()
-          .setStringPref('youtubeUrl', dataval.content.churchProfile.youtube);
+          .setStringPref('youtubeUrl', dataval.content.churchProfile.youtube.replaceAll("'", ""));
       await SharedPref()
-          .setStringPref('facebookUrl', dataval.content.churchProfile.facebook);
+          .setStringPref('facebookUrl', dataval.content.churchProfile.facebook.replaceAll("'", ""));
       await SharedPref()
-          .setStringPref('schoolUrl', dataval.content.churchProfile.school);
+          .setStringPref('schoolUrl', dataval.content.churchProfile.school.replaceAll("'", ""));
       await SharedPref()
-          .setStringPref('bulletinUrl', dataval.content.churchProfile.bulletIn);
+          .setStringPref('bulletinUrl', dataval.content.churchProfile.bulletIn.replaceAll("'", ""));
       await SharedPref().setStringPref(
-          'onlieReadingUrl', dataval.content.churchProfile.onlineReading);
+          'onlieReadingUrl', dataval.content.churchProfile.onlineReading.replaceAll("'", ""));
       await SharedPref().setStringPref(
           'prayerRequestUtl', dataval.content.churchProfile.prayerRequest);
       await SharedPref().setStringPref('masstimingintention',
-          dataval.content.churchProfile.massTimeIntention);
+          dataval.content.churchProfile.massTimeIntention.replaceAll("'", ""));
+      await SharedPref().setStringPref('anointingSick',
+          dataval.content.churchProfile.anointingSick.replaceAll("'", ""));
       await SharedPref()
           .setStringPref(SharedPref().role, dataval.content.roleName);
       await SharedPref().setStringPref('userNumber', dataval.content.contactNo);

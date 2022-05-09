@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 class ReadNotificationRequest {
   int announcementId;
   String deviceId;
   bool status;
 
   ReadNotificationRequest({this.announcementId, this.deviceId, this.status});
-
   ReadNotificationRequest.fromJson(Map<String, dynamic> json) {
     announcementId = json['announcementId'];
     deviceId = json['deviceId'];

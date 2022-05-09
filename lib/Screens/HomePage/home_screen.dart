@@ -1,17 +1,22 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:churchapp/Model/HomeGridsModel.dart';
 import 'package:churchapp/Screens/HomePage/empty_card.dart';
 import 'package:churchapp/Screens/WebViewLoad.dart';
 import 'package:churchapp/api/announcement_api.dart';
+import 'package:churchapp/api/authentication_api.dart';
 import 'package:churchapp/api/banner_api.dart';
 import 'package:churchapp/model_response/announcement_count_response.dart';
 import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/color_constants.dart';
 import 'package:churchapp/util/common_fun.dart';
 import 'package:churchapp/util/string_constants.dart';
+import 'package:churchapp/widgets/view_videos.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -50,15 +55,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int columnCount = 2;
   var homelist = [];
-  var bannerImages = [];
+ // var bannerImages = [];
   var reloadBannerImages = [];
+  var gridReloadBannerImages = [];
   var menuposition = HomeMenu.values[0];
   bool _fetching;
   int bannerindex = 0;
   Future apiAnnouncementCount;
+  HomeGridsModel homeGridsModel;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   AnimationController controller;
   Animation<double> animation;
+  Future<HomeGridsModel> gridViewItem;
   int _currentIndex = 0;
   List<IconData> _icons = [
     Icons.brightness_1,
@@ -78,10 +86,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
     return 'Evening';
   }
+/*fetchGridData()
+{
+  getDashboardGrids().then((value){
+    setState(() {
+      homeGridsModel= value;
+    });
+  });
+}*/
 
+  getData()async
+  {
+    gridViewItem= getDashboardGrids();
+  }
   @override
   void initState() {
     super.initState();
+   // fetchGridData();
+    getData();
     _fetching = true;
     firebaseSetup(_firebaseMessaging);
     getVersion();
@@ -110,30 +132,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     loadData();
     apiAnnouncementCount = getAnnouncementCountAPI();
     getBanners().then((banners) {
-      var localBannerImages = List<NetworkImage>();
+      var localBannerImages = [];//List<NetworkImage>();
       for (var i = 0; i < banners.content.length; i++) {
-        debugPrint("Banner: ${baseUrl + banners.content[i]}");
+        debugPrint("Bannerss: ${baseUrl3 + banners.content[i]}");
         var extension = p.extension(banners.content[i]);
         debugPrint("Banner: $extension");
         switch (extension) {
           case '.png':
-            localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
+
+            localBannerImages.add(NetworkImage(baseUrl3 + "/"+banners.content[i]));
+         //   localBannerImages.add(baseUrl + banners.content[i]);
             break;
           case '.jpg':
-            localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
+            localBannerImages.add(NetworkImage(baseUrl3 + "/"+banners.content[i]));
+          //  localBannerImages.add(baseUrl + banners.content[i]);
             break;
           case '.jpeg':
-            localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
+            localBannerImages.add(NetworkImage(baseUrl3 + "/"+banners.content[i]));
+          //  localBannerImages.add(baseUrl + banners.content[i]);
             break;
-          /*case '.mp4':
-            loadView = ViewVideos(url: widget.weburl);
+        /*  case '.mp4':
+            localBannerImages.add(NetworkImage(baseUrl + banners.content[i]));
             break;*/
         }
 
       }
       setState(() {
-        bannerImages = localBannerImages;
+        //bannerImages = localBannerImages;
         debugPrint("localBannerImages$localBannerImages");
+
         reloadBannerImages.addAll(localBannerImages);
         _fetching = false;
         controller.forward();
@@ -193,13 +220,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         return FadeTransition(
                             child: child, opacity: animations);
                       },
-                      child: Image.network(
+                      child:/*p.extension(reloadBannerImages[_currentIndex].url).toLowerCase()==".mp4"?ViewVideos(url: "http://103.99.149.26:9876/downloadBannerImage?fileName=1634725897819.mp4"):*/
+
+                      CachedNetworkImage(
+                        imageUrl: reloadBannerImages[_currentIndex].url,
+                        imageBuilder: (context, imageProvider) => Container(
+                          key:ValueKey<int>(_currentIndex),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                                ),
+
+                          ),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 2,
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                     /* Image.network(
                         reloadBannerImages[_currentIndex].url,
                         key: ValueKey<int>(_currentIndex),
                         fit: BoxFit.cover,
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height / 2,
-                      ),
+                      ),*/
                     )
 /*                    Carousel(
                       boxFit: BoxFit.cover,
@@ -341,7 +386,87 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   )),
             ),
           ),
-          GridView.count(
+
+ FutureBuilder<HomeGridsModel>(
+     future: gridViewItem,//getDashboardGrids(),
+     builder: (context,snap){
+       if (snap.connectionState ==
+           ConnectionState.waiting) {
+         return Center(
+             child: CircularProgressIndicator());
+       } else if (snap.connectionState ==
+           ConnectionState.done) {
+
+          return          GridView.count(
+            childAspectRatio: 1.0,
+            padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 20),
+            crossAxisCount: columnCount,
+            physics: BouncingScrollPhysics(),
+            children: List.generate(
+              snap.data.content.length,
+                  (int index) {
+                var homelistitem = snap.data.content[index];
+                return AnimationConfiguration.staggeredGrid(
+                  columnCount: columnCount,
+                  position: index,
+                  duration: const Duration(milliseconds: 400),
+                  child: ScaleAnimation(
+                    scale: 0.5,
+                    child: GestureDetector(
+                        onTap: () async {
+                          if(index<12)
+                          menuposition = HomeMenu.values[index];
+                          pushToCubicNavigationController(
+                              context, menuposition,homelistitem.link,homelistitem.name,index==snap.data.content.length-1);
+                        },
+                        child: (index == 0)
+                            ? FutureBuilder<AnnouncementCountResponse>(
+                            future: apiAnnouncementCount,
+                            builder: (context, projectSnap) {
+                              if (projectSnap.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              } else if (projectSnap.connectionState ==
+                                  ConnectionState.done) {
+                                //   log("data of content ${projectSnap.data.content}");
+                                return Badge(
+                                    padding: EdgeInsets.all(15.0),
+                                    position: BadgePosition.topStart(
+                                        top: 15, start: 15),
+                                    badgeContent: Text(
+                                        projectSnap.data.content.toString(),
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.lato(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        )),
+                                    child: EmptyCard(
+                                      imagename:baseUrl3+"/grids/"+homelistitem.downloadPath,
+                                      index: index,// title: homelistitem.title
+                                    ));
+                                // : Container();
+                              } else {
+                                return Container();
+                              }
+                            })
+                            : EmptyCard(
+                          imagename: baseUrl3+"/grids/"+homelistitem.downloadPath,
+                         index: index, // title: homelistitem.title
+                        )),
+                  ),
+                );
+              },
+            ),
+          );
+
+     }else return Container();
+
+ })
+ /*         GridView.count(
             childAspectRatio: 1.0,
             padding: EdgeInsets.fromLTRB(0, (height / 2), 0, 20),
             crossAxisCount: columnCount,
@@ -372,6 +497,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         child: CircularProgressIndicator());
                                   } else if (projectSnap.connectionState ==
                                       ConnectionState.done) {
+                                 //   log("data of content ${projectSnap.data.content}");
                                     return Badge(
                                         padding: EdgeInsets.all(15.0),
                                         position: BadgePosition.topStart(
@@ -403,15 +529,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 );
               },
             ),
-          ),
+          ),*/
         ],
       ),
     );
   }
 
   pushToCubicNavigationController(
-      BuildContext context, HomeMenu homemenu) async {
+      BuildContext context, HomeMenu homemenu,String url2,String pageTitle,bool isLastIndex) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final url=url2.replaceAll("'", "");
+    print("last index $url");
+    if(isLastIndex) {
+
+      Get.toNamed("/contact");
+      return ;
+    }
+
     switch (homemenu) {
       case HomeMenu.parishannouncement:
         Get.toNamed("/announcementList", arguments: true);
@@ -420,10 +554,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Get.toNamed("/liveStream", arguments: true);
         break;
       case HomeMenu.bulletin:
+        print("current url ${prefs.getString('bulletinUrl')}");
         var bulletin = WebViewLoad(
-            weburl: prefs.getString('bulletinUrl'),
+            weburl: url,//prefs.getString('bulletinUrl'),
             isShowAppbar: true,
-            pageTitle: "BULLETIN");
+            pageTitle: pageTitle//"BULLETIN"
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
@@ -436,17 +572,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Get.toNamed("/prayerRequest", arguments: true);
         break;
       case HomeMenu.donate:
+        print("current url ${prefs.getString('donateUrl')}");
+
         var bulletin;
         Platform.isIOS
             ? launch(
-                prefs.getString('donateUrl'),
+          url,//  prefs.getString('donateUrl'),
                 forceSafariVC: true,
                 universalLinksOnly: true,
               )
             : bulletin = WebViewLoad(
-                weburl: prefs.getString('donateUrl'),
+                weburl:url,// prefs.getString('donateUrl'),
                 isShowAppbar: true,
-                pageTitle: "DONATE");
+                pageTitle: pageTitle//"DONATE"
+        );
         bulletin != null
             ? Navigator.push(
                 context,
@@ -468,10 +607,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Get.toNamed("/classifiedList", arguments: true);
         break;
       case HomeMenu.readings:
+        print("current url ${prefs.getString('onlieReadingUrl')}");
         var bulletin = WebViewLoad(
-            weburl: prefs.getString('onlieReadingUrl'),
+            weburl: url,//prefs.getString('onlieReadingUrl'),
             isShowAppbar: true,
-            pageTitle: "ONLINE READINGS");
+            pageTitle: pageTitle//"ONLINE READINGS"
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
@@ -479,30 +620,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
         break;
       case HomeMenu.ministers:
+        print("current url ${prefs.getString('ministersUrl')}");
+
         var bulletin = WebViewLoad(
-            weburl: prefs.getString('ministersUrl'),
+            weburl:url,// prefs.getString('ministersUrl'),
             isShowAppbar: true,
-            pageTitle: "MINISTERS");
+            pageTitle: pageTitle//"MINISTERS"
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
         );
 
         break;
+
       case HomeMenu.school:
+        print("current url ${prefs.getString('schoolUrl')}");
         var bulletin = WebViewLoad(
-            weburl: prefs.getString('schoolUrl'),
+            weburl: url,//prefs.getString('schoolUrl'),
             isShowAppbar: true,
-            pageTitle: "School");
+            pageTitle: pageTitle//"School"
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => bulletin),
         );
 
         break;
-      case HomeMenu.contactus:
+     /* case HomeMenu.contactus:
         Get.toNamed("/contact");
-        break;
+        break;*/
 /*
       case HomeMenu.aboutus:
         Get.toNamed("/about");
@@ -588,12 +735,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         );
         break;
 */
-      default:
+      default:      var defaultPage = WebViewLoad(
+          weburl: url,//prefs.getString('schoolUrl'),
+          isShowAppbar: true,
+          pageTitle: pageTitle);
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => defaultPage));
     }
   }
 
-  loadData() {
-    homelist.add(HomeItem("image/img_announcement.png"));
+  loadData() async {
+    if(homeGridsModel!=null)
+      {
+       await homeGridsModel.content.forEach((element) {
+          homelist.add(HomeItem('image/img_announcement.png'));
+        });
+     /*  setState(() {
+
+       });*/
+      }
+   /* homelist.add(HomeItem("image/img_announcement.png"));
     homelist.add(HomeItem("image/img_livestreaming.png"));
     homelist.add(HomeItem("image/img_bulletin.png"));
     homelist.add(HomeItem("image/img_massTime.jpeg"));
@@ -604,7 +766,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     homelist.add(HomeItem("image/img_readings.png"));
     homelist.add(HomeItem("image/img_ministries.png"));
     homelist.add(HomeItem("image/img_school.png"));
-    homelist.add(HomeItem("image/img_contact.png"));
+    homelist.add(HomeItem("image/img_contact.png"));*/
     /* homelist.add(HomeItem("image/img_aboutUs.jpg"));
     homelist.add(HomeItem("image/img_logOut.jpg"));*/
   }
@@ -649,7 +811,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       const AndroidNotificationChannel channel = AndroidNotificationChannel(
           'barnabas_channel', // id
           'New Announcement Notifications', // title
-          'New Announcement is arrived.', // description
+          //'New Announcement is arrived.', // description
           importance: Importance.max,
           enableLights: true,
           enableVibration: true,
@@ -675,7 +837,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               notification.body,
               NotificationDetails(
                 android: AndroidNotificationDetails(
-                  channel.id, channel.name, channel.description,
+                  channel.id, channel.name, //channel.description,
                   icon: android?.smallIcon,
                   playSound: true,
                   enableVibration: true,

@@ -71,8 +71,9 @@ class CustomBody extends StatelessWidget {
           TextButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
+              print("url is ${prefs.getString('prayerRequestUtl')}");
               var wepage = WebViewLoad(
-                  weburl: prefs.getString('prayerRequestUtl'),
+                  weburl:/*"https://stbarnabaslb.org/anointing-of-the-sick/",*/   prefs.getString('prayerRequestUtl').replaceAll("'", ""),
                   isShowAppbar: true,
                   pageTitle: "Prayer Request");
               Navigator.push(
@@ -143,7 +144,7 @@ class CustomBody extends StatelessWidget {
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               var wepage = WebViewLoad(
-                  weburl: prefs.getString('masstimingintention'),
+                  weburl: prefs.getString('anointingSick'),
                   isShowAppbar: true,
                   pageTitle: "Anointing of the sick");
               Navigator.push(

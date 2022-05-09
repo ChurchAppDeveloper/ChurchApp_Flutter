@@ -70,7 +70,7 @@ class _ConfessionState extends State<Confession> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: Text("By Appointment Only",
+                          child: Text(/*"By Appointment Only"*/'',
                               textAlign: TextAlign.start,
                               style: GoogleFonts.lato(
                                 textStyle: TextStyle(
@@ -151,7 +151,7 @@ class _ConfessionState extends State<Confession> {
                   } else if (projectSnap.connectionState == ConnectionState.done) {
                     return Padding(
                       padding: const EdgeInsets.only(left:16.0,right:16.0,bottom: 16.0),
-                      child: Text("or E-mail: ${projectSnap.data} to book your time slot. Walk-ins are now okay, but keep in mind that those who made appointments, take precedence.",
+                      child: Text("or E-mail: ${projectSnap.data} to book your time slot. ${/*"Walk-ins are now okay, but keep in mind that those who made appointments, take precedence."*/""}",
                           textAlign: TextAlign.start,
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(

@@ -22,7 +22,7 @@ Future<AnnouncementResponse> getAnnouncementAPI() async {
   String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
   debugPrint("deviceId: $deviceId");
 
-  String url = "$baseUrl/getAnnouncementListMobile?deviceId=$deviceId";
+  String url = "$baseUrl3/getAnnouncementListMobile?deviceId=$deviceId";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     // HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -44,7 +44,7 @@ Future getAnnouncementImageAPI(
     BuildContext context, int id, String fileName, Uri uri) async {
   debugPrint("$fileName");
   String url =
-      "$baseUrl/getannouncementImage?id=$id";
+     /*"http://3.208.178.159:9876/barnabas/getannouncementImage?announcementid=$id&fileName=$fileName";*/"$baseUrl3/getannouncementImage?announcementid=$id&fileName=$fileName";
   debugPrint("AnnouncementImage:$url");
   var bulletin = WebViewPdfLoad(
     weburl: url,
@@ -66,18 +66,20 @@ Future readNotificationAPI(ReadNotificationRequest readNotificationRequest,
     RefreshController refreshController) async {
   String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
 
-  String url = "$baseUrl/ReadNotificationsbyDeviceId";
+  String url = "$baseUrl3/ReadNotificationsbyDeviceId";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   readNotificationRequest.deviceId = deviceId;
   var body = json.encode(readNotificationRequest);
+  debugPrint("url read notification : $url");
   debugPrint("notify_body: $body");
   final response =
       await http.post(Uri.parse(url), body: body, headers: requestHeaders);
   debugPrint("productAddRequest1 ${response.body}");
 
+  updateAnnouncementStatus(readNotificationRequest.announcementId);
   var data = ReadNotificationResponse.fromJson(json.decode(response.body));
 
   if (response.statusCode == 200) {
@@ -87,19 +89,40 @@ Future readNotificationAPI(ReadNotificationRequest readNotificationRequest,
   }
 }
 
+updateAnnouncementStatus(id)async{
+  String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
+
+  String url = "$baseUrl3/notifications/updatestatus";
+  Map<String, String> requestHeaders = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    "X-Device-ID":deviceId
+    // HttpHeaders.authorizationHeader: 'Bearer $token',
+  };
+
+  var body = json.encode({
+    "id": id
+  });
+  debugPrint("url annoucemet update status : $url");
+  debugPrint("notify_body: $body");
+  final response =
+      await http.put(Uri.parse(url), body: body, headers: requestHeaders);
+  debugPrint("productAddRequest12 ${response.body}");
+}
+
 Future<AnnouncementCountResponse> getAnnouncementCountAPI() async {
   String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
   debugPrint("deviceId: $deviceId");
-  String url = "$baseUrl/UnReadNotificationCount?deviceId=$deviceId";
+ // String url = "$baseUrl/UnReadNotificationCount?deviceId=$deviceId";
+  String url = "$baseUrl3/notifications/count";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
+    "X-Device-ID":deviceId
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
     final response = await http.get(Uri.parse(url), headers: requestHeaders);
     debugPrint("Announcement_response: ${response.request}");
     debugPrint("profile_response: ${response.body}");
-
     var data = json.decode(response.body);
     return AnnouncementCountResponse.fromJson(data);
   } catch (e) {
@@ -112,7 +135,7 @@ Future createAnnouncementAPI(AnnouncementCreateRequest announcementForm,
     {File file}) async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl/createAnnouncement";
+  String url = "$baseUrl3/createAnnouncement";
   Map<String, String> requestHeaders = {
     HttpHeaders.authorizationHeader: 'Bearer $token',
   };

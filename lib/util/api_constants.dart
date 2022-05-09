@@ -6,9 +6,10 @@
  * /
  */
 //local
-final baseUrl = "http://103.99.149.26:9876";
+/*final baseUrl = "http://103.99.149.26:9876";
+final baseUrl2 = "http://3.208.178.159:9876";*/
 // final baseUrl = "http://103.99.149.26:9875/barnabas";
-// final baseUrl = "http://3.208.178.159:9875/barnabas";
+ final baseUrl3 = "http://3.208.178.159:9876/barnabas";
 // final img_base_url = "http://192.168.86.49:3250";
 
 // // server

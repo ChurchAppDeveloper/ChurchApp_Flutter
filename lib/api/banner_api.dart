@@ -14,7 +14,7 @@ Future<BannerResponse> getBanners() async {
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
-    final response = await http.get(Uri.parse('$baseUrl/bannerImageListMobile'),
+    final response = await http.get(Uri.parse('$baseUrl3/bannerImageListMobile'),
         headers: requestHeaders);
     var data = json.decode(response.body);
     debugPrint("BannerData $data");
@@ -23,7 +23,7 @@ Future<BannerResponse> getBanners() async {
     debugPrint("BannerList:${list.content}");
     return list;
   } catch (e) {
-    debugPrint("Error $e");
+    debugPrint("Error in banners api $e");
     return null;
   }
 }

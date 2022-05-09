@@ -46,9 +46,11 @@ class _AnnouncementListState extends State<AnnouncementList> {
     String deviceId = await SharedPref().getStringPref(SharedPref().deviceId);
     debugPrint("deviceId: $deviceId");
 
-    String url = "$baseUrl/getAnnouncementListMobile?deviceId=$deviceId";
+   // String url = "$baseUrl/getAnnouncementListMobile?deviceId=$deviceId";
+    String url = "$baseUrl3/notifications/";
     Map<String, String> requestHeaders = {
       HttpHeaders.contentTypeHeader: 'application/json',
+      "X-Device-ID":deviceId
       // HttpHeaders.authorizationHeader: 'Bearer $token',
     };
     try {
@@ -61,7 +63,11 @@ class _AnnouncementListState extends State<AnnouncementList> {
       if (response.statusCode == 200) {
         if (keyRefresh) {
           setState(() {
-            announcementList = data.content;
+            announcementList.clear();
+           data.content.forEach((element) {
+             if(element.announcement!=null)
+             announcementList.add(element);
+           });
             return true;
           });
         }
@@ -76,6 +82,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: isShowAppbar
             ? AppBar(
@@ -160,7 +167,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
             physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               if (announcementList.isNotEmpty) {
-                var uri = Uri.parse(announcementList[index].description);
+                var uri = Uri.parse(announcementList[index].announcement!=null?announcementList[index].announcement.description:'');
                 debugPrint("URL :$uri");
                 return GestureDetector(
                   child: Container(
@@ -183,7 +190,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                       //     colors: [Colors.white, Colors.white]),
                     ),
                     child: ListTile(
-                      leading: announcementList[index].readStatus == true
+                      leading: announcementList[index].read == true
                           ? Icon(
                               Icons.mark_email_read,
                               size: 40,
@@ -195,7 +202,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                             left: 8.0, right: 8.0, top: 8.0),
                         child: Text(
                             announcementList[index]
-                                .title
+                                .announcement.title
                                 .toString()
                                 .capitalizeFirst,
                             textAlign: TextAlign.start,
@@ -248,7 +255,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                     ),
                   ),
                   onTap: () async {
-                    if(announcementList[index].readStatus==false){
+                    if(announcementList[index].read==false){
                       readNotificationRequest.announcementId =
                           announcementList[index].id;
                       readNotificationRequest.status = true;
@@ -256,9 +263,9 @@ class _AnnouncementListState extends State<AnnouncementList> {
                       readNotificationAPI(
                           readNotificationRequest, refreshController);
                     }
-                    debugPrint("FileName:${announcementList[index].filename}");
-                    getAnnouncementImageAPI(context, announcementList[index].id,
-                        announcementList[index].filename, uri);
+                    debugPrint("FileName:${announcementList[index].announcement.filename}");
+                    getAnnouncementImageAPI(context, announcementList[index].announcementId,
+                        announcementList[index].announcement.filename, uri);
                   },
                 );
               } else {

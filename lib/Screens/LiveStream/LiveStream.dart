@@ -106,6 +106,8 @@ class CustomBody extends StatelessWidget {
                   weburl: prefs.getString('youtubeUrl'),
                   isShowAppbar: true,
                   pageTitle: "Live Streaming in Youtube");
+              String ss=prefs.getString('youtubeUrl').replaceAll("'", "");
+              print("youtube url ${prefs.getString('youtubeUrl')} ...  $ss ..");
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => wepage),

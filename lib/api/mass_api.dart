@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:churchapp/model_response/mass_response.dart';
@@ -30,7 +31,7 @@ Future<List<Appointment>> getMass() async {
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
-    final response = await http.get(Uri.parse('$baseUrl/massTimingListMobile'),
+    final response = await http.get(Uri.parse('$baseUrl3/massTimingListMobile'),
         headers: requestHeaders);
     var data = json.decode(response.body);
     debugPrint("massTimingListMobiles: $data");
@@ -56,7 +57,7 @@ Future<List<Appointment>> getMass() async {
         location: "In Church",
         isAllDay: false,
         subject: contentTiming[i].scheduleType,
-        color: HexColor(contentTiming[i].primaryColour),
+        color:contentTiming[i].primaryColour==null?Color.fromARGB(255, 219, 69, 71): HexColor(contentTiming[i].primaryColour),
         // recurrenceRule:
           //     'FREQ=WEEKLY;INTERVAL=1;BYDAY=${day.substring(0, 3).toUpperCase()};'
       ));
@@ -70,6 +71,7 @@ Future<List<Appointment>> getMass() async {
 }
 class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {
+    log("yes usss ${hexColor==null}");
     hexColor = hexColor.toUpperCase().replaceAll("#", "");
     if (hexColor.length == 6) {
       hexColor = "FF" + hexColor;
@@ -83,13 +85,14 @@ Future createTimingAPI(Map<String, dynamic> timingForm) async {
   debugPrint("TIMING :${jsonEncode(timingForm)}");
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl/createMassTiming";
+  String url = "$baseUrl3/createMassTiming";
+
   Map<String, String> requestHeaders = {
     // HttpHeaders.acceptHeader: "application/json",
     HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.authorizationHeader: 'Bearer $token',
   };
-
+print("urls is $url ${jsonEncode(timingForm)}");
   final response = await http.post(Uri.parse(url),
       body: jsonEncode(timingForm), headers: requestHeaders);
   var data = TimingCreateResponse.fromJson(json.decode(response.body));

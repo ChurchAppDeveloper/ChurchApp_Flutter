@@ -21,7 +21,7 @@ import 'package:http/http.dart' as http;
 Future createBusinessTypeAPI(Map<String, dynamic> businessTypeForm) async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl/createBusinessType";
+  String url = "$baseUrl3/createBusinessType";
   Map<String, String> requestHeaders = {
     // HttpHeaders.acceptHeader: "application/json",
     HttpHeaders.contentTypeHeader: "application/json",
@@ -50,7 +50,7 @@ Future createBusinessTypeAPI(Map<String, dynamic> businessTypeForm) async {
 Future<List<ClassifiedModel>> getBusinessType(filter) async {
   String token = await SharedPref().getStringPref(SharedPref().token);
   List<ClassifiedModel> model = List<ClassifiedModel>();
-  String url = "$baseUrl/businessTypeList?search=$filter";
+  String url = "$baseUrl3/businessTypeList?search=$filter";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -81,7 +81,7 @@ Future createClassifiedAPI(ClassifiedCreateRequest classifiedForm,
     {File file}) async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl/createClassifier";
+  String url = "$baseUrl3/createClassifier";
   Map<String, String> requestHeaders = {
     HttpHeaders.authorizationHeader: 'Bearer $token',
   };
@@ -119,14 +119,14 @@ Future createClassifiedAPI(ClassifiedCreateRequest classifiedForm,
 Future<getClassified.ClassifiedResponse> getClassifiedAPI() async {
   String token = await SharedPref().getStringPref(SharedPref().token);
 
-  String url = "$baseUrl/classifiedListMobile";
+  String url = "$baseUrl3/classifiedListMobile";
   Map<String, String> requestHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
     // HttpHeaders.authorizationHeader: 'Bearer $token',
   };
   try {
     final response = await http.get(Uri.parse(url), headers: requestHeaders);
-    debugPrint("Announcement_response: ${response.request}");
+    debugPrint("Announcement_response claassifields: ${response.request}");
     debugPrint("profile_response: ${response.body}");
 
     var data = json.decode(response.body);

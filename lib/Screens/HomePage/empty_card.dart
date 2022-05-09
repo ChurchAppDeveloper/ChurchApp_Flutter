@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,13 +9,14 @@ class EmptyCard extends StatelessWidget {
   final double height;
   // final String title;
   final String imagename;
-
+ final int index;
   const EmptyCard({
     Key key,
     this.width,
     this.height,
     // this.title,
     this.imagename,
+    this.index
   }) : super(key: key);
 
   @override
@@ -28,7 +30,24 @@ class EmptyCard extends StatelessWidget {
           Container(
             alignment: Alignment.topCenter,
             margin: const EdgeInsets.only(top: 20.0),
-            child: Image.asset(imagename, width: 150,height: 150,)
+            child: /*Image.network(
+              imagename,
+              key: ValueKey<int>(index),
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 2,
+            )*///Image.network(imagename, width: 150,height: 150,)
+            CachedNetworkImage(
+              imageUrl: imagename,
+              height: 150,
+              width: 150,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Container(
+                   //   height: 50,width: 50,
+                      margin: EdgeInsets.all(50),
+                      child: CircularProgressIndicator(value: downloadProgress.progress,)),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
           ),
 /*          Container(
               alignment: Alignment.bottomCenter,

@@ -9,7 +9,7 @@ class AnnouncementResponse {
     success = json['success'];
     message = json['message'];
     if (json['content'] != null) {
-      content = new List<Content>();
+      content = <Content>[];
       json['content'].forEach((v) {
         content.add(new Content.fromJson(v));
       });
@@ -29,27 +29,67 @@ class AnnouncementResponse {
 
 class Content {
   int id;
+  String deviceId;
+  int announcementId;
+  Announcement announcement;
+  bool read;
+
+  Content(
+      {this.id,
+        this.deviceId,
+        this.announcementId,
+        this.announcement,
+        this.read});
+
+  Content.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    deviceId = json['deviceId'];
+    announcementId = json['announcementId'];
+    announcement = json['announcement'] != null
+        ? new Announcement.fromJson(json['announcement'])
+        : null;
+    read = json['read'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['deviceId'] = this.deviceId;
+    data['announcementId'] = this.announcementId;
+    if (this.announcement != null) {
+      data['announcement'] = this.announcement.toJson();
+    }
+    data['read'] = this.read;
+    return data;
+  }
+}
+
+class Announcement {
+  int id;
   String title;
   String description;
   String filename;
   bool status;
   bool readStatus;
+  int createdDate;
 
-  Content(
+  Announcement(
       {this.id,
         this.title,
         this.description,
         this.filename,
         this.status,
-        this.readStatus});
+        this.readStatus,
+        this.createdDate});
 
-  Content.fromJson(Map<String, dynamic> json) {
+  Announcement.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     description = json['description'];
     filename = json['filename'];
     status = json['status'];
     readStatus = json['readStatus'];
+    createdDate = json['createdDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +100,8 @@ class Content {
     data['filename'] = this.filename;
     data['status'] = this.status;
     data['readStatus'] = this.readStatus;
+    data['createdDate'] = this.createdDate;
     return data;
   }
 }
+

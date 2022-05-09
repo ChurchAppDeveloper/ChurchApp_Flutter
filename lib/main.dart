@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 
 import 'package:churchapp/Screens/AboutUs/AboutUs.dart';
@@ -13,6 +14,7 @@ import 'package:churchapp/Screens/LiveStream/LiveStream.dart';
 import 'package:churchapp/Screens/LoginPage/otp_screen.dart';
 import 'package:churchapp/Screens/MassTiming/MassTiming.dart';
 import 'package:churchapp/Screens/PrayerRequest/PrayerRequest.dart';
+import 'package:churchapp/util/api_constants.dart';
 import 'package:churchapp/util/shared_preference.dart';
 import 'package:churchapp/util/string_constants.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +26,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'Screens/LoginPage/login_screen.dart';
-
+import 'package:http/http.dart' as http;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -91,7 +93,22 @@ class _MyAppState extends State<MyApp> {
 
   void getDeviceToken() async {
     String deviceToken = await _firebaseMessaging.getToken();
-    SharedPref().setStringPref(SharedPref().deviceId, deviceToken);
+    var storedId= await SharedPref().getStringPref(SharedPref().deviceId);
+    print("yes its null  ${storedId.toString()}");
+   if(storedId.toString().isEmpty) {
+      try{
+        final response = await http.get(
+            Uri.parse(baseUrl3 + "/notifications/registerdevice"),
+            headers: {
+              "X-Device-ID":deviceToken
+            });
+
+        print("register token api ${response.body}");    SharedPref().setStringPref(SharedPref().deviceId, deviceToken);
+
+      }catch(err){
+        print("error in register token api ${err}");
+      }
+    }
     debugPrint("Mainoken:$deviceToken");
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:churchapp/util/string_constants.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,8 @@ class ViewVideos extends StatefulWidget {
     @required this.url,
   }) : super(key: key);
 
-  final String url;
+ // final String url;
+  final File url;
 
   @override
   _ViewVideosState createState() => _ViewVideosState();
@@ -20,7 +23,7 @@ class _ViewVideosState extends State<ViewVideos> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.url)
+    _controller = VideoPlayerController.file(widget.url)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});

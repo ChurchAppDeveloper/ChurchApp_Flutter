@@ -63,6 +63,7 @@ class ChurchProfile {
   String prayerRequest;
   String youtube;
   String massTimeIntention;
+  String anointingSick;
   String confessionContact;
   String confessionEmail;
   String confessionDetails;
@@ -83,7 +84,7 @@ class ChurchProfile {
       this.confessionContact,
       this.confessionEmail,
       this.confessionDetails,
-      this.massTimeIntention});
+      this.massTimeIntention,this.anointingSick});
 
   ChurchProfile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -99,6 +100,7 @@ class ChurchProfile {
     prayerRequest = json['prayerRequest'];
     youtube = json['youtube'];
     massTimeIntention = json['massTimeIntention'];
+    anointingSick = json['anointingSick'];
     confessionContact = json['confessionContact'];
     confessionEmail = json['confessionEmail'];
     confessionDetails = json['confessionDetails'];
@@ -119,6 +121,8 @@ class ChurchProfile {
     data['prayerRequest'] = this.prayerRequest;
     data['youtube'] = this.youtube;
     data['massTimeIntention'] = this.massTimeIntention;
+    data['anointingSick'] = this.anointingSick;
+
     data['confessionContact'] = this.confessionContact;
     data['confessionEmail'] = this.confessionEmail;
     data['confessionDetails'] = this.confessionDetails;
